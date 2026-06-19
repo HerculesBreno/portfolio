@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Signal Defense — Playground</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background: radial-gradient(#181613 0%, #0a0908 75%);
+    color:#F3EEE6; font-family:"JetBrains Mono",monospace;
+    min-height:100vh; display:flex; flex-direction:column; overflow:hidden;
+  }
+  .menubar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:1px solid #2C2620;font-size:13px}
+  .menubar a{color:#9C9085;text-decoration:none}
+  .menubar a:hover{color:#F3EEE6}
+  .title{font-family:"Space Grotesk",sans-serif;letter-spacing:0.05em}
+  .stage{flex:1;display:grid;place-items:center;padding:18px}
+  .cabinet{
+    position:relative; width:min(820px,100%); aspect-ratio:4/3;
+    background:#070605; border:1px solid #2C2620; border-radius:10px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.6); overflow:hidden;
+  }
+  .cabinet::before{
+    content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:repeating-linear-gradient(rgba(255,255,255,0.035) 0px,rgba(255,255,255,0.035) 1px,transparent 1px,transparent 3px);
+    mix-blend-mode:screen;
+  }
+  #game{display:block;width:100%;height:100%;image-rendering:pixelated}
+  .hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#9C9085;z-index:3}
+  .controls-row{display:flex;justify-content:center;gap:10px;padding:14px}
+  .controls-row button{
+    font-family:"JetBrains Mono",monospace;font-size:12px;color:#F3EEE6;
+    background:transparent;border:1px solid #2C2620;border-radius:100px;padding:8px 16px;cursor:pointer;
+  }
+  .controls-row button:hover{border-color:#E8A23D;color:#E8A23D}
+</style>
+</head>
+<body>
+  <nav class="menubar">
+    <a href="../playground.html">← Playground</a>
+    <span class="title">SIGNAL DEFENSE</span>
+    <a href="../index.html">Voltar à call</a>
+  </nav>
+  <div class="stage">
+    <div class="cabinet">
+      <canvas id="game" width="800" height="600"></canvas>
+      <div class="hint">← → ou A/D para mover · ESPAÇO para disparar</div>
+    </div>
+  </div>
+  <div class="controls-row">
+    <button id="restart">↻ Reiniciar</button>
+  </div>
+  <script src="../assets/js/games/signal-defense.js"></script>
+</body>
+</html>

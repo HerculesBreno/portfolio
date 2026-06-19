@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Uplink Run — Playground</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background: radial-gradient(#181613 0%, #0a0908 75%);
+    color:#F3EEE6; font-family:"JetBrains Mono",monospace;
+    min-height:100vh; display:flex; flex-direction:column; overflow:hidden;
+  }
+  .menubar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;border-bottom:1px solid #2C2620;font-size:13px}
+  .menubar a{color:#9C9085;text-decoration:none}
+  .menubar a:hover{color:#F3EEE6}
+  .title{font-family:"Space Grotesk",sans-serif;letter-spacing:0.05em}
+  .wip-banner{
+    text-align:center;font-size:11px;color:#E8A23D;padding:8px;
+    border-bottom:1px dashed rgba(232,162,61,0.4);
+  }
+  .stage{flex:1;display:grid;place-items:center;padding:18px}
+  .cabinet{
+    position:relative; width:min(820px,100%); aspect-ratio:4/3;
+    background:#0c1410; border:1px solid #2C2620; border-radius:10px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.6); overflow:hidden;
+  }
+  #game{display:block;width:100%;height:100%;image-rendering:pixelated}
+  .hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:11px;color:#9C9085}
+</style>
+</head>
+<body>
+  <nav class="menubar">
+    <a href="../playground.html">← Playground</a>
+    <span class="title">UPLINK RUN</span>
+    <a href="../index.html">Voltar à call</a>
+  </nav>
+  <div class="wip-banner">EM CONSTRUÇÃO — movimento e tiro básicos só pra validar a mecânica. Fases, sprites e inimigos entram depois.</div>
+  <div class="stage">
+    <div class="cabinet">
+      <canvas id="game" width="800" height="600"></canvas>
+      <div class="hint">← → mover · ↑ ou ESPAÇO pular · F disparar</div>
+    </div>
+  </div>
+  <script src="../assets/js/games/uplink-run.js"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Playground — Seu Nome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+<style>
+  .pg-hero { padding: 160px 0 60px; text-align: center; }
+  .pg-hero .eyebrow { display:block; margin-bottom: 14px; }
+  .game-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; padding-bottom: 160px; }
+  .game-card {
+    background: var(--panel); border: 1px solid var(--hairline); border-radius: var(--radius);
+    padding: 28px; transition: 0.3s;
+  }
+  .game-card:hover { border-color: rgba(232,162,61,0.4); transform: translateY(-3px); }
+  .game-status { font-family: var(--font-mono); font-size: 11px; color: var(--green); margin-bottom: 10px; }
+  .game-status.wip { color: var(--amber); }
+  .game-card h3 { font-family: var(--font-display); font-size: 20px; margin-bottom: 8px; }
+  .game-card p { color: var(--text-soft); font-size: 14px; margin-bottom: 18px; }
+  @media (max-width: 760px) { .game-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body style="padding-top:0">
+
+<header class="topbar solid" style="position:static">
+  <a href="index.html" class="status-pill" style="text-decoration:none">← Voltar pra call</a>
+  <div class="eyebrow">Enquanto você espera</div>
+</header>
+
+<div class="wrap pg-hero">
+  <span class="eyebrow">Sala de espera</span>
+  <h1 class="section-title" style="margin-top:10px">Playground</h1>
+  <p class="section-lede" style="margin:14px auto 0">Dois mini-games pra enquanto a próxima call não começa. Em construção.</p>
+</div>
+
+<div class="wrap game-grid">
+  <div class="game-card reveal in-view">
+    <div class="game-status">● JOGÁVEL</div>
+    <h3>Signal Defense</h3>
+    <p>Defenda o sinal de ondas de interferência descendo pela tela. Inspirado nos clássicos shooters de alienígenas — sem usar marca registrada.</p>
+    <a href="games/signal-defense.html" class="btn btn-filled">Jogar</a>
+  </div>
+  <div class="game-card reveal in-view">
+    <div class="game-status wip">● EM CONSTRUÇÃO</div>
+    <h3>Uplink Run</h3>
+    <p>Corra, salte e dispare numa selva de servidores. Inspirado nos clássicos run-and-gun de scroll lateral.</p>
+    <a href="games/uplink-run.html" class="btn btn-outline">Ver protótipo</a>
+  </div>
+</div>
+
+</body>
+</html>

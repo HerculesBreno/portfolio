@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Seu Nome — Product Designer disponível para novos projetos." />
+<title>Seu Nome — Product Designer</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<!-- ============ TOP CALL BAR ============ -->
+<header class="topbar">
+  <div class="status-pill">
+    <span class="status-dot"></span>
+    Disponível para novos projetos
+  </div>
+
+  <div class="topbar-right">
+    <div class="meta-readout">
+      <span class="hide-mobile">Florianópolis, Brasil</span>
+      <span class="meta-divider hide-mobile"></span>
+      <strong>UTC&minus;3</strong>
+      <span class="meta-divider"></span>
+      <span id="local-clock">--:--</span>
+    </div>
+    <div class="topbar-menu-wrap">
+      <button class="menu-btn" aria-haspopup="true" aria-label="Mais opções">⋮</button>
+      <nav class="dropdown" aria-label="Mais opções">
+        <a href="playground.html">🎮 Playground (mini-games)</a>
+        <a href="uploads/curriculo.pdf">📄 Baixar currículo</a>
+        <a href="https://github.com/" target="_blank" rel="noopener">💻 GitHub</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO (chamada em andamento) ============ -->
+<section id="hero">
+  <div class="hero-media" role="img" aria-label="Foto do designer em seu escritório, durante uma chamada de vídeo"></div>
+  <div class="nameplate">
+    <b>Seu Nome</b>
+    <span>· Product Designer</span>
+  </div>
+</section>
+
+<main>
+
+  <!-- ============ WORK — "gravações" ============ -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-tag reveal">
+        <span class="rec-dot"></span>
+        <span class="eyebrow">Gravações desta chamada</span>
+      </div>
+      <h2 class="section-title reveal">Work</h2>
+      <p class="section-lede reveal">Projetos selecionados — cada um com contexto, decisões e resultado, não só telas bonitas.</p>
+
+      <div class="rec-grid">
+        <a href="case-studies/_template.html" class="rec-card reveal">
+          <div class="rec-thumb" data-time="04:32">REC 001</div>
+          <div class="rec-body">
+            <div class="rec-label">CASE STUDY 001</div>
+            <div class="rec-title">Nome do Projeto</div>
+            <p class="rec-desc">Resumo de uma linha sobre o problema e o impacto.</p>
+            <div class="rec-tags"><span>Produto</span><span>0→1</span></div>
+          </div>
+        </a>
+        <a href="case-studies/_template.html" class="rec-card reveal">
+          <div class="rec-thumb" data-time="06:10">REC 002</div>
+          <div class="rec-body">
+            <div class="rec-label">CASE STUDY 002</div>
+            <div class="rec-title">Nome do Projeto</div>
+            <p class="rec-desc">Resumo de uma linha sobre o problema e o impacto.</p>
+            <div class="rec-tags"><span>B2B</span><span>Design System</span></div>
+          </div>
+        </a>
+      </div>
+      <span class="todo">TODO: me envie os projetos prontos pra eu gerar as páginas reais</span>
+    </div>
+  </section>
+
+  <!-- ============ AI & AUTOMATIONS — "tela compartilhada" ============ -->
+  <section id="ai-automations" style="background:var(--panel-2)">
+    <div class="wrap">
+      <div class="section-tag reveal">
+        <span class="rec-dot" style="background:var(--amber)"></span>
+        <span class="eyebrow">Tela compartilhada</span>
+      </div>
+      <h2 class="section-title reveal">AI &amp; Automations</h2>
+      <p class="section-lede reveal">Ferramentas e fluxos que você construiu para acelerar produto com IA.</p>
+
+      <div class="screenshare-grid">
+        <div class="screen-card reveal">
+          <div class="screen-chrome"><span></span><span></span><span></span></div>
+          <h3>Nome da automação</h3>
+          <p>O que ela resolve, em uma frase direta.</p>
+        </div>
+        <div class="screen-card reveal">
+          <div class="screen-chrome"><span></span><span></span><span></span></div>
+          <h3>Nome da automação</h3>
+          <p>O que ela resolve, em uma frase direta.</p>
+        </div>
+        <div class="screen-card reveal">
+          <div class="screen-chrome"><span></span><span></span><span></span></div>
+          <h3>Nome da automação</h3>
+          <p>O que ela resolve, em uma frase direta.</p>
+        </div>
+      </div>
+      <span class="todo">TODO: trocar pelos seus projetos de IA/automação reais</span>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT THINKING — "legendas" ============ -->
+  <section id="product-thinking">
+    <div class="wrap">
+      <div class="section-tag reveal">
+        <span class="rec-dot" style="background:var(--text-soft)"></span>
+        <span class="eyebrow">Legendas da chamada</span>
+      </div>
+      <h2 class="section-title reveal">Product Thinking</h2>
+      <p class="section-lede reveal">Como você pensa, não só o que você entrega — processo, frameworks, decisões.</p>
+
+      <div class="transcript">
+        <div class="caption-line reveal">
+          <div class="caption-time">00:04:12</div>
+          <div>
+            <h3>Título da nota / artigo</h3>
+            <p>Resumo curto da ideia ou do processo que você quer destacar.</p>
+          </div>
+        </div>
+        <div class="caption-line reveal">
+          <div class="caption-time">00:11:40</div>
+          <div>
+            <h3>Título da nota / artigo</h3>
+            <p>Resumo curto da ideia ou do processo que você quer destacar.</p>
+          </div>
+        </div>
+      </div>
+      <span class="todo">TODO: escrever 2–3 notas reais de processo/decisão</span>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT — "cartão do participante" ============ -->
+  <section id="about" style="background:var(--panel-2)">
+    <div class="wrap">
+      <div class="section-tag reveal">
+        <span class="rec-dot" style="background:var(--green)"></span>
+        <span class="eyebrow">Participante</span>
+      </div>
+      <h2 class="section-title reveal">About</h2>
+
+      <div class="participant-card reveal">
+        <div class="participant-avatar">
+          <img src="uploads/hero.png" alt="Seu Nome" />
+        </div>
+        <div class="participant-info">
+          <p>Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.</p>
+          <div class="skill-chips">
+            <span>Product Design</span>
+            <span>Design Systems</span>
+            <span>IA aplicada</span>
+            <span>Front-end</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT — "agendar próxima call" ============ -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="schedule-panel reveal">
+        <span class="eyebrow">Chamada encerrando</span>
+        <h2 style="margin-top:14px">Vamos agendar a próxima call?</h2>
+        <p>Responda em até 1 dia útil. Disponível para projetos freelance e full-time.</p>
+        <div class="btn-row">
+          <a href="mailto:seu@email.com" class="btn btn-filled">Enviar e-mail</a>
+          <a href="https://linkedin.com/in/seuperfil" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">© <span id="year"></span> Seu Nome — feito com HTML, CSS e JS puro.</footer>
+
+<!-- ============ CALL CONTROLS (NAV FIXA) ============ -->
+<nav class="callbar" aria-label="Navegação principal">
+  <div class="callbar-inner">
+    <a href="#work" class="call-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Work
+    </a>
+    <a href="#ai-automations" class="call-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+      AI &amp; Automations
+    </a>
+    <a href="#product-thinking" class="call-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a6 6 0 016 6c0 2.5-1.3 4-2.5 5.2-.6.6-.9 1.4-.9 2.3v.5h-5.2v-.5c0-.9-.3-1.7-.9-2.3C7.3 12 6 10.5 6 8a6 6 0 016-6z"/></svg>
+      Product Thinking
+    </a>
+    <a href="#about" class="call-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+      About
+    </a>
+    <a href="#contact" class="call-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+      Contact
+    </a>
+    <div class="call-divider"></div>
+    <a href="#contact" class="call-end">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Let's talk
+    </a>
+  </div>
+</nav>
+
+<script src="assets/js/main.js"></script>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
