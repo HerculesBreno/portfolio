@@ -183,10 +183,39 @@ if (callbarInner) {
   aiBackBtn  && aiBackBtn.addEventListener('click', closeAI);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      if (projModal && projModal.classList.contains('open')) { closeProjModal(); return; }
       if (callbarInner.classList.contains('work-open')) closeWork();
       if (callbarInner.classList.contains('ai-open')) closeAI();
       if (aboutModal && aboutModal.classList.contains('open')) closeAbout();
     }
+  });
+}
+
+// ===== Project modal =====
+const projModal    = document.getElementById('proj-modal');
+const projModalClose = document.getElementById('proj-modal-close');
+const projBackdrop = document.getElementById('proj-modal-backdrop');
+const projLabel    = document.getElementById('proj-modal-label');
+const projTitle    = document.getElementById('proj-modal-title');
+
+function openProjModal(type, n) {
+  const isWork = type === 'work';
+  projLabel.textContent = isWork ? `CASE STUDY 00${n}` : `AI PROJECT 00${n}`;
+  projTitle.textContent = isWork ? `Projeto ${String(n).padStart(2,'0')}` : `IA Projeto ${String(n).padStart(2,'0')}`;
+  projModal.hidden = false;
+  requestAnimationFrame(() => projModal.classList.add('open'));
+  document.body.style.overflow = 'hidden';
+}
+function closeProjModal() {
+  projModal.classList.remove('open');
+  projModal.addEventListener('transitionend', () => { projModal.hidden = true; }, { once: true });
+}
+
+if (projModal) {
+  projModalClose && projModalClose.addEventListener('click', closeProjModal);
+  projBackdrop   && projBackdrop.addEventListener('click', closeProjModal);
+  document.querySelectorAll('.work-pill-card[data-proj]').forEach(btn => {
+    btn.addEventListener('click', () => openProjModal(btn.dataset.proj, btn.dataset.projN));
   });
 }
 

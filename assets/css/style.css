@@ -52,8 +52,10 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100svh;
 }
+main, footer.site-footer { display: none; }
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
@@ -286,16 +288,6 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   opacity: 1; pointer-events: auto;
   transition: opacity 0.18s ease;
   position: relative; z-index: 1;
-}
-
-/* Work state (cards dentro do pill) */
-.callbar-work {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center; gap: 4px;
-  padding: 10px 16px;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.2s ease 0.14s;
-  z-index: 1;
 }
 
 /* Crossfade ao abrir work */
@@ -618,75 +610,69 @@ footer.site-footer {
 .about-bio { font-size: 14px; color: var(--text-soft); line-height: 1.75; }
 
 /* =========================================================
-   WORK SHELF — estilos do overlay antigo (removido)
+   PROJECT MODAL
    ========================================================= */
-.work-overlay {
-  position: fixed;
-  bottom: calc(22px + 68px + 14px);
-  left: 50%; transform: translateX(-50%) translateY(12px);
-  z-index: 61;
-  display: none; flex-direction: column; align-items: center; gap: 20px;
-  background: rgba(18, 16, 14, 0.82);
+.proj-modal {
+  position: fixed; inset: 0; z-index: 80;
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
+}
+.proj-modal:not([hidden]) { display: flex; }
+
+.proj-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.proj-modal-box {
+  position: relative; z-index: 1;
+  width: min(680px, 100%); max-height: 80vh;
+  background: rgba(18, 16, 14, 0.90);
+  border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  border-radius: 24px;
-  padding: 24px 28px 20px;
+  border-radius: 20px;
   box-shadow: var(--glass-shadow-lg);
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  opacity: 0; transform: scale(0.96) translateY(8px);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(.2,.8,.2,1);
 }
-.work-overlay:not([hidden]) { display: flex; }
-.work-overlay.open {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
+.proj-modal.open .proj-modal-box {
+  opacity: 1; transform: scale(1) translateY(0);
 }
-
-.work-overlay-inner { display: contents; }
-.work-overlay-eyebrow { font-size: 11px; }
-
-.work-app-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 88px);
-  gap: 20px;
+.proj-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--glass-border);
 }
-
-.work-app-card {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  text-decoration: none; color: var(--text);
-  cursor: pointer; background: none; border: none;
-  transition: transform 0.2s cubic-bezier(.2,.8,.2,1);
+.proj-modal-label {
+  font-family: var(--font-mono); font-size: 11px; color: var(--red); letter-spacing: 0.08em;
 }
-.work-app-card:hover { transform: scale(1.08) translateY(-3px); }
-.work-app-card:hover .work-app-icon { box-shadow: var(--glass-shadow-lg); }
-
-.work-app-icon {
-  width: 80px; height: 80px; border-radius: 20px;
+.proj-modal-title {
+  font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-top: 4px;
+}
+.proj-modal-close {
+  width: 30px; height: 30px; border-radius: 50%;
   display: grid; place-items: center;
-  background: #2a2520;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.08) inset;
-  position: relative; overflow: hidden;
-  transition: box-shadow 0.2s;
+  background: rgba(255,255,255,0.08); border: 1px solid var(--glass-border);
+  color: var(--text-soft); flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
 }
-.work-app-icon::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: var(--glass-shine);
-  border-radius: inherit;
+.proj-modal-close:hover { background: rgba(255,255,255,0.14); color: var(--text); }
+.proj-modal-close svg { width: 13px; height: 13px; }
+.proj-modal-body {
+  flex: 1; overflow-y: auto; padding: 28px 22px;
+  color: var(--text-soft); font-size: 14.5px; line-height: 1.75;
 }
-.work-icon-label {
-  font-family: var(--font-mono); font-size: 11px; font-weight: 500;
-  text-align: center; line-height: 1.4; color: var(--text);
-  position: relative; z-index: 1;
+.proj-modal-thumb {
+  width: 100%; aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
+  background: var(--panel-2); margin-bottom: 24px;
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 13px; color: var(--text-soft);
+  border: 1px solid var(--glass-border);
 }
-
-.work-back-card .work-app-icon { background: #222018; }
-.work-back-card .work-app-icon svg { width: 22px; height: 22px; position: relative; z-index: 1; color: var(--text-soft); }
-
-.work-icon-amber { background: #3a2b0e; border-color: rgba(232,162,61,0.30); }
-.work-icon-amber .work-icon-label { color: var(--amber); }
 
 .work-icon-blue { background: #0e1f3a; border-color: rgba(80,140,255,0.30); }
 .work-icon-blue .work-icon-label { color: #7eb8ff; }

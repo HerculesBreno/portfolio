@@ -231,26 +231,26 @@
         <span data-i18n="workBack">Voltar</span>
       </button>
       <div class="call-divider"></div>
-      <a href="case-studies/_template.html" class="work-pill-card">
+      <button class="work-pill-card" data-proj="work" data-proj-n="1">
         <div class="work-pill-icon work-icon-amber"></div>
         <span data-i18n="proj1">Proj 01</span>
-      </a>
-      <a href="case-studies/_template.html" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="work" data-proj-n="2">
         <div class="work-pill-icon work-icon-blue"></div>
         <span data-i18n="proj2">Proj 02</span>
-      </a>
-      <a href="case-studies/_template.html" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="work" data-proj-n="3">
         <div class="work-pill-icon work-icon-purple"></div>
         <span data-i18n="proj3">Proj 03</span>
-      </a>
-      <a href="case-studies/_template.html" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="work" data-proj-n="4">
         <div class="work-pill-icon work-icon-teal"></div>
         <span data-i18n="proj4">Proj 04</span>
-      </a>
-      <a href="case-studies/_template.html" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="work" data-proj-n="5">
         <div class="work-pill-icon work-icon-rose"></div>
         <span data-i18n="proj5">Proj 05</span>
-      </a>
+      </button>
     </div>
 
     <!-- Estado AI: cards dentro do pill -->
@@ -260,26 +260,26 @@
         <span data-i18n="aiBack">Voltar</span>
       </button>
       <div class="call-divider"></div>
-      <a href="#ai-automations" class="work-pill-card">
+      <button class="work-pill-card" data-proj="ai" data-proj-n="1">
         <div class="work-pill-icon work-icon-cyan"></div>
         <span data-i18n="aiProj1">IA 01</span>
-      </a>
-      <a href="#ai-automations" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="ai" data-proj-n="2">
         <div class="work-pill-icon work-icon-green"></div>
         <span data-i18n="aiProj2">IA 02</span>
-      </a>
-      <a href="#ai-automations" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="ai" data-proj-n="3">
         <div class="work-pill-icon work-icon-orange"></div>
         <span data-i18n="aiProj3">IA 03</span>
-      </a>
-      <a href="#ai-automations" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="ai" data-proj-n="4">
         <div class="work-pill-icon work-icon-amber"></div>
         <span data-i18n="aiProj4">IA 04</span>
-      </a>
-      <a href="#ai-automations" class="work-pill-card">
+      </button>
+      <button class="work-pill-card" data-proj="ai" data-proj-n="5">
         <div class="work-pill-icon work-icon-blue"></div>
         <span data-i18n="aiProj5">IA 05</span>
-      </a>
+      </button>
     </div>
 
   </div>
@@ -331,6 +331,26 @@
 
 </aside>
 
+
+<!-- PROJECT MODAL -->
+<div class="proj-modal" id="proj-modal" hidden>
+  <div class="proj-modal-backdrop" id="proj-modal-backdrop"></div>
+  <div class="proj-modal-box">
+    <div class="proj-modal-head">
+      <div>
+        <div class="proj-modal-label" id="proj-modal-label">CASE STUDY 001</div>
+        <div class="proj-modal-title" id="proj-modal-title">Nome do Projeto</div>
+      </div>
+      <button class="proj-modal-close" id="proj-modal-close" aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="proj-modal-body">
+      <div class="proj-modal-thumb">Em breve</div>
+      <p>Conteúdo do case study aparecerá aqui.</p>
+    </div>
+  </div>
+</div>
 
 <script src="assets/js/main.js"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
