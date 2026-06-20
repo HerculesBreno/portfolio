@@ -284,8 +284,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 100px;
-  padding: 10px 12px;
+  border-radius: 26px;
+  padding: 10px 10px;
+  gap: 2px;
   box-shadow: var(--glass-shadow-lg);
   pointer-events: auto;
   position: relative;
@@ -367,36 +368,36 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .call-back svg { width: 18px; height: 18px; }
 
 .call-link, .call-end {
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  border-radius: 50px; font-size: 11px; font-family: var(--font-body);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  border-radius: 16px; font-size: 11px; font-family: var(--font-body);
   transition: background 0.18s, color 0.18s;
   white-space: nowrap;
 }
 .call-link {
-  padding: 8px 14px;
-  color: rgba(255,255,255,0.55);
-  min-width: 60px;
+  padding: 10px 16px;
+  color: rgba(255,255,255,0.50);
+  min-width: 64px;
 }
-.call-link svg { width: 20px; height: 20px; stroke-width: 1.8; }
-.call-link:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+.call-link svg { width: 22px; height: 22px; stroke-width: 1.6; }
+.call-link:hover { color: rgba(255,255,255,0.90); background: rgba(255,255,255,0.07); }
 .call-link.active {
   color: var(--amber);
-  background: rgba(232, 162, 61, 0.08);
+  background: rgba(232, 162, 61, 0.09);
 }
 
 .call-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.1); margin: 0 6px; flex-shrink: 0; }
 
 .call-end {
-  padding: 10px 22px;
-  background: rgba(95, 217, 138, 0.22);
+  padding: 10px 20px;
+  background: rgba(95, 217, 138, 0.20);
   color: var(--green);
-  border: 1px solid rgba(95, 217, 138, 0.30);
-  min-width: 80px;
+  border: 1px solid rgba(95, 217, 138, 0.28);
+  min-width: 64px;
   backdrop-filter: var(--glass-blur-sm);
   -webkit-backdrop-filter: var(--glass-blur-sm);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(95,217,138,0.15);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(95,217,138,0.12);
 }
-.call-end svg { width: 20px; height: 20px; }
+.call-end svg { width: 22px; height: 22px; }
 .call-end:hover {
   background: rgba(95, 217, 138, 0.30);
   border-color: rgba(95, 217, 138, 0.45);
