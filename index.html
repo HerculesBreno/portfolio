@@ -27,7 +27,10 @@
       <span class="lang-option" data-lang="en">EN</span>
     </button>
     <div class="topbar-menu-wrap">
-      <button class="menu-btn" aria-haspopup="true" aria-label="Mais opções">⋮</button>
+      <button class="menu-btn" aria-haspopup="true" aria-label="Games">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M6 12.5h3M7.5 11v3"/><circle cx="16.5" cy="11.5" r="0.8" fill="currentColor"/><circle cx="18.5" cy="13.5" r="0.8" fill="currentColor"/></svg>
+      </button>
+      <span class="menu-tooltip">Games</span>
       <nav class="dropdown" aria-label="Mais opções">
         <a href="playground.html">🎮 Playground (mini-games)</a>
         <a href="uploads/curriculo.pdf">📄 Baixar currículo</a>
@@ -40,8 +43,20 @@
 <!-- ============ HERO (chamada em andamento) ============ -->
 <section id="hero">
   <div class="hero-media" role="img" aria-label="Foto do designer em seu escritório, durante uma chamada de vídeo"></div>
+
+  <!-- Hero text — desktop only, fades on mousemove -->
+  <div class="hero-text" id="hero-text">
+    <p class="eyebrow hero-eyebrow" data-i18n="heroEyebrow">Product Designer</p>
+    <h1 class="hero-h1" data-i18n="heroH1">Designing products and AI workflows that people understand and love.</h1>
+    <p class="hero-sub" data-i18n="heroSub">I help teams turn complexity into intuitive experiences through strategy, design and technology.</p>
+    <div class="hero-cta">
+      <a href="#work" class="btn btn-filled" data-i18n="heroCta1">View Case Studies</a>
+      <a href="#contact" class="btn btn-outline" data-i18n="heroCta2">Let's Talk</a>
+    </div>
+  </div>
+
   <div class="nameplate">
-    <b>Seu Nome</b>
+    <b>Hércules Breno</b>
     <span>· Product Designer</span>
   </div>
 </section>
@@ -198,14 +213,10 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         <span data-i18n="navWork">Work</span>
       </button>
-      <a href="#ai-automations" class="call-link">
+      <button class="call-link" id="ai-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
-        AI &amp; Automations
-      </a>
-      <a href="#product-thinking" class="call-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a6 6 0 016 6c0 2.5-1.3 4-2.5 5.2-.6.6-.9 1.4-.9 2.3v.5h-5.2v-.5c0-.9-.3-1.7-.9-2.3C7.3 12 6 10.5 6 8a6 6 0 016-6z"/></svg>
-        Product Thinking
-      </a>
+        <span data-i18n="navAI">AI &amp; Automations</span>
+      </button>
       <button class="call-link" id="about-btn" aria-haspopup="dialog" aria-controls="about-panel">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
         About
@@ -229,80 +240,85 @@
       </button>
       <div class="call-divider"></div>
       <a href="case-studies/_template.html" class="work-pill-card">
-        <div class="work-pill-icon work-icon-amber"><span>REC<br>001</span></div>
-        <span data-i18n="proj1">Projeto 01</span>
+        <div class="work-pill-icon work-icon-amber"></div>
+        <span data-i18n="proj1">Proj 01</span>
       </a>
       <a href="case-studies/_template.html" class="work-pill-card">
-        <div class="work-pill-icon work-icon-blue"><span>REC<br>002</span></div>
-        <span data-i18n="proj2">Projeto 02</span>
+        <div class="work-pill-icon work-icon-blue"></div>
+        <span data-i18n="proj2">Proj 02</span>
       </a>
       <a href="case-studies/_template.html" class="work-pill-card">
-        <div class="work-pill-icon work-icon-purple"><span>REC<br>003</span></div>
-        <span data-i18n="proj3">Projeto 03</span>
+        <div class="work-pill-icon work-icon-purple"></div>
+        <span data-i18n="proj3">Proj 03</span>
+      </a>
+      <a href="case-studies/_template.html" class="work-pill-card">
+        <div class="work-pill-icon work-icon-teal"></div>
+        <span data-i18n="proj4">Proj 04</span>
+      </a>
+      <a href="case-studies/_template.html" class="work-pill-card">
+        <div class="work-pill-icon work-icon-rose"></div>
+        <span data-i18n="proj5">Proj 05</span>
+      </a>
+    </div>
+
+    <!-- Estado AI: cards dentro do pill -->
+    <div class="callbar-ai" id="callbar-ai">
+      <button class="call-link call-back" id="ai-back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span data-i18n="aiBack">Voltar</span>
+      </button>
+      <div class="call-divider"></div>
+      <a href="#ai-automations" class="work-pill-card">
+        <div class="work-pill-icon work-icon-cyan"></div>
+        <span data-i18n="aiProj1">IA 01</span>
+      </a>
+      <a href="#ai-automations" class="work-pill-card">
+        <div class="work-pill-icon work-icon-green"></div>
+        <span data-i18n="aiProj2">IA 02</span>
+      </a>
+      <a href="#ai-automations" class="work-pill-card">
+        <div class="work-pill-icon work-icon-orange"></div>
+        <span data-i18n="aiProj3">IA 03</span>
+      </a>
+      <a href="#ai-automations" class="work-pill-card">
+        <div class="work-pill-icon work-icon-amber"></div>
+        <span data-i18n="aiProj4">IA 04</span>
+      </a>
+      <a href="#ai-automations" class="work-pill-card">
+        <div class="work-pill-icon work-icon-blue"></div>
+        <span data-i18n="aiProj5">IA 05</span>
       </a>
     </div>
 
   </div>
 </nav>
 
-<!-- ============ ABOUT MODAL (Maps sidebar style) ============ -->
+<!-- ============ ABOUT PANEL (right-side drawer) ============ -->
 <div class="about-overlay" id="about-overlay" aria-hidden="true"></div>
 <aside class="about-modal" id="about-panel" role="dialog" aria-modal="true" aria-label="About" hidden>
 
-  <div class="about-sidebar" id="about-sidebar">
-    <div class="about-sidebar-head">
-      <button class="about-collapse-btn" id="about-close" aria-label="Recolher painel">
-        <svg viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
-          <rect x="1" y="1" width="16" height="16" rx="3.5"/>
-          <line x1="6" y1="1" x2="6" y2="17"/>
-        </svg>
-      </button>
+  <div class="about-panel-head">
+    <div class="about-header-text">
+      <strong>Hércules Breno</strong>
+      <span>Product Designer</span>
     </div>
-
-    <div class="about-profile-mini">
-      <div class="about-avatar-mini">
-        <img src="uploads/hero.png" alt="Hércules Breno" />
-      </div>
-      <div class="about-profile-text">
-        <strong>Hércules Breno</strong>
-        <span>Product Designer</span>
-      </div>
-    </div>
-
-    <nav class="about-nav-list" aria-label="Seções do perfil">
-      <button class="about-nav-item active" data-section="bio">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
-        <span data-i18n="aboutNavBio">Sobre</span>
-      </button>
-      <button class="about-nav-item" data-section="skills">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-        <span>Skills</span>
-      </button>
-      <button class="about-nav-item" data-section="contact">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-        <span data-i18n="aboutNavContact">Contato</span>
-      </button>
-    </nav>
+    <button class="about-modal-close" id="about-modal-close" aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
   </div>
 
-  <button class="about-modal-close" id="about-modal-close" aria-label="Fechar">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-  </button>
+  <div class="about-tabs" role="tablist">
+    <button class="about-tab active" data-section="bio" role="tab" aria-selected="true" data-i18n="aboutNavBio">Sobre</button>
+    <button class="about-tab" data-section="skills" role="tab" aria-selected="false">Skills</button>
+    <button class="about-tab" data-section="contact" role="tab" aria-selected="false" data-i18n="aboutNavContact">Contato</button>
+  </div>
 
   <div class="about-content-area">
     <div class="about-section active" id="section-bio">
-      <div class="about-avatar-full">
-        <img src="uploads/hero.png" alt="Hércules Breno" />
-      </div>
-      <div class="about-namerow">
-        <strong>Hércules Breno</strong>
-        <span class="about-role">· Product Designer</span>
-      </div>
       <p class="about-bio" data-i18n="aboutBio">Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.</p>
     </div>
 
     <div class="about-section" id="section-skills">
-      <h3 class="about-section-title">Skills</h3>
       <div class="skill-chips">
         <span>Product Design</span>
         <span>Design Systems</span>
@@ -314,8 +330,7 @@
     </div>
 
     <div class="about-section" id="section-contact">
-      <h3 class="about-section-title" data-i18n="aboutNavContact">Contato</h3>
-      <div class="btn-row" style="justify-content:flex-start;margin-top:20px">
+      <div class="btn-row" style="flex-direction:column;align-items:stretch;margin-top:8px">
         <a href="mailto:seu@email.com" class="btn btn-filled" data-i18n="emailBtn">Enviar e-mail</a>
         <a href="https://linkedin.com/in/seuperfil" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
       </div>

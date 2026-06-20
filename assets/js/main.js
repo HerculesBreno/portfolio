@@ -23,6 +23,7 @@ const i18n = {
     status:         'Disponível para novos projetos',
     workEyebrow:    'Gravações desta chamada',
     navWork:        'Work',
+    navAI:          'AI & Automations',
     aiEyebrow:      'Tela compartilhada',
     ptEyebrow:      'Legendas da chamada',
     aboutEyebrow:   'Participante',
@@ -33,13 +34,21 @@ const i18n = {
     aboutNavBio:    'Sobre',
     aboutNavContact:'Contato',
     aboutBio:       'Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.',
-    workBack:       'Versão anterior',
-    proj1: 'Projeto 01', proj2: 'Projeto 02', proj3: 'Projeto 03',
+    workBack:       'Voltar',
+    aiBack:         'Voltar',
+    heroEyebrow:    'Product Designer',
+    heroH1:         'Projetando produtos e fluxos de IA que as pessoas entendem e amam.',
+    heroSub:        'Ajudo equipes a transformar complexidade em experiências intuitivas por meio de estratégia, design e tecnologia.',
+    heroCta1:       'Ver Projetos',
+    heroCta2:       'Vamos conversar',
+    proj1: 'Proj 01', proj2: 'Proj 02', proj3: 'Proj 03', proj4: 'Proj 04', proj5: 'Proj 05',
+    aiProj1: 'IA 01', aiProj2: 'IA 02', aiProj3: 'IA 03', aiProj4: 'IA 04', aiProj5: 'IA 05',
   },
   en: {
     status:         'Available for new projects',
     workEyebrow:    'Recordings of this call',
     navWork:        'Work',
+    navAI:          'AI & Automations',
     aiEyebrow:      'Shared screen',
     ptEyebrow:      'Call captions',
     aboutEyebrow:   'Participant',
@@ -50,8 +59,15 @@ const i18n = {
     aboutNavBio:    'About',
     aboutNavContact:'Contact',
     aboutBio:       'Your bio here — who you are, how you think about product, what sets you apart. Two or three sentences.',
-    workBack:       'Previous version',
-    proj1: 'Project 01', proj2: 'Project 02', proj3: 'Project 03',
+    workBack:       'Back',
+    aiBack:         'Back',
+    heroEyebrow:    'Product Designer',
+    heroH1:         'Designing products and AI workflows that people understand and love.',
+    heroSub:        'I help teams turn complexity into intuitive experiences through strategy, design and technology.',
+    heroCta1:       'View Case Studies',
+    heroCta2:       "Let's Talk",
+    proj1: 'Proj 01', proj2: 'Proj 02', proj3: 'Proj 03', proj4: 'Proj 04', proj5: 'Proj 05',
+    aiProj1: 'AI 01', aiProj2: 'AI 02', aiProj3: 'AI 03', aiProj4: 'AI 04', aiProj5: 'AI 05',
   }
 };
 
@@ -77,13 +93,22 @@ if (langToggle) {
   });
 }
 
-// ===== About modal (Maps sidebar style) =====
+// ===== Hero text — fade on mousemove =====
+const heroText = document.getElementById('hero-text');
+if (heroText) {
+  let heroTimer;
+  document.addEventListener('mousemove', () => {
+    heroText.style.opacity = '0';
+    clearTimeout(heroTimer);
+    heroTimer = setTimeout(() => { heroText.style.opacity = '1'; }, 2200);
+  });
+}
+
+// ===== About panel (right-side drawer) =====
 const aboutBtn        = document.getElementById('about-btn');
 const aboutModal      = document.getElementById('about-panel');
 const aboutOverlay    = document.getElementById('about-overlay');
-const aboutClose      = document.getElementById('about-close');
 const aboutModalClose = document.getElementById('about-modal-close');
-const aboutSidebar    = document.getElementById('about-sidebar');
 
 function openAbout() {
   aboutModal.hidden = false;
@@ -92,8 +117,7 @@ function openAbout() {
     aboutOverlay.classList.add('open');
     aboutOverlay.setAttribute('aria-hidden', 'false');
   });
-  document.body.style.overflow = 'hidden';
-  aboutClose && aboutClose.focus();
+  aboutModalClose && aboutModalClose.focus();
 }
 
 function closeAbout() {
@@ -102,7 +126,6 @@ function closeAbout() {
   aboutOverlay.setAttribute('aria-hidden', 'true');
   aboutModal.addEventListener('transitionend', () => {
     aboutModal.hidden = true;
-    document.body.style.overflow = '';
   }, { once: true });
   aboutBtn && aboutBtn.focus();
 }
@@ -111,55 +134,59 @@ if (aboutBtn && aboutModal) {
   aboutBtn.addEventListener('click', openAbout);
   aboutModalClose && aboutModalClose.addEventListener('click', closeAbout);
   aboutOverlay && aboutOverlay.addEventListener('click', closeAbout);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && aboutModal.classList.contains('open')) closeAbout();
-  });
 }
 
-// Sidebar collapse toggle — clicking the icon inside the sidebar toggles it;
-// clicking from collapsed state (icon floated in content) expands it back
-let sidebarCollapsed = false;
-if (aboutClose && aboutSidebar) {
-  aboutClose.addEventListener('click', (e) => {
-    e.stopPropagation();
-    sidebarCollapsed = !sidebarCollapsed;
-    aboutSidebar.classList.toggle('collapsed', sidebarCollapsed);
-  });
-}
-
-// About nav items (section switcher)
-document.querySelectorAll('.about-nav-item').forEach(item => {
-  item.addEventListener('click', () => {
-    const section = item.dataset.section;
-    document.querySelectorAll('.about-nav-item').forEach(i => i.classList.remove('active'));
+// About tabs (section switcher)
+document.querySelectorAll('.about-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const section = tab.dataset.section;
+    document.querySelectorAll('.about-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
     document.querySelectorAll('.about-section').forEach(s => s.classList.remove('active'));
-    item.classList.add('active');
+    tab.classList.add('active'); tab.setAttribute('aria-selected', 'true');
     const target = document.getElementById('section-' + section);
     if (target) target.classList.add('active');
   });
 });
 
-// ===== Work — crossfade dentro do callbar =====
-const workBtn     = document.getElementById('work-btn');
-const workBackBtn = document.getElementById('work-back-btn');
+// ===== Work & AI — crossfade dentro do callbar =====
+const workBtn      = document.getElementById('work-btn');
+const workBackBtn  = document.getElementById('work-back-btn');
+const aiBtn        = document.getElementById('ai-btn');
+const aiBackBtn    = document.getElementById('ai-back-btn');
 const callbarInner = document.getElementById('callbar-inner');
 
 function openWork() {
+  callbarInner.classList.remove('ai-open');
   callbarInner.classList.add('work-open');
   workBtn.setAttribute('aria-expanded', 'true');
 }
-
 function closeWork() {
   callbarInner.classList.remove('work-open');
   workBtn.setAttribute('aria-expanded', 'false');
   workBtn && workBtn.focus();
 }
+function openAI() {
+  callbarInner.classList.remove('work-open');
+  callbarInner.classList.add('ai-open');
+  aiBtn.setAttribute('aria-expanded', 'true');
+}
+function closeAI() {
+  callbarInner.classList.remove('ai-open');
+  aiBtn.setAttribute('aria-expanded', 'false');
+  aiBtn && aiBtn.focus();
+}
 
-if (workBtn && callbarInner) {
-  workBtn.addEventListener('click', openWork);
+if (callbarInner) {
+  workBtn    && workBtn.addEventListener('click', openWork);
   workBackBtn && workBackBtn.addEventListener('click', closeWork);
+  aiBtn      && aiBtn.addEventListener('click', openAI);
+  aiBackBtn  && aiBackBtn.addEventListener('click', closeAI);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && callbarInner.classList.contains('work-open')) closeWork();
+    if (e.key === 'Escape') {
+      if (callbarInner.classList.contains('work-open')) closeWork();
+      if (callbarInner.classList.contains('ai-open')) closeAI();
+      if (aboutModal && aboutModal.classList.contains('open')) closeAbout();
+    }
   });
 }
 

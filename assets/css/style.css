@@ -151,13 +151,29 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   backdrop-filter: var(--glass-blur-sm);
   -webkit-backdrop-filter: var(--glass-blur-sm);
   box-shadow: var(--glass-shadow);
-  font-size: 18px; letter-spacing: 2px; color: var(--text);
+  color: var(--text);
   transition: background 0.2s, border-color 0.2s;
   flex-shrink: 0;
 }
 .menu-btn:hover { background: var(--glass-bg-hover); border-color: var(--glass-border-hover); }
+.menu-btn svg { pointer-events: none; }
 
 .topbar-menu-wrap { position: relative; }
+
+/* Games tooltip */
+.menu-tooltip {
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%);
+  background: rgba(18,16,14,0.90);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  color: var(--text); font-size: 11px; font-family: var(--font-mono);
+  padding: 4px 10px; border-radius: 20px;
+  white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: opacity 0.15s;
+}
+.topbar-menu-wrap:hover .menu-tooltip { opacity: 1; }
 .dropdown {
   position: absolute; top: 46px; right: 0;
   background: rgba(20, 17, 14, 0.78);
@@ -216,6 +232,25 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .nameplate b { font-family: var(--font-display); font-size: 15px; font-weight: 600; }
 .nameplate span { color: var(--text-soft); }
 
+/* Hero text — desktop only */
+.hero-text {
+  position: absolute; left: 52px; top: 50%; transform: translateY(-48%);
+  z-index: 1; max-width: 420px;
+  transition: opacity 0.7s ease;
+}
+.hero-eyebrow { margin-bottom: 10px; }
+.hero-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.2vw, 46px);
+  font-weight: 600; line-height: 1.15;
+  color: var(--text); margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 15px; color: var(--text-soft);
+  line-height: 1.7; margin-bottom: 28px;
+}
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
 /* =========================================================
    BOTTOM CALL CONTROLS (PRIMARY NAV)
    ========================================================= */
@@ -273,37 +308,53 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   transition: opacity 0.22s ease 0.12s;
 }
 
-/* Cards de work dentro do pill */
+/* Cards de work/AI dentro do pill */
 .work-pill-card {
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  padding: 8px 12px; border-radius: 50px;
-  font-size: 11px; color: rgba(255,255,255,0.60);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: 50px;
+  font-size: 10px; color: rgba(255,255,255,0.55);
   text-decoration: none;
   transition: background 0.18s, color 0.18s;
-  white-space: nowrap; min-width: 56px;
+  white-space: nowrap;
 }
 .work-pill-card:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
 .work-pill-icon {
-  width: 28px; height: 28px; border-radius: 8px;
-  display: grid; place-items: center;
-  font-family: var(--font-mono); font-size: 7px; font-weight: 500;
-  text-align: center; line-height: 1.3;
-  position: relative; overflow: hidden;
+  width: 32px; height: 32px; border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.15) inset;
 }
-.work-pill-icon::before {
-  content: ""; position: absolute; inset: 0;
-  background: var(--glass-shine); border-radius: inherit;
-}
-.work-pill-icon span { position: relative; z-index: 1; }
 
-.work-icon-amber { background: #3a2b0e; color: var(--amber); }
-.work-icon-blue  { background: #0e1f3a; color: #7eb8ff; }
-.work-icon-purple{ background: #1e0e3a; color: #c4a0ff; }
+/* Ícones Work */
+.work-icon-amber  { background: radial-gradient(135% 135% at 30% 20%, #f0b951, #a06010); }
+.work-icon-blue   { background: radial-gradient(135% 135% at 30% 20%, #5ba4ff, #1a4ab0); }
+.work-icon-purple { background: radial-gradient(135% 135% at 30% 20%, #c084fc, #6b1fa8); }
+.work-icon-teal   { background: radial-gradient(135% 135% at 30% 20%, #2dd4bf, #0d6b60); }
+.work-icon-rose   { background: radial-gradient(135% 135% at 30% 20%, #fb7185, #be1239); }
 
-.call-back {
-  color: var(--text-soft);
+/* Ícones AI */
+.work-icon-cyan   { background: radial-gradient(135% 135% at 30% 20%, #22d3ee, #0e6680); }
+.work-icon-green  { background: radial-gradient(135% 135% at 30% 20%, #4ade80, #15803d); }
+.work-icon-orange { background: radial-gradient(135% 135% at 30% 20%, #fb923c, #c2410c); }
+
+/* AI callbar state */
+.callbar-work, .callbar-ai {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  padding: 10px 16px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease 0.14s;
+  z-index: 1;
 }
+.callbar-inner.ai-open .callbar-nav {
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.callbar-inner.ai-open .callbar-ai {
+  opacity: 1; pointer-events: auto;
+  transition: opacity 0.22s ease 0.12s;
+}
+
+.call-back { color: var(--text-soft); }
 .call-back svg { width: 18px; height: 18px; }
 
 .call-link, .call-end {
@@ -506,120 +557,65 @@ footer.site-footer {
 }
 .about-overlay.open { opacity: 1; pointer-events: auto; }
 
+/* ---- About panel — right-side drawer ---- */
 .about-modal {
-  position: fixed; top: 50%; left: 50%; z-index: 71;
-  transform: translate(-50%, -50%) scale(0.96);
-  width: min(800px, 94vw);
-  height: min(520px, 82vh);
-  display: none; flex-direction: row;
-  border-radius: 16px; overflow: hidden;
-  background: rgba(18, 16, 14, 0.82);
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 71;
+  width: 280px;
+  display: none; flex-direction: column;
+  background: rgba(16, 14, 12, 0.90);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow-lg), 0 0 0 0.5px rgba(255,255,255,0.05);
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(.2,.8,.2,1);
+  border-left: 1px solid var(--glass-border);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.50), inset 1px 0 0 rgba(255,255,255,0.06);
+  opacity: 0; pointer-events: none; transform: translateX(100%);
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(.4,0,.2,1);
 }
 .about-modal:not([hidden]) { display: flex; }
-.about-modal.open { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+.about-modal.open { opacity: 1; transform: translateX(0); pointer-events: auto; }
 
-/* Sidebar */
-.about-sidebar {
-  width: 220px; flex-shrink: 0;
-  border-right: 1px solid var(--glass-border);
-  display: flex; flex-direction: column;
-  padding: 14px 10px 20px;
-  transition: width 0.3s cubic-bezier(.4,0,.2,1);
-  overflow: hidden;
-}
-.about-sidebar.collapsed { width: 0; padding: 0; border-right: none; }
-
-.about-sidebar-head {
-  display: flex; align-items: center;
-  padding: 4px 6px 12px;
-}
-.about-collapse-btn {
-  width: 30px; height: 30px; border-radius: 7px;
-  display: grid; place-items: center;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid var(--glass-border);
-  color: var(--text-soft);
-  transition: background 0.15s, color 0.15s;
-  flex-shrink: 0;
-}
-.about-collapse-btn:hover { background: rgba(255,255,255,0.13); color: var(--text); }
-.about-collapse-btn svg { width: 16px; height: 16px; }
-
-.about-profile-mini {
-  display: flex; align-items: center; gap: 10px;
-  padding: 0 8px 18px;
+.about-panel-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 20px 16px 14px;
   border-bottom: 1px solid var(--glass-border);
-  margin-bottom: 12px;
 }
-.about-avatar-mini {
-  width: 36px; height: 36px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
-  border: 1.5px solid rgba(255,255,255,0.12);
+.about-header-text strong {
+  display: block; font-family: var(--font-display); font-size: 15px; font-weight: 600;
 }
-.about-avatar-mini img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.about-profile-text strong {
-  display: block; font-family: var(--font-display);
-  font-size: 13px; font-weight: 600; white-space: nowrap;
+.about-header-text span {
+  font-family: var(--font-mono); font-size: 11px; color: var(--text-soft);
 }
-.about-profile-text span {
-  font-family: var(--font-mono); font-size: 10.5px; color: var(--text-soft); white-space: nowrap;
-}
-
-.about-nav-list { display: flex; flex-direction: column; gap: 2px; }
-.about-nav-item {
-  display: flex; align-items: center; gap: 11px;
-  padding: 9px 12px; border-radius: 9px;
-  font-size: 13.5px; color: rgba(255,255,255,0.55);
-  text-align: left; white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
-  width: 100%;
-}
-.about-nav-item svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.7; }
-.about-nav-item:hover { background: rgba(255,255,255,0.07); color: var(--text); }
-.about-nav-item.active {
-  background: rgba(255,255,255,0.10);
-  color: var(--text);
-}
-.about-nav-item.active svg { opacity: 1; }
-
 .about-modal-close {
-  position: absolute; top: 14px; right: 14px; z-index: 2;
-  width: 30px; height: 30px; border-radius: 50%;
-  display: grid; place-items: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  display: grid; place-items: center; flex-shrink: 0;
   background: rgba(255,255,255,0.08);
   border: 1px solid var(--glass-border);
   color: var(--text-soft);
   transition: background 0.15s, color 0.15s;
 }
 .about-modal-close:hover { background: rgba(255,255,255,0.14); color: var(--text); }
-.about-modal-close svg { width: 14px; height: 14px; }
+.about-modal-close svg { width: 13px; height: 13px; }
 
-/* Content area */
+.about-tabs {
+  display: flex; gap: 2px; padding: 10px 12px;
+  border-bottom: 1px solid var(--glass-border);
+}
+.about-tab {
+  flex: 1; padding: 7px 4px; border-radius: 8px;
+  font-size: 12px; color: rgba(255,255,255,0.50);
+  transition: background 0.15s, color 0.15s;
+  text-align: center;
+}
+.about-tab:hover { background: rgba(255,255,255,0.07); color: var(--text); }
+.about-tab.active { background: rgba(255,255,255,0.11); color: var(--text); }
+
 .about-content-area {
   flex: 1; overflow-y: auto;
-  padding: 32px 36px;
+  padding: 22px 18px;
   display: flex; flex-direction: column;
 }
-.about-section { display: none; flex-direction: column; gap: 18px; height: 100%; }
+.about-section { display: none; flex-direction: column; gap: 16px; }
 .about-section.active { display: flex; }
-
-.about-avatar-full {
-  width: 72px; height: 72px; border-radius: 50%; overflow: hidden;
-  border: 2px solid rgba(255,255,255,0.12); flex-shrink: 0;
-}
-.about-avatar-full img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.about-namerow { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.about-namerow strong { font-family: var(--font-display); font-size: 20px; font-weight: 600; }
-.about-role { font-size: 13px; color: var(--text-soft); font-family: var(--font-mono); }
-.about-bio { font-size: 14.5px; color: var(--text-soft); line-height: 1.7; max-width: 460px; }
-.about-section-title {
-  font-family: var(--font-display); font-size: 17px; font-weight: 500; margin-bottom: 4px;
-}
+.about-bio { font-size: 14px; color: var(--text-soft); line-height: 1.75; }
 
 /* =========================================================
    WORK SHELF — estilos do overlay antigo (removido)
@@ -710,6 +706,7 @@ footer.site-footer {
 
 /* Tablet — 860px */
 @media (max-width: 860px) {
+  .hero-text { display: none; }
   .wrap { padding-inline: 22px; }
   section { padding: 80px 0; }
 
@@ -762,13 +759,8 @@ footer.site-footer {
 
   footer.site-footer { padding-bottom: 120px; }
 
-  .about-modal { width: 96vw; height: 88svh; top: auto; bottom: 0; left: 0;
-    transform: translateY(8px); border-radius: 20px 20px 0 0;
-  }
-  .about-modal.open { transform: translateY(0); }
-  .about-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--glass-border); }
-  .about-modal:not([hidden]) { flex-direction: column; }
-  .about-content-area { padding: 20px 22px; }
+  .about-modal { width: min(300px, 88vw); }
+  .about-content-area { padding: 16px; }
 
   .work-overlay { bottom: calc(12px + 62px + 12px); padding: 18px 16px 14px; border-radius: 18px; }
   .work-app-grid { grid-template-columns: repeat(4, 64px); gap: 12px; }
