@@ -318,20 +318,29 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   transition: opacity 0.22s ease 0.12s;
 }
 
-/* Cards de work/AI dentro do pill */
+/* Cards de work/AI dentro do dock — tiles estilo Apple TV */
 .work-pill-card {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  padding: 6px 10px; border-radius: 50px;
-  font-size: 10px; color: rgba(255,255,255,0.55);
-  text-decoration: none;
-  transition: background 0.18s, color 0.18s;
-  white-space: nowrap;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4px; border-radius: 14px;
+  transition: transform 0.18s, box-shadow 0.18s;
 }
-.work-pill-card:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+.work-pill-card:hover {
+  transform: scale(1.08);
+}
+.work-pill-card:hover .work-pill-icon {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.20) inset;
+}
 
 .work-pill-icon {
-  width: 32px; height: 32px; border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 1px 0 rgba(255,255,255,0.15) inset;
+  width: 52px; height: 52px; border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.18) inset;
+  position: relative; overflow: hidden;
+}
+.work-pill-icon::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%);
+  border-radius: inherit;
 }
 
 /* Ícones Work */
