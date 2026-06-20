@@ -7,7 +7,7 @@ if (topbar) {
 }
 
 // ===== Dropdown menu (the ⋮ button) =====
-const menuBtn = document.querySelector('.menu-btn');
+const menuBtn  = document.querySelector('.menu-btn');
 const dropdown = document.querySelector('.dropdown');
 if (menuBtn && dropdown) {
   menuBtn.addEventListener('click', (e) => {
@@ -17,50 +17,153 @@ if (menuBtn && dropdown) {
   document.addEventListener('click', () => dropdown.classList.remove('open'));
 }
 
-// ===== Live local-time readout (UTC-3 / Florianópolis) =====
-const clockEl = document.getElementById('local-clock');
-function tickClock() {
-  if (!clockEl) return;
-  const now = new Date();
-  clockEl.textContent = now.toLocaleTimeString('pt-BR', {
-    hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo'
+// ===== Language toggle =====
+const i18n = {
+  pt: {
+    status:         'Disponível para novos projetos',
+    workEyebrow:    'Gravações desta chamada',
+    navWork:        'Work',
+    aiEyebrow:      'Tela compartilhada',
+    ptEyebrow:      'Legendas da chamada',
+    aboutEyebrow:   'Participante',
+    contactEyebrow: 'Chamada encerrando',
+    contactTitle:   'Vamos agendar a próxima call?',
+    contactLede:    'Responda em até 1 dia útil. Disponível para projetos freelance e full-time.',
+    emailBtn:       'Enviar e-mail',
+    aboutNavBio:    'Sobre',
+    aboutNavContact:'Contato',
+    aboutBio:       'Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.',
+    workBack:       'Versão anterior',
+    proj1: 'Projeto 01', proj2: 'Projeto 02', proj3: 'Projeto 03',
+  },
+  en: {
+    status:         'Available for new projects',
+    workEyebrow:    'Recordings of this call',
+    navWork:        'Work',
+    aiEyebrow:      'Shared screen',
+    ptEyebrow:      'Call captions',
+    aboutEyebrow:   'Participant',
+    contactEyebrow: 'Call ending',
+    contactTitle:   "Let's schedule the next call?",
+    contactLede:    'Response within 1 business day. Available for freelance and full-time projects.',
+    emailBtn:       'Send email',
+    aboutNavBio:    'About',
+    aboutNavContact:'Contact',
+    aboutBio:       'Your bio here — who you are, how you think about product, what sets you apart. Two or three sentences.',
+    workBack:       'Previous version',
+    proj1: 'Project 01', proj2: 'Project 02', proj3: 'Project 03',
+  }
+};
+
+let currentLang = 'pt';
+
+function applyLang(lang) {
+  currentLang = lang;
+  const dict = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.classList.toggle('active', opt.dataset.lang === lang);
+  });
+  document.documentElement.lang = lang === 'pt' ? 'pt-BR' : 'en';
+}
+
+const langToggle = document.getElementById('lang-toggle');
+if (langToggle) {
+  langToggle.addEventListener('click', () => {
+    applyLang(currentLang === 'pt' ? 'en' : 'pt');
   });
 }
-tickClock();
-setInterval(tickClock, 30000);
 
-// ===== About side panel =====
-const aboutBtn     = document.getElementById('about-btn');
-const aboutPanel   = document.getElementById('about-panel');
-const aboutOverlay = document.getElementById('about-overlay');
-const aboutClose   = document.getElementById('about-close');
+// ===== About modal (Maps sidebar style) =====
+const aboutBtn        = document.getElementById('about-btn');
+const aboutModal      = document.getElementById('about-panel');
+const aboutOverlay    = document.getElementById('about-overlay');
+const aboutClose      = document.getElementById('about-close');
+const aboutModalClose = document.getElementById('about-modal-close');
+const aboutSidebar    = document.getElementById('about-sidebar');
 
 function openAbout() {
-  aboutPanel.hidden = false;
+  aboutModal.hidden = false;
   requestAnimationFrame(() => {
-    aboutPanel.classList.add('open');
+    aboutModal.classList.add('open');
     aboutOverlay.classList.add('open');
+    aboutOverlay.setAttribute('aria-hidden', 'false');
   });
   document.body.style.overflow = 'hidden';
-  aboutClose.focus();
+  aboutClose && aboutClose.focus();
 }
 
 function closeAbout() {
-  aboutPanel.classList.remove('open');
+  aboutModal.classList.remove('open');
   aboutOverlay.classList.remove('open');
-  aboutPanel.addEventListener('transitionend', () => {
-    aboutPanel.hidden = true;
+  aboutOverlay.setAttribute('aria-hidden', 'true');
+  aboutModal.addEventListener('transitionend', () => {
+    aboutModal.hidden = true;
     document.body.style.overflow = '';
   }, { once: true });
   aboutBtn && aboutBtn.focus();
 }
 
-if (aboutBtn && aboutPanel) {
+if (aboutBtn && aboutModal) {
   aboutBtn.addEventListener('click', openAbout);
-  aboutClose.addEventListener('click', closeAbout);
-  aboutOverlay.addEventListener('click', closeAbout);
+  aboutModalClose && aboutModalClose.addEventListener('click', closeAbout);
+  aboutOverlay && aboutOverlay.addEventListener('click', closeAbout);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && aboutPanel.classList.contains('open')) closeAbout();
+    if (e.key === 'Escape' && aboutModal.classList.contains('open')) closeAbout();
+  });
+}
+
+// Sidebar collapse toggle — clicking the icon inside the sidebar toggles it;
+// clicking from collapsed state (icon floated in content) expands it back
+let sidebarCollapsed = false;
+if (aboutClose && aboutSidebar) {
+  aboutClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sidebarCollapsed = !sidebarCollapsed;
+    aboutSidebar.classList.toggle('collapsed', sidebarCollapsed);
+  });
+}
+
+// About nav items (section switcher)
+document.querySelectorAll('.about-nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const section = item.dataset.section;
+    document.querySelectorAll('.about-nav-item').forEach(i => i.classList.remove('active'));
+    document.querySelectorAll('.about-section').forEach(s => s.classList.remove('active'));
+    item.classList.add('active');
+    const target = document.getElementById('section-' + section);
+    if (target) target.classList.add('active');
+  });
+});
+
+// ===== Work overlay (Apple TV card grid) =====
+const workBtn          = document.getElementById('work-btn');
+const workOverlay      = document.getElementById('work-overlay');
+const workOverlayClose = document.getElementById('work-overlay-close');
+
+function openWork() {
+  workOverlay.hidden = false;
+  requestAnimationFrame(() => workOverlay.classList.add('open'));
+  document.body.style.overflow = 'hidden';
+}
+
+function closeWork() {
+  workOverlay.classList.remove('open');
+  workOverlay.addEventListener('transitionend', () => {
+    workOverlay.hidden = true;
+    document.body.style.overflow = '';
+  }, { once: true });
+  workBtn && workBtn.focus();
+}
+
+if (workBtn && workOverlay) {
+  workBtn.addEventListener('click', openWork);
+  workOverlayClose && workOverlayClose.addEventListener('click', closeWork);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && workOverlay.classList.contains('open')) closeWork();
   });
 }
 
