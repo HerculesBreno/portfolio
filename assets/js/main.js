@@ -147,21 +147,27 @@ const workOverlayClose = document.getElementById('work-overlay-close');
 function openWork() {
   workOverlay.hidden = false;
   requestAnimationFrame(() => workOverlay.classList.add('open'));
-  document.body.style.overflow = 'hidden';
+  workBtn.classList.add('active');
 }
 
 function closeWork() {
   workOverlay.classList.remove('open');
+  workBtn.classList.remove('active');
   workOverlay.addEventListener('transitionend', () => {
     workOverlay.hidden = true;
-    document.body.style.overflow = '';
   }, { once: true });
   workBtn && workBtn.focus();
 }
 
 if (workBtn && workOverlay) {
-  workBtn.addEventListener('click', openWork);
+  workBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    workOverlay.classList.contains('open') ? closeWork() : openWork();
+  });
   workOverlayClose && workOverlayClose.addEventListener('click', closeWork);
+  document.addEventListener('click', (e) => {
+    if (workOverlay.classList.contains('open') && !workOverlay.contains(e.target)) closeWork();
+  });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && workOverlay.classList.contains('open')) closeWork();
   });
