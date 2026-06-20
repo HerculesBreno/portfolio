@@ -552,7 +552,7 @@ footer.site-footer {
 /* ---- About panel — right-side drawer ---- */
 .about-modal {
   position: fixed; top: 0; right: 0; bottom: 0; z-index: 71;
-  width: 280px;
+  width: 340px;
   display: none; flex-direction: column;
   background: rgba(16, 14, 12, 0.90);
   backdrop-filter: var(--glass-blur);
@@ -628,19 +628,23 @@ footer.site-footer {
 .proj-modal-box {
   position: relative; z-index: 1;
   width: min(680px, 100%); max-height: 80vh;
-  background: rgba(18, 16, 14, 0.90);
+  background: rgba(18, 16, 14, 0.80);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-radius: 20px;
-  box-shadow: var(--glass-shadow-lg);
+  box-shadow: var(--glass-shadow-lg), 0 0 0 0.5px rgba(255,255,255,0.04);
   overflow: hidden;
   display: flex; flex-direction: column;
-  opacity: 0; transform: scale(0.96) translateY(8px);
-  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(.2,.8,.2,1);
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.3s ease, transform 0.38s cubic-bezier(.2,.8,.2,1);
+}
+.proj-modal-box::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--glass-shine); border-radius: inherit; z-index: 0;
 }
 .proj-modal.open .proj-modal-box {
-  opacity: 1; transform: scale(1) translateY(0);
+  opacity: 1; transform: translateY(0);
 }
 .proj-modal-head {
   display: flex; align-items: center; justify-content: space-between;
@@ -674,17 +678,84 @@ footer.site-footer {
   border: 1px solid var(--glass-border);
 }
 
-.work-icon-blue { background: #0e1f3a; border-color: rgba(80,140,255,0.30); }
-.work-icon-blue .work-icon-label { color: #7eb8ff; }
-
-.work-icon-purple { background: #1e0e3a; border-color: rgba(160,100,255,0.30); }
-.work-icon-purple .work-icon-label { color: #c4a0ff; }
-
-.work-app-card span:last-child {
-  font-size: 11px; color: rgba(255,255,255,0.60);
-  text-align: center; width: 88px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+/* =========================================================
+   CONTACT MODAL
+   ========================================================= */
+.contact-modal {
+  position: fixed; inset: 0; z-index: 80;
+  display: none; align-items: center; justify-content: center;
+  padding: 24px;
 }
+.contact-modal:not([hidden]) { display: flex; }
+
+.contact-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.contact-modal-box {
+  position: relative; z-index: 1;
+  width: min(420px, 100%);
+  background: rgba(18, 16, 14, 0.80);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow-lg), 0 0 0 0.5px rgba(255,255,255,0.04);
+  overflow: hidden;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.3s ease, transform 0.38s cubic-bezier(.2,.8,.2,1);
+}
+.contact-modal-box::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--glass-shine); border-radius: inherit; z-index: 0;
+}
+.contact-modal.open .contact-modal-box { opacity: 1; transform: translateY(0); }
+
+.contact-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--glass-border);
+  position: relative; z-index: 1;
+}
+.contact-modal-head strong {
+  font-family: var(--font-display); font-size: 17px; font-weight: 600;
+}
+.contact-modal-body {
+  padding: 14px; display: flex; flex-direction: column; gap: 8px;
+  position: relative; z-index: 1;
+}
+
+.contact-option {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 14px;
+  background: var(--material-bg);
+  border: 1px solid var(--material-border);
+  text-decoration: none; color: var(--text);
+  transition: background 0.18s, border-color 0.18s, transform 0.18s;
+  cursor: pointer;
+}
+.contact-option:hover {
+  background: var(--material-bg-hover);
+  border-color: rgba(255,255,255,0.13);
+  transform: translateY(-1px);
+}
+.contact-option-icon {
+  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  display: grid; place-items: center;
+  font-size: 11px; font-family: var(--font-mono); font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.12) inset;
+}
+.contact-icon-linkedin { background: radial-gradient(135% 135% at 30% 20%, #3b82f6, #1e3a8a); color: #fff; }
+.contact-icon-email    { background: radial-gradient(135% 135% at 30% 20%, #f0b951, #a06010); color: #fff; }
+.contact-icon-whatsapp { background: radial-gradient(135% 135% at 30% 20%, #4ade80, #15803d); color: #fff; }
+
+.contact-option-text { flex: 1; }
+.contact-option-text strong { display: block; font-size: 14px; font-weight: 500; }
+.contact-option-text span { font-size: 12px; color: var(--text-soft); font-family: var(--font-mono); }
+.contact-option-arrow { color: var(--text-soft); flex-shrink: 0; }
+.contact-option-arrow svg { width: 16px; height: 16px; }
 
 /* =========================================================
    RESPONSIVE

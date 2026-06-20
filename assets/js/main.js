@@ -93,11 +93,24 @@ if (langToggle) {
   });
 }
 
-// ===== Hero text — fade on mousemove =====
+// ===== Hero text — fade on mousemove, hidden when modals open =====
 const heroText = document.getElementById('hero-text');
+let heroTimer, heroModalCount = 0;
+
+function heroModalOpen() {
+  heroModalCount++;
+  if (heroText) { clearTimeout(heroTimer); heroText.style.opacity = '0'; heroText.style.transition = 'opacity 0.3s ease'; }
+}
+function heroModalClose() {
+  heroModalCount = Math.max(0, heroModalCount - 1);
+  if (heroModalCount === 0 && heroText) {
+    heroTimer = setTimeout(() => { heroText.style.opacity = '1'; }, 400);
+  }
+}
+
 if (heroText) {
-  let heroTimer;
   document.addEventListener('mousemove', () => {
+    if (heroModalCount > 0) return;
     heroText.style.opacity = '0';
     clearTimeout(heroTimer);
     heroTimer = setTimeout(() => { heroText.style.opacity = '1'; }, 1200);
@@ -111,6 +124,7 @@ const aboutOverlay    = document.getElementById('about-overlay');
 const aboutModalClose = document.getElementById('about-modal-close');
 
 function openAbout() {
+  heroModalOpen();
   aboutModal.hidden = false;
   requestAnimationFrame(() => {
     aboutModal.classList.add('open');
@@ -121,6 +135,7 @@ function openAbout() {
 }
 
 function closeAbout() {
+  heroModalClose();
   aboutModal.classList.remove('open');
   aboutOverlay.classList.remove('open');
   aboutOverlay.setAttribute('aria-hidden', 'true');
@@ -183,30 +198,32 @@ if (callbarInner) {
   aiBackBtn  && aiBackBtn.addEventListener('click', closeAI);
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      if (contactModal && contactModal.classList.contains('open')) { closeContactModal(); return; }
       if (projModal && projModal.classList.contains('open')) { closeProjModal(); return; }
+      if (aboutModal && aboutModal.classList.contains('open')) { closeAbout(); return; }
       if (callbarInner.classList.contains('work-open')) closeWork();
       if (callbarInner.classList.contains('ai-open')) closeAI();
-      if (aboutModal && aboutModal.classList.contains('open')) closeAbout();
     }
   });
 }
 
 // ===== Project modal =====
-const projModal    = document.getElementById('proj-modal');
+const projModal      = document.getElementById('proj-modal');
 const projModalClose = document.getElementById('proj-modal-close');
-const projBackdrop = document.getElementById('proj-modal-backdrop');
-const projLabel    = document.getElementById('proj-modal-label');
-const projTitle    = document.getElementById('proj-modal-title');
+const projBackdrop   = document.getElementById('proj-modal-backdrop');
+const projLabel      = document.getElementById('proj-modal-label');
+const projTitle      = document.getElementById('proj-modal-title');
 
 function openProjModal(type, n) {
+  heroModalOpen();
   const isWork = type === 'work';
   projLabel.textContent = isWork ? `CASE STUDY 00${n}` : `AI PROJECT 00${n}`;
   projTitle.textContent = isWork ? `Projeto ${String(n).padStart(2,'0')}` : `IA Projeto ${String(n).padStart(2,'0')}`;
   projModal.hidden = false;
   requestAnimationFrame(() => projModal.classList.add('open'));
-  document.body.style.overflow = 'hidden';
 }
 function closeProjModal() {
+  heroModalClose();
   projModal.classList.remove('open');
   projModal.addEventListener('transitionend', () => { projModal.hidden = true; }, { once: true });
 }
@@ -217,6 +234,30 @@ if (projModal) {
   document.querySelectorAll('.work-pill-card[data-proj]').forEach(btn => {
     btn.addEventListener('click', () => openProjModal(btn.dataset.proj, btn.dataset.projN));
   });
+}
+
+// ===== Contact modal =====
+const contactModal      = document.getElementById('contact-modal');
+const contactModalClose = document.getElementById('contact-modal-close');
+const contactBackdrop   = document.getElementById('contact-modal-backdrop');
+const contactBtn        = document.getElementById('contact-btn');
+
+function openContactModal() {
+  heroModalOpen();
+  contactModal.hidden = false;
+  requestAnimationFrame(() => contactModal.classList.add('open'));
+}
+function closeContactModal() {
+  heroModalClose();
+  contactModal.classList.remove('open');
+  contactModal.addEventListener('transitionend', () => { contactModal.hidden = true; }, { once: true });
+  contactBtn && contactBtn.focus();
+}
+
+if (contactBtn && contactModal) {
+  contactBtn.addEventListener('click', openContactModal);
+  contactModalClose && contactModalClose.addEventListener('click', closeContactModal);
+  contactBackdrop   && contactBackdrop.addEventListener('click', closeContactModal);
 }
 
 // ===== Scroll reveal =====
