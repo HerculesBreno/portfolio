@@ -21,16 +21,17 @@
   --nav-h: 76px;
   --radius: 14px;
 
-  /* Liquid Glass — camada de controles (nav, callbar, drawer, dropdown) */
-  --glass-bg:           rgba(255, 255, 255, 0.05);
-  --glass-bg-hover:     rgba(255, 255, 255, 0.09);
-  --glass-border:       rgba(255, 255, 255, 0.10);
-  --glass-border-hover: rgba(255, 255, 255, 0.18);
-  --glass-blur:         blur(24px) saturate(180%);
-  --glass-blur-sm:      blur(12px) saturate(150%);
-  --glass-shadow:       0 8px 32px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.10) inset;
-  --glass-shadow-lg:    0 20px 60px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.12) inset;
-  --glass-shine:        linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 55%);
+  /* Liquid Glass — autêntico (iOS 26 / Apple HIG 2025) */
+  --glass-bg:           rgba(255, 255, 255, 0.07);
+  --glass-bg-hover:     rgba(255, 255, 255, 0.13);
+  --glass-border:       rgba(255, 255, 255, 0.18);
+  --glass-border-hover: rgba(255, 255, 255, 0.30);
+  --glass-blur:         blur(44px) saturate(220%) brightness(1.06);
+  --glass-blur-sm:      blur(22px) saturate(180%) brightness(1.04);
+  --glass-shadow:       0 4px 24px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.22) inset, 0 -0.5px 0 rgba(0,0,0,0.12) inset;
+  --glass-shadow-lg:    0 16px 48px rgba(0,0,0,0.38), 0 1px 0 rgba(255,255,255,0.24) inset, 0 -0.5px 0 rgba(0,0,0,0.14) inset;
+  /* faixa de luz horizontal no topo — padrão real Apple */
+  --glass-shine:        linear-gradient(180deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.07) 38%, rgba(255,255,255,0) 100%);
 
   /* Material — camada de conteúdo (cards, painéis, seções) */
   --material-bg:        rgba(255, 255, 255, 0.06);
@@ -81,25 +82,30 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border-bottom: 1px solid transparent;
 }
 .topbar.solid {
-  background: rgba(18, 15, 12, 0.72);
+  background: rgba(16, 12, 8, 0.38);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-bottom-color: var(--glass-border);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 8px 32px rgba(0,0,0,0.30);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.18) inset, 0 8px 32px rgba(0,0,0,0.22);
   padding: 12px 28px;
 }
 
 .status-pill {
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  background: rgba(232, 162, 61, 0.10);
+  border: 1px solid rgba(232, 162, 61, 0.28);
   border-radius: 100px;
   padding: 8px 16px 8px 12px;
   font-size: 13px;
   backdrop-filter: var(--glass-blur-sm);
   -webkit-backdrop-filter: var(--glass-blur-sm);
-  box-shadow: var(--glass-shadow);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.22), 0 1px 0 rgba(255,255,255,0.20) inset, 0 0 0 1px rgba(232,162,61,0.12);
   white-space: nowrap;
+  position: relative; overflow: hidden;
+}
+.status-pill::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--glass-shine); border-radius: inherit;
 }
 .status-dot {
   width: 8px; height: 8px; border-radius: 50%;
@@ -119,7 +125,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 /* Language toggle */
 .lang-toggle {
   display: inline-flex; align-items: center; gap: 2px;
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur-sm);
   -webkit-backdrop-filter: var(--glass-blur-sm);
@@ -127,6 +133,11 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border-radius: 100px;
   padding: 4px 6px;
   cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.lang-toggle::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--glass-shine); border-radius: inherit;
 }
 .lang-option {
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em;
@@ -178,15 +189,21 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .topbar-menu-wrap:hover .menu-tooltip { opacity: 1; }
 .dropdown {
   position: absolute; top: 46px; right: 0;
-  background: rgba(20, 17, 14, 0.78);
+  background: rgba(18, 14, 10, 0.48);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 12px; min-width: 200px; padding: 6px;
+  border-radius: 16px; min-width: 200px; padding: 6px;
   box-shadow: var(--glass-shadow-lg);
   opacity: 0; transform: translateY(-6px); pointer-events: none;
   transition: opacity 0.18s ease, transform 0.18s ease;
+  overflow: hidden; position: absolute;
 }
+.dropdown::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--glass-shine); border-radius: inherit; z-index: 0;
+}
+.dropdown a { position: relative; z-index: 1; }
 .dropdown.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .dropdown a {
   display: flex; align-items: center; gap: 10px;
@@ -263,7 +280,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .callbar-inner {
   display: flex; align-items: center;
-  background: rgba(18, 16, 14, 0.72);
+  background: rgba(20, 15, 10, 0.36);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -554,14 +571,20 @@ footer.site-footer {
   position: fixed; top: 0; right: 0; bottom: 0; z-index: 71;
   width: 340px;
   display: none; flex-direction: column;
-  background: rgba(16, 14, 12, 0.90);
+  background: rgba(16, 12, 8, 0.50);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-left: 1px solid var(--glass-border);
-  box-shadow: -8px 0 40px rgba(0,0,0,0.50), inset 1px 0 0 rgba(255,255,255,0.06);
+  box-shadow: -8px 0 48px rgba(0,0,0,0.40), inset 1px 0 0 rgba(255,255,255,0.18);
   opacity: 0; pointer-events: none; transform: translateX(100%);
   transition: opacity 0.25s ease, transform 0.3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
 }
+.about-modal::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--glass-shine); z-index: 0;
+}
+.about-panel-head, .about-tabs, .about-content-area { position: relative; z-index: 1; }
 .about-modal:not([hidden]) { display: flex; }
 .about-modal.open { opacity: 1; transform: translateX(0); pointer-events: auto; }
 
@@ -628,12 +651,12 @@ footer.site-footer {
 .proj-modal-box {
   position: relative; z-index: 1;
   width: min(680px, 100%); max-height: 80vh;
-  background: rgba(18, 16, 14, 0.80);
+  background: rgba(18, 13, 8, 0.46);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 20px;
-  box-shadow: var(--glass-shadow-lg), 0 0 0 0.5px rgba(255,255,255,0.04);
+  border-radius: 22px;
+  box-shadow: var(--glass-shadow-lg);
   overflow: hidden;
   display: flex; flex-direction: column;
   opacity: 0; transform: translateY(28px);
@@ -697,12 +720,12 @@ footer.site-footer {
 .contact-modal-box {
   position: relative; z-index: 1;
   width: min(420px, 100%);
-  background: rgba(18, 16, 14, 0.80);
+  background: rgba(18, 13, 8, 0.46);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 20px;
-  box-shadow: var(--glass-shadow-lg), 0 0 0 0.5px rgba(255,255,255,0.04);
+  border-radius: 22px;
+  box-shadow: var(--glass-shadow-lg);
   overflow: hidden;
   opacity: 0; transform: translateY(28px);
   transition: opacity 0.3s ease, transform 0.38s cubic-bezier(.2,.8,.2,1);
