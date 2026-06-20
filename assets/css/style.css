@@ -225,7 +225,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   pointer-events: none;
 }
 .callbar-inner {
-  display: flex; align-items: center; gap: 4px;
+  display: flex; align-items: center;
   background: rgba(18, 16, 14, 0.72);
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
@@ -235,13 +235,76 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   box-shadow: var(--glass-shadow-lg);
   pointer-events: auto;
   position: relative;
+  overflow: hidden;
 }
 .callbar-inner::before {
   content: "";
   position: absolute; inset: 0; pointer-events: none;
   background: var(--glass-shine);
   border-radius: inherit;
+  z-index: 0;
 }
+
+/* Nav state (padrão) */
+.callbar-nav {
+  display: flex; align-items: center; gap: 4px;
+  opacity: 1; pointer-events: auto;
+  transition: opacity 0.18s ease;
+  position: relative; z-index: 1;
+}
+
+/* Work state (cards dentro do pill) */
+.callbar-work {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  padding: 10px 16px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease 0.14s;
+  z-index: 1;
+}
+
+/* Crossfade ao abrir work */
+.callbar-inner.work-open .callbar-nav {
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.callbar-inner.work-open .callbar-work {
+  opacity: 1; pointer-events: auto;
+  transition: opacity 0.22s ease 0.12s;
+}
+
+/* Cards de work dentro do pill */
+.work-pill-card {
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  padding: 8px 12px; border-radius: 50px;
+  font-size: 11px; color: rgba(255,255,255,0.60);
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap; min-width: 56px;
+}
+.work-pill-card:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+
+.work-pill-icon {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 7px; font-weight: 500;
+  text-align: center; line-height: 1.3;
+  position: relative; overflow: hidden;
+}
+.work-pill-icon::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--glass-shine); border-radius: inherit;
+}
+.work-pill-icon span { position: relative; z-index: 1; }
+
+.work-icon-amber { background: #3a2b0e; color: var(--amber); }
+.work-icon-blue  { background: #0e1f3a; color: #7eb8ff; }
+.work-icon-purple{ background: #1e0e3a; color: #c4a0ff; }
+
+.call-back {
+  color: var(--text-soft);
+}
+.call-back svg { width: 18px; height: 18px; }
 
 .call-link, .call-end {
   display: flex; flex-direction: column; align-items: center; gap: 5px;
@@ -559,7 +622,7 @@ footer.site-footer {
 }
 
 /* =========================================================
-   WORK SHELF — abre acima do callbar (dentro do nav)
+   WORK SHELF — estilos do overlay antigo (removido)
    ========================================================= */
 .work-overlay {
   position: fixed;

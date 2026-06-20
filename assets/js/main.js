@@ -139,37 +139,27 @@ document.querySelectorAll('.about-nav-item').forEach(item => {
   });
 });
 
-// ===== Work overlay (Apple TV card grid) =====
-const workBtn          = document.getElementById('work-btn');
-const workOverlay      = document.getElementById('work-overlay');
-const workOverlayClose = document.getElementById('work-overlay-close');
+// ===== Work — crossfade dentro do callbar =====
+const workBtn     = document.getElementById('work-btn');
+const workBackBtn = document.getElementById('work-back-btn');
+const callbarInner = document.getElementById('callbar-inner');
 
 function openWork() {
-  workOverlay.hidden = false;
-  requestAnimationFrame(() => workOverlay.classList.add('open'));
-  workBtn.classList.add('active');
+  callbarInner.classList.add('work-open');
+  workBtn.setAttribute('aria-expanded', 'true');
 }
 
 function closeWork() {
-  workOverlay.classList.remove('open');
-  workBtn.classList.remove('active');
-  workOverlay.addEventListener('transitionend', () => {
-    workOverlay.hidden = true;
-  }, { once: true });
+  callbarInner.classList.remove('work-open');
+  workBtn.setAttribute('aria-expanded', 'false');
   workBtn && workBtn.focus();
 }
 
-if (workBtn && workOverlay) {
-  workBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    workOverlay.classList.contains('open') ? closeWork() : openWork();
-  });
-  workOverlayClose && workOverlayClose.addEventListener('click', closeWork);
-  document.addEventListener('click', (e) => {
-    if (workOverlay.classList.contains('open') && !workOverlay.contains(e.target)) closeWork();
-  });
+if (workBtn && callbarInner) {
+  workBtn.addEventListener('click', openWork);
+  workBackBtn && workBackBtn.addEventListener('click', closeWork);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && workOverlay.classList.contains('open')) closeWork();
+    if (e.key === 'Escape' && callbarInner.classList.contains('work-open')) closeWork();
   });
 }
 

@@ -190,32 +190,58 @@
 
 <!-- ============ CALL CONTROLS (NAV FIXA) ============ -->
 <nav class="callbar" aria-label="Navegação principal">
-  <div class="callbar-inner">
-    <button class="call-link" id="work-btn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      <span data-i18n="navWork">Work</span>
-    </button>
-    <a href="#ai-automations" class="call-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
-      AI &amp; Automations
-    </a>
-    <a href="#product-thinking" class="call-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a6 6 0 016 6c0 2.5-1.3 4-2.5 5.2-.6.6-.9 1.4-.9 2.3v.5h-5.2v-.5c0-.9-.3-1.7-.9-2.3C7.3 12 6 10.5 6 8a6 6 0 016-6z"/></svg>
-      Product Thinking
-    </a>
-    <button class="call-link" id="about-btn" aria-haspopup="dialog" aria-controls="about-panel">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
-      About
-    </button>
-    <a href="#contact" class="call-link">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-      Contact
-    </a>
-    <div class="call-divider"></div>
-    <a href="#contact" class="call-end">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      Let's talk
-    </a>
+  <div class="callbar-inner" id="callbar-inner">
+
+    <!-- Estado padrão: nav links -->
+    <div class="callbar-nav" id="callbar-nav">
+      <button class="call-link" id="work-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span data-i18n="navWork">Work</span>
+      </button>
+      <a href="#ai-automations" class="call-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
+        AI &amp; Automations
+      </a>
+      <a href="#product-thinking" class="call-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a6 6 0 016 6c0 2.5-1.3 4-2.5 5.2-.6.6-.9 1.4-.9 2.3v.5h-5.2v-.5c0-.9-.3-1.7-.9-2.3C7.3 12 6 10.5 6 8a6 6 0 016-6z"/></svg>
+        Product Thinking
+      </a>
+      <button class="call-link" id="about-btn" aria-haspopup="dialog" aria-controls="about-panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        About
+      </button>
+      <a href="#contact" class="call-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+        Contact
+      </a>
+      <div class="call-divider"></div>
+      <a href="#contact" class="call-end">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(135deg)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Let's talk
+      </a>
+    </div>
+
+    <!-- Estado Work: cards dentro do pill -->
+    <div class="callbar-work" id="callbar-work">
+      <button class="call-link call-back" id="work-back-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        <span data-i18n="workBack">Voltar</span>
+      </button>
+      <div class="call-divider"></div>
+      <a href="case-studies/_template.html" class="work-pill-card">
+        <div class="work-pill-icon work-icon-amber"><span>REC<br>001</span></div>
+        <span data-i18n="proj1">Projeto 01</span>
+      </a>
+      <a href="case-studies/_template.html" class="work-pill-card">
+        <div class="work-pill-icon work-icon-blue"><span>REC<br>002</span></div>
+        <span data-i18n="proj2">Projeto 02</span>
+      </a>
+      <a href="case-studies/_template.html" class="work-pill-card">
+        <div class="work-pill-icon work-icon-purple"><span>REC<br>003</span></div>
+        <span data-i18n="proj3">Projeto 03</span>
+      </a>
+    </div>
+
   </div>
 </nav>
 
@@ -298,43 +324,6 @@
 
 </aside>
 
-<!-- ============ WORK OVERLAY (Apple TV card grid) ============ -->
-<div class="work-overlay" id="work-overlay" role="dialog" aria-modal="true" aria-label="Work" hidden>
-  <div class="work-overlay-inner">
-    <p class="work-overlay-eyebrow eyebrow" data-i18n="workEyebrow">Gravações desta chamada</p>
-    <div class="work-app-grid">
-
-      <button class="work-app-card work-back-card" id="work-overlay-close">
-        <div class="work-app-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        </div>
-        <span data-i18n="workBack">Versão anterior</span>
-      </button>
-
-      <a class="work-app-card" href="case-studies/_template.html">
-        <div class="work-app-icon work-icon-amber">
-          <span class="work-icon-label">REC<br>001</span>
-        </div>
-        <span data-i18n="proj1">Projeto 01</span>
-      </a>
-
-      <a class="work-app-card" href="case-studies/_template.html">
-        <div class="work-app-icon work-icon-blue">
-          <span class="work-icon-label">REC<br>002</span>
-        </div>
-        <span data-i18n="proj2">Projeto 02</span>
-      </a>
-
-      <a class="work-app-card" href="case-studies/_template.html">
-        <div class="work-app-icon work-icon-purple">
-          <span class="work-icon-label">REC<br>003</span>
-        </div>
-        <span data-i18n="proj3">Projeto 03</span>
-      </a>
-
-    </div>
-  </div>
-</div>
 
 <script src="assets/js/main.js"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
