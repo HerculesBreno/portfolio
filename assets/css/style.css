@@ -21,7 +21,7 @@
   --nav-h: 76px;
   --radius: 14px;
 
-  /* Liquid Glass */
+  /* Liquid Glass — camada de controles (nav, callbar, drawer, dropdown) */
   --glass-bg:           rgba(255, 255, 255, 0.05);
   --glass-bg-hover:     rgba(255, 255, 255, 0.09);
   --glass-border:       rgba(255, 255, 255, 0.10);
@@ -31,6 +31,14 @@
   --glass-shadow:       0 8px 32px rgba(0,0,0,0.40), 0 1px 0 rgba(255,255,255,0.10) inset;
   --glass-shadow-lg:    0 20px 60px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.12) inset;
   --glass-shine:        linear-gradient(135deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0) 55%);
+
+  /* Material — camada de conteúdo (cards, painéis, seções) */
+  --material-bg:        rgba(255, 255, 255, 0.06);
+  --material-bg-hover:  rgba(255, 255, 255, 0.09);
+  --material-border:    rgba(255, 255, 255, 0.08);
+  --material-blur:      blur(12px) saturate(140%);
+  --material-shadow:    0 4px 24px rgba(0,0,0,0.30);
+  --material-shadow-lg: 0 12px 40px rgba(0,0,0,0.40);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -262,29 +270,20 @@ h2.section-title {
 /* WORK — "recordings" grid */
 .rec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
 .rec-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow);
+  background: var(--material-bg);
+  border: 1px solid var(--material-border);
+  backdrop-filter: var(--material-blur);
+  -webkit-backdrop-filter: var(--material-blur);
+  box-shadow: var(--material-shadow);
   border-radius: var(--radius); overflow: hidden;
   transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
   display: flex; flex-direction: column;
-  position: relative;
 }
-.rec-card::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: var(--glass-shine);
-  border-radius: inherit;
-  z-index: 0;
-}
-.rec-card > * { position: relative; z-index: 1; }
 .rec-card:hover {
-  background: var(--glass-bg-hover);
-  border-color: rgba(232,162,61,0.30);
-  box-shadow: var(--glass-shadow-lg);
-  transform: translateY(-4px);
+  background: var(--material-bg-hover);
+  border-color: rgba(232,162,61,0.25);
+  box-shadow: var(--material-shadow-lg);
+  transform: translateY(-3px);
 }
 .rec-thumb {
   aspect-ratio: 16/10; background: var(--panel-2); position: relative;
@@ -308,37 +307,28 @@ h2.section-title {
 .rec-tags { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
 .rec-tags span {
   font-size: 11px; padding: 4px 10px; border-radius: 100px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-soft);
 }
 
 /* AI & AUTOMATIONS — "shared screen" cards */
 .screenshare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
 .screen-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow);
+  background: var(--material-bg);
+  border: 1px solid var(--material-border);
+  backdrop-filter: var(--material-blur);
+  -webkit-backdrop-filter: var(--material-blur);
+  box-shadow: var(--material-shadow);
   border-radius: var(--radius);
   padding: 22px;
-  position: relative; overflow: hidden;
   transition: background 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s;
 }
-.screen-card::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: var(--glass-shine);
-  border-radius: inherit;
-}
 .screen-card:hover {
-  background: var(--glass-bg-hover);
-  border-color: rgba(232,162,61,0.28);
-  box-shadow: var(--glass-shadow-lg);
-  transform: translateY(-4px);
+  background: var(--material-bg-hover);
+  border-color: rgba(232,162,61,0.25);
+  box-shadow: var(--material-shadow-lg);
+  transform: translateY(-3px);
 }
 .screen-chrome { display: flex; gap: 6px; margin-bottom: 16px; }
 .screen-chrome span { width: 8px; height: 8px; border-radius: 50%; background: var(--hairline); }
@@ -358,20 +348,13 @@ h2.section-title {
 /* ABOUT — participant card (section) */
 .participant-card {
   display: grid; grid-template-columns: 200px 1fr; gap: 40px;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow);
+  background: var(--material-bg);
+  border: 1px solid var(--material-border);
+  backdrop-filter: var(--material-blur);
+  -webkit-backdrop-filter: var(--material-blur);
+  box-shadow: var(--material-shadow);
   border-radius: 18px;
   padding: 36px; align-items: center;
-  position: relative; overflow: hidden;
-}
-.participant-card::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: var(--glass-shine);
-  border-radius: inherit;
 }
 .participant-avatar { aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: var(--panel-2); }
 .participant-avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -382,27 +365,18 @@ h2.section-title {
   border-radius: 100px;
   background: rgba(232, 162, 61, 0.08);
   border: 1px solid rgba(232, 162, 61, 0.20);
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
   color: var(--amber);
 }
 
 /* CONTACT — schedule next call */
 .schedule-panel {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-shadow-lg);
+  background: var(--material-bg);
+  border: 1px solid var(--material-border);
+  backdrop-filter: var(--material-blur);
+  -webkit-backdrop-filter: var(--material-blur);
+  box-shadow: var(--material-shadow-lg);
   border-radius: 20px;
   padding: 56px; text-align: center;
-  position: relative; overflow: hidden;
-}
-.schedule-panel::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: var(--glass-shine);
-  border-radius: inherit;
 }
 .schedule-panel h2 { font-family: var(--font-display); font-size: clamp(22px, 3.6vw, 38px); margin-bottom: 14px; }
 .schedule-panel p { color: var(--text-soft); margin-bottom: 32px; }
