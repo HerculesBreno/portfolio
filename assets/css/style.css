@@ -378,18 +378,30 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   min-width: 60px;
 }
 .call-link svg { width: 20px; height: 20px; stroke-width: 1.8; }
-.call-link:hover { color: var(--text); background: rgba(255,255,255,0.08); }
-.call-link.active { color: var(--text); }
+.call-link:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+.call-link.active {
+  color: var(--amber);
+  background: rgba(232, 162, 61, 0.08);
+}
 
 .call-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.1); margin: 0 6px; flex-shrink: 0; }
 
 .call-end {
   padding: 10px 22px;
-  background: var(--red); color: #fff;
+  background: rgba(95, 217, 138, 0.22);
+  color: var(--green);
+  border: 1px solid rgba(95, 217, 138, 0.30);
   min-width: 80px;
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(95,217,138,0.15);
 }
 .call-end svg { width: 20px; height: 20px; }
-.call-end:hover { background: #c93a31; }
+.call-end:hover {
+  background: rgba(95, 217, 138, 0.30);
+  border-color: rgba(95, 217, 138, 0.45);
+  color: #fff;
+}
 
 /* =========================================================
    SHARED SECTION SCAFFOLDING
