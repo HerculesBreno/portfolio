@@ -22,13 +22,47 @@ const clockEl = document.getElementById('local-clock');
 function tickClock() {
   if (!clockEl) return;
   const now = new Date();
-  const formatted = now.toLocaleTimeString('pt-BR', {
+  clockEl.textContent = now.toLocaleTimeString('pt-BR', {
     hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo'
   });
-  clockEl.textContent = formatted;
 }
 tickClock();
 setInterval(tickClock, 30000);
+
+// ===== About side panel =====
+const aboutBtn     = document.getElementById('about-btn');
+const aboutPanel   = document.getElementById('about-panel');
+const aboutOverlay = document.getElementById('about-overlay');
+const aboutClose   = document.getElementById('about-close');
+
+function openAbout() {
+  aboutPanel.hidden = false;
+  requestAnimationFrame(() => {
+    aboutPanel.classList.add('open');
+    aboutOverlay.classList.add('open');
+  });
+  document.body.style.overflow = 'hidden';
+  aboutClose.focus();
+}
+
+function closeAbout() {
+  aboutPanel.classList.remove('open');
+  aboutOverlay.classList.remove('open');
+  aboutPanel.addEventListener('transitionend', () => {
+    aboutPanel.hidden = true;
+    document.body.style.overflow = '';
+  }, { once: true });
+  aboutBtn && aboutBtn.focus();
+}
+
+if (aboutBtn && aboutPanel) {
+  aboutBtn.addEventListener('click', openAbout);
+  aboutClose.addEventListener('click', closeAbout);
+  aboutOverlay.addEventListener('click', closeAbout);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && aboutPanel.classList.contains('open')) closeAbout();
+  });
+}
 
 // ===== Scroll reveal =====
 const reveals = document.querySelectorAll('.reveal');
@@ -48,7 +82,7 @@ if ('IntersectionObserver' in window) {
 
 // ===== Scrollspy for the call-control nav =====
 const sections = document.querySelectorAll('main section[id]');
-const navLinks = document.querySelectorAll('.call-link');
+const navLinks  = document.querySelectorAll('.call-link[href]');
 if (sections.length && navLinks.length && 'IntersectionObserver' in window) {
   const spy = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {

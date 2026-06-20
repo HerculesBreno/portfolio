@@ -205,10 +205,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a6 6 0 016 6c0 2.5-1.3 4-2.5 5.2-.6.6-.9 1.4-.9 2.3v.5h-5.2v-.5c0-.9-.3-1.7-.9-2.3C7.3 12 6 10.5 6 8a6 6 0 016-6z"/></svg>
       Product Thinking
     </a>
-    <a href="#about" class="call-link">
+    <button class="call-link" id="about-btn" aria-haspopup="dialog" aria-controls="about-panel">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
       About
-    </a>
+    </button>
     <a href="#contact" class="call-link">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
       Contact
@@ -220,6 +220,33 @@
     </a>
   </div>
 </nav>
+
+<!-- ============ ABOUT SIDE PANEL ============ -->
+<div class="about-overlay" id="about-overlay" aria-hidden="true"></div>
+<aside class="about-panel" id="about-panel" role="dialog" aria-modal="true" aria-label="About" hidden>
+  <div class="about-panel-header">
+    <span class="about-panel-title">Sobre</span>
+    <button class="about-panel-close" id="about-close" aria-label="Fechar painel">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="about-panel-body">
+    <div class="about-avatar">
+      <img src="uploads/hero.png" alt="Hércules Breno" />
+    </div>
+    <div class="about-namerow">
+      <strong>Hércules Breno</strong>
+      <span class="about-role">· Product Designer</span>
+    </div>
+    <p class="about-bio">Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.</p>
+    <div class="skill-chips">
+      <span>Product Design</span>
+      <span>Design Systems</span>
+      <span>IA aplicada</span>
+      <span>Front-end</span>
+    </div>
+  </div>
+</aside>
 
 <script src="assets/js/main.js"></script>
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
