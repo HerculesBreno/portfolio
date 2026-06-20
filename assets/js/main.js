@@ -100,7 +100,7 @@ if (heroText) {
   document.addEventListener('mousemove', () => {
     heroText.style.opacity = '0';
     clearTimeout(heroTimer);
-    heroTimer = setTimeout(() => { heroText.style.opacity = '1'; }, 2200);
+    heroTimer = setTimeout(() => { heroText.style.opacity = '1'; }, 1200);
   });
 }
 
