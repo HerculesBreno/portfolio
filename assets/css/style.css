@@ -284,13 +284,13 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   border: 1px solid var(--glass-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 26px;
+  border-radius: 999px;
   padding: 10px 10px;
   gap: 2px;
   box-shadow: var(--glass-shadow-lg);
   pointer-events: auto;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .callbar-inner::before {
   content: "";
@@ -298,6 +298,29 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   background: var(--glass-shine);
   border-radius: inherit;
   z-index: 0;
+}
+/* Lensing — luz refratando no aro do vidro (Liquid Glass) */
+.callbar-inner::after {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  border-radius: inherit;
+  box-shadow:
+    0 1px 1px rgba(255,255,255,0.30) inset,
+    0 -1px 1px rgba(255,255,255,0.08) inset,
+    1px 0 1px rgba(255,255,255,0.10) inset,
+    -1px 0 1px rgba(255,255,255,0.10) inset;
+  z-index: 0;
+}
+
+/* Itens do dock — magnificam a partir da base, podem sair do vidro */
+.callbar-nav > .call-link,
+.callbar-nav > .call-end,
+.callbar-work > .call-link,
+.callbar-ai > .call-link,
+.callbar-work > .work-pill-card,
+.callbar-ai > .work-pill-card {
+  transform-origin: 50% 120%;
+  will-change: transform;
 }
 
 /* Nav state (padrão) */
@@ -322,7 +345,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .work-pill-card {
   display: flex; align-items: center; justify-content: center;
   padding: 4px; border-radius: 14px;
-  transition: transform 0.18s, box-shadow 0.18s;
+  transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.18s;
 }
 .work-pill-card:hover {
   transform: scale(1.08);
@@ -379,7 +402,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .call-link, .call-end {
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   border-radius: 16px; font-size: 11px; font-family: var(--font-body);
-  transition: background 0.18s, color 0.18s;
+  transition: background 0.18s, color 0.18s, transform 0.3s cubic-bezier(.2,.8,.2,1);
   white-space: nowrap;
 }
 .call-link {

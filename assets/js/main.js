@@ -260,6 +260,68 @@ if (contactBtn && contactModal) {
   contactBackdrop   && contactBackdrop.addEventListener('click', closeContactModal);
 }
 
+// ===== Dock magnification no callbar (efeito dock do macOS) =====
+(function () {
+  const inner = document.getElementById('callbar-inner');
+  if (!inner) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer  = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  const dockParams = {
+    'callbar-nav':  { scale: 1.28, shift: 14, range: 150 },
+    'callbar-work': { scale: 1.50, shift: 18, range: 130 },
+    'callbar-ai':   { scale: 1.50, shift: 18, range: 130 },
+  };
+
+  const rows = Object.keys(dockParams)
+    .map((id) => document.getElementById(id))
+    .filter(Boolean)
+    .map((row) => ({
+      row,
+      params: dockParams[row.id],
+      items: Array.from(row.querySelectorAll(':scope > .call-link, :scope > .call-end, :scope > .work-pill-card')),
+    }));
+
+  function activeRow() {
+    if (inner.classList.contains('work-open')) return rows.find((r) => r.row.id === 'callbar-work');
+    if (inner.classList.contains('ai-open'))   return rows.find((r) => r.row.id === 'callbar-ai');
+    return rows.find((r) => r.row.id === 'callbar-nav');
+  }
+
+  function resetAll() {
+    rows.forEach(({ items }) => items.forEach((el) => { el.style.transform = ''; }));
+  }
+
+  inner.addEventListener('mousemove', (e) => {
+    if (reduceMotion.matches || !finePointer.matches) return;
+    const current = activeRow();
+    if (!current) return;
+    const { params, items } = current;
+    const rowLeft = current.row.getBoundingClientRect().left;
+
+    items.forEach((item) => {
+      const center = rowLeft + item.offsetLeft + item.offsetWidth / 2;
+      const distance = center - e.clientX;
+      let scale = 1;
+      let x;
+      if (Math.abs(distance) < params.range) {
+        const rad = (distance / params.range) * (Math.PI / 2);
+        scale = 1 + (params.scale - 1) * Math.cos(rad);
+        x = params.shift * Math.sin(rad);
+      } else {
+        x = (distance > 0 ? 1 : -1) * params.shift;
+      }
+      item.style.transform = `translateX(${x.toFixed(2)}px) scale(${scale.toFixed(3)})`;
+    });
+  });
+
+  inner.addEventListener('mouseleave', resetAll);
+  [workBtn, workBackBtn, aiBtn, aiBackBtn].forEach((btn) => {
+    btn && btn.addEventListener('click', resetAll);
+  });
+})();
+
 // ===== Scroll reveal =====
 const reveals = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
