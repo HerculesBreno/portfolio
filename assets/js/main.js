@@ -163,25 +163,12 @@ document.querySelectorAll('.about-tab').forEach(tab => {
   });
 });
 
-// ===== Work & AI — crossfade dentro do callbar =====
-const workBtn      = document.getElementById('work-btn');
-const workBackBtn  = document.getElementById('work-back-btn');
+// ===== AI — crossfade dentro do callbar =====
 const aiBtn        = document.getElementById('ai-btn');
 const aiBackBtn    = document.getElementById('ai-back-btn');
 const callbarInner = document.getElementById('callbar-inner');
 
-function openWork() {
-  callbarInner.classList.remove('ai-open');
-  callbarInner.classList.add('work-open');
-  workBtn.setAttribute('aria-expanded', 'true');
-}
-function closeWork() {
-  callbarInner.classList.remove('work-open');
-  workBtn.setAttribute('aria-expanded', 'false');
-  workBtn && workBtn.focus();
-}
 function openAI() {
-  callbarInner.classList.remove('work-open');
   callbarInner.classList.add('ai-open');
   aiBtn.setAttribute('aria-expanded', 'true');
 }
@@ -192,20 +179,120 @@ function closeAI() {
 }
 
 if (callbarInner) {
-  workBtn    && workBtn.addEventListener('click', openWork);
-  workBackBtn && workBackBtn.addEventListener('click', closeWork);
-  aiBtn      && aiBtn.addEventListener('click', openAI);
-  aiBackBtn  && aiBackBtn.addEventListener('click', closeAI);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (contactModal && contactModal.classList.contains('open')) { closeContactModal(); return; }
-      if (projModal && projModal.classList.contains('open')) { closeProjModal(); return; }
-      if (aboutModal && aboutModal.classList.contains('open')) { closeAbout(); return; }
-      if (callbarInner.classList.contains('work-open')) closeWork();
-      if (callbarInner.classList.contains('ai-open')) closeAI();
-    }
-  });
+  aiBtn     && aiBtn.addEventListener('click', openAI);
+  aiBackBtn && aiBackBtn.addEventListener('click', closeAI);
 }
+
+// ===== Work — dock estilo Apple TV + overlay =====
+const workBtn      = document.getElementById('work-btn');
+const callbar      = document.querySelector('.callbar');
+const tvDock       = document.getElementById('tv-dock');
+const tvShelf      = document.getElementById('tv-shelf');
+const tvGrid       = document.getElementById('tv-grid');
+const tvBack       = document.getElementById('tv-back');
+const tvExpand     = document.getElementById('tv-expand');
+const tvOverlay    = document.getElementById('tv-overlay');
+const tvOverlayClose    = document.getElementById('tv-overlay-close');
+const tvOverlayBackdrop = document.getElementById('tv-overlay-backdrop');
+
+// Ícones placeholder (trocar depois pelos reais)
+const TV_ICONS = {
+  tv:       '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+  arcade:   '<svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="5.5" r="2.5"/><rect x="11" y="7" width="2" height="6"/><path d="M4 17l8-4 8 4-8 4z"/></svg>',
+  fitness:  '<svg viewBox="0 0 24 24" fill="none" stroke-width="3"><circle cx="12" cy="12" r="9" stroke="#fa114f"/><circle cx="12" cy="12" r="6" stroke="#a3f900"/><circle cx="12" cy="12" r="3" stroke="#00e0ff"/></svg>',
+  facetime: '<svg viewBox="0 0 24 24" fill="#fff"><rect x="2" y="6" width="13" height="12" rx="3"/><path d="M22 8l-6 4 6 4z"/></svg>',
+  music:    '<svg viewBox="0 0 24 24" fill="#fff" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V5l10-2v12" fill="none"/><circle cx="6.5" cy="17" r="2.6" stroke="none"/><circle cx="16.5" cy="15" r="2.6" stroke="none"/></svg>',
+  appstore: '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18l6-12 6 12M8.5 14h7"/></svg>',
+  photos:   '<svg viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="3.2"/><path d="M12 3c1.2 1.6 1.2 4 0 6-2-1-3.4-3-3-6zM21 12c-1.6 1.2-4 1.2-6 0 1-2 3-3.4 6-3zM12 21c-1.2-1.6-1.2-4 0-6 2 1 3.4 3 3 6zM3 12c1.6-1.2 4-1.2 6 0-1 2-3 3.4-6 3z"/></svg>',
+  notes:    '<svg viewBox="0 0 24 24" fill="none" stroke="#3a2a00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h9"/></svg>',
+  podcasts: '<svg viewBox="0 0 24 24" fill="#fff"><rect x="9.5" y="3" width="5" height="10" rx="2.5"/><path d="M7 11a5 5 0 0 0 10 0" fill="none" stroke="#fff" stroke-width="2"/><path d="M12 16v4" stroke="#fff" stroke-width="2"/></svg>',
+  maps:     '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a6 6 0 0 0-6 6c0 4.5 6 12 6 12s6-7.5 6-12a6 6 0 0 0-6-6z"/><circle cx="12" cy="8" r="2.4" fill="#23a35a"/></svg>',
+  mail:     '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg>',
+  safari:   '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="#fff" stroke="none"/></svg>',
+};
+
+// Dataset placeholder de trabalhos
+const WORKS = [
+  { n: 1,  color: 'tv',       icon: 'tv' },
+  { n: 2,  color: 'arcade',   icon: 'arcade' },
+  { n: 3,  color: 'fitness',  icon: 'fitness' },
+  { n: 4,  color: 'facetime', icon: 'facetime' },
+  { n: 5,  color: 'music',    icon: 'music' },
+  { n: 6,  color: 'appstore', icon: 'appstore' },
+  { n: 7,  color: 'photos',   icon: 'photos' },
+  { n: 8,  color: 'notes',    icon: 'notes' },
+  { n: 9,  color: 'podcasts', icon: 'podcasts' },
+  { n: 10, color: 'maps',     icon: 'maps' },
+  { n: 11, color: 'mail',     icon: 'mail' },
+  { n: 12, color: 'safari',   icon: 'safari' },
+];
+
+function makeTile(work) {
+  const btn = document.createElement('button');
+  btn.className = `tv-tile tv-c-${work.color}`;
+  btn.setAttribute('aria-label', `Projeto ${String(work.n).padStart(2, '0')}`);
+  btn.innerHTML = TV_ICONS[work.icon] || '';
+  btn.addEventListener('click', () => openProjModal('work', work.n));
+  return btn;
+}
+
+if (tvShelf) WORKS.slice(0, 6).forEach((w) => tvShelf.appendChild(makeTile(w)));
+if (tvGrid)  WORKS.forEach((w) => tvGrid.appendChild(makeTile(w)));
+
+function openWork() {
+  callbarInner.classList.remove('ai-open');
+  callbar && callbar.classList.add('dimmed');
+  tvDock.hidden = false;
+  requestAnimationFrame(() => tvDock.classList.add('open'));
+  workBtn && workBtn.setAttribute('aria-expanded', 'true');
+  tvBack && tvBack.focus();
+}
+function closeWork() {
+  tvDock.classList.remove('open');
+  callbar && callbar.classList.remove('dimmed');
+  tvDock.addEventListener('transitionend', function h() {
+    tvDock.hidden = true;
+    tvDock.removeEventListener('transitionend', h);
+  }, { once: true });
+  workBtn && workBtn.setAttribute('aria-expanded', 'false');
+  workBtn && workBtn.focus();
+}
+function openWorkOverlay() {
+  heroModalOpen();
+  tvOverlay.hidden = false;
+  requestAnimationFrame(() => tvOverlay.classList.add('open'));
+  tvExpand && tvExpand.setAttribute('aria-expanded', 'true');
+  tvOverlayClose && tvOverlayClose.focus();
+}
+function closeWorkOverlay() {
+  heroModalClose();
+  tvOverlay.classList.remove('open');
+  tvOverlay.addEventListener('transitionend', function h() {
+    tvOverlay.hidden = true;
+    tvOverlay.removeEventListener('transitionend', h);
+  }, { once: true });
+  tvExpand && tvExpand.setAttribute('aria-expanded', 'false');
+  tvExpand && tvExpand.focus();
+}
+
+if (workBtn && tvDock) {
+  workBtn.addEventListener('click', openWork);
+  tvBack && tvBack.addEventListener('click', closeWork);
+  tvExpand && tvExpand.addEventListener('click', openWorkOverlay);
+  tvOverlayClose && tvOverlayClose.addEventListener('click', closeWorkOverlay);
+  tvOverlayBackdrop && tvOverlayBackdrop.addEventListener('click', closeWorkOverlay);
+}
+
+// ===== Escape global =====
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (contactModal && contactModal.classList.contains('open')) { closeContactModal(); return; }
+  if (projModal && projModal.classList.contains('open')) { closeProjModal(); return; }
+  if (aboutModal && aboutModal.classList.contains('open')) { closeAbout(); return; }
+  if (tvOverlay && !tvOverlay.hidden) { closeWorkOverlay(); return; }
+  if (tvDock && !tvDock.hidden) { closeWork(); return; }
+  if (callbarInner && callbarInner.classList.contains('ai-open')) closeAI();
+});
 
 // ===== Project modal =====
 const projModal      = document.getElementById('proj-modal');
@@ -270,7 +357,6 @@ if (contactBtn && contactModal) {
 
   const dockParams = {
     'callbar-nav':  { scale: 1.28, shift: 14, range: 150 },
-    'callbar-work': { scale: 1.50, shift: 18, range: 130 },
     'callbar-ai':   { scale: 1.50, shift: 18, range: 130 },
   };
 
@@ -284,8 +370,7 @@ if (contactBtn && contactModal) {
     }));
 
   function activeRow() {
-    if (inner.classList.contains('work-open')) return rows.find((r) => r.row.id === 'callbar-work');
-    if (inner.classList.contains('ai-open'))   return rows.find((r) => r.row.id === 'callbar-ai');
+    if (inner.classList.contains('ai-open')) return rows.find((r) => r.row.id === 'callbar-ai');
     return rows.find((r) => r.row.id === 'callbar-nav');
   }
 
@@ -317,7 +402,7 @@ if (contactBtn && contactModal) {
   });
 
   inner.addEventListener('mouseleave', resetAll);
-  [workBtn, workBackBtn, aiBtn, aiBackBtn].forEach((btn) => {
+  [aiBtn, aiBackBtn].forEach((btn) => {
     btn && btn.addEventListener('click', resetAll);
   });
 })();

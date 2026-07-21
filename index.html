@@ -224,20 +224,6 @@
       </button>
     </div>
 
-    <!-- Estado Work: cards dentro do pill -->
-    <div class="callbar-work" id="callbar-work">
-      <button class="call-link call-back" id="work-back-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        <span data-i18n="workBack">Voltar</span>
-      </button>
-      <div class="call-divider"></div>
-      <button class="work-pill-card" data-proj="work" data-proj-n="1"><div class="work-pill-icon work-icon-amber"></div></button>
-      <button class="work-pill-card" data-proj="work" data-proj-n="2"><div class="work-pill-icon work-icon-blue"></div></button>
-      <button class="work-pill-card" data-proj="work" data-proj-n="3"><div class="work-pill-icon work-icon-purple"></div></button>
-      <button class="work-pill-card" data-proj="work" data-proj-n="4"><div class="work-pill-icon work-icon-teal"></div></button>
-      <button class="work-pill-card" data-proj="work" data-proj-n="5"><div class="work-pill-icon work-icon-rose"></div></button>
-    </div>
-
     <!-- Estado AI: cards dentro do pill -->
     <div class="callbar-ai" id="callbar-ai">
       <button class="call-link call-back" id="ai-back-btn">
@@ -254,6 +240,32 @@
 
   </div>
 </nav>
+
+<!-- ============ WORK DOCK (estilo Apple TV top-shelf) ============ -->
+<div class="tv-dock" id="tv-dock" role="region" aria-label="Trabalhos" hidden>
+  <div class="tv-dock-top">
+    <button class="tv-back" id="tv-back" aria-label="Voltar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="tv-expand" id="tv-expand" aria-label="Ver todos os trabalhos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+    </button>
+  </div>
+  <div class="tv-shelf" id="tv-shelf"></div>
+</div>
+
+<!-- ============ WORK OVERLAY (grid sobre o background) ============ -->
+<div class="tv-overlay" id="tv-overlay" role="dialog" aria-modal="true" aria-label="Todos os trabalhos" hidden>
+  <div class="tv-overlay-backdrop" id="tv-overlay-backdrop"></div>
+  <div class="tv-overlay-panel">
+    <button class="tv-overlay-close" id="tv-overlay-close" aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
+    <p class="tv-overlay-eyebrow">Portfólio</p>
+    <h3 class="tv-overlay-title">Todos os trabalhos</h3>
+    <div class="tv-grid" id="tv-grid"></div>
+  </div>
+</div>
 
 <!-- ============ ABOUT PANEL (right-side drawer) ============ -->
 <div class="about-overlay" id="about-overlay" aria-hidden="true"></div>
