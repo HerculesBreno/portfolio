@@ -278,41 +278,20 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   display: flex; justify-content: center;
   pointer-events: none;
 }
+/* Botões individuais flutuando — estilo FaceTime, sem cápsula de fundo */
 .callbar-inner {
-  display: flex; align-items: center;
-  background: rgba(20, 15, 10, 0.36);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 999px;
-  padding: 10px 10px;
-  gap: 2px;
-  box-shadow: var(--glass-shadow-lg);
+  display: flex; align-items: flex-start; justify-content: center;
+  background: none; border: none; box-shadow: none;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  border-radius: 0;
+  padding: 0;
+  gap: 18px;
   pointer-events: auto;
   position: relative;
   overflow: visible;
 }
-.callbar-inner::before {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background: var(--glass-shine);
-  border-radius: inherit;
-  z-index: 0;
-}
-/* Lensing — luz refratando no aro do vidro (Liquid Glass) */
-.callbar-inner::after {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  border-radius: inherit;
-  box-shadow:
-    0 1px 1px rgba(255,255,255,0.30) inset,
-    0 -1px 1px rgba(255,255,255,0.08) inset,
-    1px 0 1px rgba(255,255,255,0.10) inset,
-    -1px 0 1px rgba(255,255,255,0.10) inset;
-  z-index: 0;
-}
 
-/* Itens do dock — magnificam a partir da base, podem sair do vidro */
+/* Itens do dock — magnificam a partir da base */
 .callbar-nav > .call-link,
 .callbar-nav > .call-end,
 .callbar-work > .call-link,
@@ -325,7 +304,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
 /* Nav state (padrão) */
 .callbar-nav {
-  display: flex; align-items: center; gap: 4px;
+  display: flex; align-items: flex-start; gap: 18px;
   opacity: 1; pointer-events: auto;
   transition: opacity 0.18s ease;
   position: relative; z-index: 1;
@@ -381,8 +360,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 /* AI callbar state */
 .callbar-work, .callbar-ai {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center; gap: 4px;
-  padding: 10px 16px;
+  display: flex; align-items: flex-start; justify-content: center; gap: 14px;
+  padding: 0;
   opacity: 0; pointer-events: none;
   transition: opacity 0.2s ease 0.14s;
   z-index: 1;
@@ -396,44 +375,68 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   transition: opacity 0.22s ease 0.12s;
 }
 
-.call-back { color: var(--text-soft); }
-.call-back svg { width: 18px; height: 18px; }
-
+/* Botões individuais: círculo de vidro + label embaixo (estilo FaceTime) */
 .call-link, .call-end {
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
-  border-radius: 16px; font-size: 11px; font-family: var(--font-body);
-  transition: background 0.18s, color 0.18s, transform 0.3s cubic-bezier(.2,.8,.2,1);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 0; background: none; border: none;
+  width: 54px;
+  font-size: 11px; font-family: var(--font-body);
+  color: rgba(255,255,255,0.55);
+  transition: color 0.18s, transform 0.3s cubic-bezier(.2,.8,.2,1);
   white-space: nowrap;
 }
-.call-link {
-  padding: 10px 16px;
-  color: rgba(255,255,255,0.50);
-  min-width: 64px;
-}
-.call-link svg { width: 22px; height: 22px; stroke-width: 1.6; }
-.call-link:hover { color: rgba(255,255,255,0.90); background: rgba(255,255,255,0.07); }
-.call-link.active {
-  color: var(--amber);
-  background: rgba(232, 162, 61, 0.09);
+
+/* O círculo de vidro é o próprio SVG (padding gera o disco ao redor do ícone) */
+.call-link svg, .call-end svg {
+  width: 54px; height: 54px; padding: 15px; stroke-width: 1.7;
+  border-radius: 50%;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.05) 42%, rgba(255,255,255,0) 100%),
+    var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  transition: background 0.18s, border-color 0.18s, box-shadow 0.18s;
 }
 
-.call-divider { width: 1px; height: 32px; background: rgba(255,255,255,0.1); margin: 0 6px; flex-shrink: 0; }
-
-.call-end {
-  padding: 10px 20px;
-  background: rgba(95, 217, 138, 0.20);
-  color: var(--green);
-  border: 1px solid rgba(95, 217, 138, 0.28);
-  min-width: 64px;
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 4px 16px rgba(95,217,138,0.12);
+.call-link:hover { color: rgba(255,255,255,0.95); }
+.call-link:hover svg {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.08) 42%, rgba(255,255,255,0) 100%),
+    var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glass-shadow-lg);
 }
-.call-end svg { width: 22px; height: 22px; }
-.call-end:hover {
-  background: rgba(95, 217, 138, 0.30);
-  border-color: rgba(95, 217, 138, 0.45);
-  color: #fff;
+.call-link.active { color: var(--amber); }
+.call-link.active svg {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.05) 42%, rgba(255,255,255,0) 100%),
+    rgba(232, 162, 61, 0.22);
+  border-color: rgba(232, 162, 61, 0.40);
+}
+
+.call-back svg { padding: 17px; }
+
+.call-divider { display: none; }
+
+/* "Let's talk" = círculo verde preenchido (equivalente ao botão End do FaceTime) */
+.call-end { color: var(--green); }
+.call-end svg {
+  padding: 15px; color: #06331d;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0) 100%),
+    rgba(95, 217, 138, 0.92);
+  border: 1px solid rgba(95, 217, 138, 0.55);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.35) inset, 0 6px 20px rgba(95,217,138,0.32);
+}
+.call-end:hover { color: #fff; }
+.call-end:hover svg {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.40) 0%, rgba(255,255,255,0.10) 45%, rgba(255,255,255,0) 100%),
+    rgba(95, 217, 138, 1);
+  border-color: rgba(95, 217, 138, 0.75);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.40) inset, 0 8px 26px rgba(95,217,138,0.45);
 }
 
 /* =========================================================
@@ -864,14 +867,13 @@ footer.site-footer {
   .nameplate { margin: 0 16px 110px; font-size: 12px; }
   .nameplate b { font-size: 14px; }
 
-  /* Callbar — labels hidden, only icons */
+  /* Callbar — círculos menores, labels ocultos */
   .callbar { bottom: 12px; }
-  .callbar-inner { padding: 8px 10px; gap: 2px; }
-  .call-link { min-width: 44px; padding: 8px 10px; font-size: 0; }
-  .call-link svg { width: 22px; height: 22px; }
-  .call-end { padding: 10px 14px; font-size: 0; min-width: 44px; }
-  .call-end svg { width: 22px; height: 22px; }
-  .call-divider { margin: 0 2px; }
+  .callbar-inner { gap: 12px; }
+  .callbar-nav { gap: 12px; }
+  .call-link, .call-end { font-size: 0; width: 46px; }
+  .call-link svg, .call-end svg { width: 46px; height: 46px; padding: 12px; }
+  .call-back svg { padding: 14px; }
 
   /* Grids */
   .screenshare-grid { grid-template-columns: 1fr; }
@@ -897,5 +899,6 @@ footer.site-footer {
 /* Very small — 380px */
 @media (max-width: 380px) {
   .status-pill span:not(.status-dot) { display: none; }
-  .callbar-inner { max-width: calc(100vw - 20px); overflow-x: auto; }
+  .callbar-inner { max-width: calc(100vw - 16px); overflow-x: auto; overflow-y: visible; }
+  .callbar-nav { gap: 8px; }
 }
