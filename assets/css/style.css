@@ -293,9 +293,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 
 /* Itens do dock — magnificam a partir da base */
 .callbar-nav > .call-link,
-.callbar-nav > .call-end,
-.callbar-ai > .call-link,
-.callbar-ai > .work-pill-card {
+.callbar-nav > .call-end {
   transform-origin: 50% 120%;
   will-change: transform;
 }
@@ -306,62 +304,6 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
   opacity: 1; pointer-events: auto;
   transition: opacity 0.18s ease;
   position: relative; z-index: 1;
-}
-
-
-/* Cards de work/AI dentro do dock — tiles estilo Apple TV */
-.work-pill-card {
-  display: flex; align-items: center; justify-content: center;
-  padding: 4px; border-radius: 14px;
-  transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.18s;
-}
-.work-pill-card:hover {
-  transform: scale(1.08);
-}
-.work-pill-card:hover .work-pill-icon {
-  box-shadow: 0 6px 20px rgba(0,0,0,0.50), 0 1px 0 rgba(255,255,255,0.20) inset;
-}
-
-.work-pill-icon {
-  width: 52px; height: 52px; border-radius: 14px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.18) inset;
-  position: relative; overflow: hidden;
-}
-.work-pill-icon::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%);
-  border-radius: inherit;
-}
-
-/* Ícones Work */
-.work-icon-amber  { background: radial-gradient(135% 135% at 30% 20%, #f0b951, #a06010); }
-.work-icon-blue   { background: radial-gradient(135% 135% at 30% 20%, #5ba4ff, #1a4ab0); }
-.work-icon-purple { background: radial-gradient(135% 135% at 30% 20%, #c084fc, #6b1fa8); }
-.work-icon-teal   { background: radial-gradient(135% 135% at 30% 20%, #2dd4bf, #0d6b60); }
-.work-icon-rose   { background: radial-gradient(135% 135% at 30% 20%, #fb7185, #be1239); }
-
-/* Ícones AI */
-.work-icon-cyan   { background: radial-gradient(135% 135% at 30% 20%, #22d3ee, #0e6680); }
-.work-icon-green  { background: radial-gradient(135% 135% at 30% 20%, #4ade80, #15803d); }
-.work-icon-orange { background: radial-gradient(135% 135% at 30% 20%, #fb923c, #c2410c); }
-
-/* AI callbar state */
-.callbar-ai {
-  position: absolute; inset: 0;
-  display: flex; align-items: flex-start; justify-content: center; gap: 14px;
-  padding: 0;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.2s ease 0.14s;
-  z-index: 1;
-}
-.callbar-inner.ai-open .callbar-nav {
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-.callbar-inner.ai-open .callbar-ai {
-  opacity: 1; pointer-events: auto;
-  transition: opacity 0.22s ease 0.12s;
 }
 
 /* Botões individuais: círculo de vidro + label embaixo (estilo FaceTime) */
@@ -519,6 +461,12 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .tv-c-maps     { background: linear-gradient(135deg, #6fe07a, #23a35a); }
 .tv-c-mail     { background: linear-gradient(135deg, #5ec8ff, #1f8fff); }
 .tv-c-safari   { background: linear-gradient(135deg, #8fd6ff, #2b7fff); }
+.tv-c-indigo   { background: linear-gradient(135deg, #8b93ff, #4338ca); }
+.tv-c-cyan     { background: linear-gradient(135deg, #5ce1e6, #0e7490); }
+.tv-c-slate    { background: linear-gradient(135deg, #4b5563, #1f2937); }
+.tv-c-lime     { background: linear-gradient(135deg, #b6f36b, #4d9c15); }
+.tv-c-magenta  { background: linear-gradient(135deg, #f472d0, #a21caf); }
+.tv-c-orange   { background: linear-gradient(135deg, #ffb066, #ea580c); }
 
 /* =========================================================
    WORK OVERLAY — grid sobre o background
@@ -1021,11 +969,10 @@ footer.site-footer {
   .about-modal { width: min(300px, 88vw); }
   .about-content-area { padding: 16px; }
 
-  .work-overlay { bottom: calc(12px + 62px + 12px); padding: 18px 16px 14px; border-radius: 18px; }
-  .work-app-grid { grid-template-columns: repeat(4, 64px); gap: 12px; }
-  .work-app-icon { width: 64px; height: 64px; border-radius: 16px; }
-  .work-icon-label { font-size: 9px; }
-  .work-app-card span:last-child { font-size: 10px; width: 64px; }
+  .tv-shelf { gap: 12px; padding: 12px; border-radius: 24px; }
+  .tv-tile { width: 104px; border-radius: 16px; }
+  .tv-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 14px; }
+  .tv-overlay-panel { padding: 32px 16px 100px; }
 }
 
 /* Very small — 380px */

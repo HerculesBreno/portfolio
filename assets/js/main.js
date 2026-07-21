@@ -163,28 +163,10 @@ document.querySelectorAll('.about-tab').forEach(tab => {
   });
 });
 
-// ===== AI — crossfade dentro do callbar =====
-const aiBtn        = document.getElementById('ai-btn');
-const aiBackBtn    = document.getElementById('ai-back-btn');
-const callbarInner = document.getElementById('callbar-inner');
-
-function openAI() {
-  callbarInner.classList.add('ai-open');
-  aiBtn.setAttribute('aria-expanded', 'true');
-}
-function closeAI() {
-  callbarInner.classList.remove('ai-open');
-  aiBtn.setAttribute('aria-expanded', 'false');
-  aiBtn && aiBtn.focus();
-}
-
-if (callbarInner) {
-  aiBtn     && aiBtn.addEventListener('click', openAI);
-  aiBackBtn && aiBackBtn.addEventListener('click', closeAI);
-}
-
-// ===== Work — dock estilo Apple TV + overlay =====
+// ===== Work & AI — dock estilo Apple TV + overlay =====
 const workBtn      = document.getElementById('work-btn');
+const aiBtn        = document.getElementById('ai-btn');
+const callbarInner = document.getElementById('callbar-inner');
 const callbar      = document.querySelector('.callbar');
 const tvDock       = document.getElementById('tv-dock');
 const tvShelf      = document.getElementById('tv-shelf');
@@ -194,6 +176,8 @@ const tvExpand     = document.getElementById('tv-expand');
 const tvOverlay    = document.getElementById('tv-overlay');
 const tvOverlayClose    = document.getElementById('tv-overlay-close');
 const tvOverlayBackdrop = document.getElementById('tv-overlay-backdrop');
+const tvOverlayTitle    = document.getElementById('tv-overlay-title');
+const tvOverlayEyebrow  = document.getElementById('tv-overlay-eyebrow');
 
 // Ícones placeholder (trocar depois pelos reais)
 const TV_ICONS = {
@@ -209,62 +193,109 @@ const TV_ICONS = {
   maps:     '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a6 6 0 0 0-6 6c0 4.5 6 12 6 12s6-7.5 6-12a6 6 0 0 0-6-6z"/><circle cx="12" cy="8" r="2.4" fill="#23a35a"/></svg>',
   mail:     '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6"/></svg>',
   safari:   '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z" fill="#fff" stroke="none"/></svg>',
+  spark:    '<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2l2.2 6.3L20.5 10l-6.3 2.2L12 18.5l-2.2-6.3L3.5 10l6.3-1.7z"/><circle cx="18.5" cy="17.5" r="2"/></svg>',
+  bot:      '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4"/><circle cx="9" cy="13.5" r="1.4" fill="#fff" stroke="none"/><circle cx="15" cy="13.5" r="1.4" fill="#fff" stroke="none"/></svg>',
+  flow:     '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="12" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8.5 7.5l7 3M8.5 16.5l7-3"/></svg>',
+  chat:     '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12z"/></svg>',
+  chart:    '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 19V9M10 19V5M16 19v-6M22 19H2"/></svg>',
+  wand:     '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L17 7M14.5 4.5l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/></svg>',
 };
 
-// Dataset placeholder de trabalhos
-const WORKS = [
-  { n: 1,  color: 'tv',       icon: 'tv' },
-  { n: 2,  color: 'arcade',   icon: 'arcade' },
-  { n: 3,  color: 'fitness',  icon: 'fitness' },
-  { n: 4,  color: 'facetime', icon: 'facetime' },
-  { n: 5,  color: 'music',    icon: 'music' },
-  { n: 6,  color: 'appstore', icon: 'appstore' },
-  { n: 7,  color: 'photos',   icon: 'photos' },
-  { n: 8,  color: 'notes',    icon: 'notes' },
-  { n: 9,  color: 'podcasts', icon: 'podcasts' },
-  { n: 10, color: 'maps',     icon: 'maps' },
-  { n: 11, color: 'mail',     icon: 'mail' },
-  { n: 12, color: 'safari',   icon: 'safari' },
-];
+// Datasets placeholder — trocar por imagens/ícones reais depois
+const DECKS = {
+  work: {
+    label: 'Trabalhos',
+    eyebrow: 'Portfólio',
+    title: 'Todos os trabalhos',
+    items: [
+      { n: 1,  color: 'tv',       icon: 'tv' },
+      { n: 2,  color: 'arcade',   icon: 'arcade' },
+      { n: 3,  color: 'fitness',  icon: 'fitness' },
+      { n: 4,  color: 'facetime', icon: 'facetime' },
+      { n: 5,  color: 'music',    icon: 'music' },
+      { n: 6,  color: 'appstore', icon: 'appstore' },
+      { n: 7,  color: 'photos',   icon: 'photos' },
+      { n: 8,  color: 'notes',    icon: 'notes' },
+      { n: 9,  color: 'podcasts', icon: 'podcasts' },
+      { n: 10, color: 'maps',     icon: 'maps' },
+      { n: 11, color: 'mail',     icon: 'mail' },
+      { n: 12, color: 'safari',   icon: 'safari' },
+    ],
+  },
+  ai: {
+    label: 'AI & Automations',
+    eyebrow: 'AI & Automations',
+    title: 'Todas as automações',
+    items: [
+      { n: 1,  color: 'indigo',   icon: 'spark' },
+      { n: 2,  color: 'cyan',     icon: 'bot' },
+      { n: 3,  color: 'slate',    icon: 'flow' },
+      { n: 4,  color: 'lime',     icon: 'chat' },
+      { n: 5,  color: 'magenta',  icon: 'chart' },
+      { n: 6,  color: 'orange',   icon: 'wand' },
+      { n: 7,  color: 'appstore', icon: 'flow' },
+      { n: 8,  color: 'photos',   icon: 'spark' },
+      { n: 9,  color: 'facetime', icon: 'chat' },
+      { n: 10, color: 'music',    icon: 'chart' },
+      { n: 11, color: 'notes',    icon: 'bot' },
+      { n: 12, color: 'safari',   icon: 'wand' },
+    ],
+  },
+};
 
-function makeTile(work) {
+let activeDeck = 'work';
+
+function makeTile(type, item) {
+  const isWork = type === 'work';
   const btn = document.createElement('button');
-  btn.className = `tv-tile tv-c-${work.color}`;
-  btn.setAttribute('aria-label', `Projeto ${String(work.n).padStart(2, '0')}`);
-  btn.innerHTML = TV_ICONS[work.icon] || '';
-  btn.addEventListener('click', () => openProjModal('work', work.n));
+  btn.className = `tv-tile tv-c-${item.color}`;
+  const n = String(item.n).padStart(2, '0');
+  btn.setAttribute('aria-label', isWork ? `Projeto ${n}` : `Automação ${n}`);
+  btn.innerHTML = TV_ICONS[item.icon] || '';
+  btn.addEventListener('click', () => openProjModal(type, item.n));
   return btn;
 }
 
-if (tvShelf) WORKS.slice(0, 6).forEach((w) => tvShelf.appendChild(makeTile(w)));
-if (tvGrid)  WORKS.forEach((w) => tvGrid.appendChild(makeTile(w)));
+function renderDeck(type) {
+  const deck = DECKS[type];
+  if (!deck || !tvShelf || !tvGrid) return;
+  tvShelf.replaceChildren(...deck.items.slice(0, 6).map((i) => makeTile(type, i)));
+  tvGrid.replaceChildren(...deck.items.map((i) => makeTile(type, i)));
+  tvDock.setAttribute('aria-label', deck.label);
+  if (tvOverlayEyebrow) tvOverlayEyebrow.textContent = deck.eyebrow;
+  if (tvOverlayTitle)   tvOverlayTitle.textContent   = deck.title;
+}
 
-function openWork() {
-  callbarInner.classList.remove('ai-open');
+function deckTrigger() { return activeDeck === 'ai' ? aiBtn : workBtn; }
+
+function openDock(type) {
+  activeDeck = type;
+  renderDeck(type);
   callbar && callbar.classList.add('dimmed');
   tvDock.hidden = false;
   requestAnimationFrame(() => tvDock.classList.add('open'));
-  workBtn && workBtn.setAttribute('aria-expanded', 'true');
+  deckTrigger() && deckTrigger().setAttribute('aria-expanded', 'true');
   tvBack && tvBack.focus();
 }
-function closeWork() {
+function closeDock() {
+  const trigger = deckTrigger();
   tvDock.classList.remove('open');
   callbar && callbar.classList.remove('dimmed');
   tvDock.addEventListener('transitionend', function h() {
     tvDock.hidden = true;
     tvDock.removeEventListener('transitionend', h);
   }, { once: true });
-  workBtn && workBtn.setAttribute('aria-expanded', 'false');
-  workBtn && workBtn.focus();
+  trigger && trigger.setAttribute('aria-expanded', 'false');
+  trigger && trigger.focus();
 }
-function openWorkOverlay() {
+function openDeckOverlay() {
   heroModalOpen();
   tvOverlay.hidden = false;
   requestAnimationFrame(() => tvOverlay.classList.add('open'));
   tvExpand && tvExpand.setAttribute('aria-expanded', 'true');
   tvOverlayClose && tvOverlayClose.focus();
 }
-function closeWorkOverlay() {
+function closeDeckOverlay() {
   heroModalClose();
   tvOverlay.classList.remove('open');
   tvOverlay.addEventListener('transitionend', function h() {
@@ -275,12 +306,13 @@ function closeWorkOverlay() {
   tvExpand && tvExpand.focus();
 }
 
-if (workBtn && tvDock) {
-  workBtn.addEventListener('click', openWork);
-  tvBack && tvBack.addEventListener('click', closeWork);
-  tvExpand && tvExpand.addEventListener('click', openWorkOverlay);
-  tvOverlayClose && tvOverlayClose.addEventListener('click', closeWorkOverlay);
-  tvOverlayBackdrop && tvOverlayBackdrop.addEventListener('click', closeWorkOverlay);
+if (tvDock) {
+  workBtn && workBtn.addEventListener('click', () => openDock('work'));
+  aiBtn   && aiBtn.addEventListener('click', () => openDock('ai'));
+  tvBack  && tvBack.addEventListener('click', closeDock);
+  tvExpand && tvExpand.addEventListener('click', openDeckOverlay);
+  tvOverlayClose && tvOverlayClose.addEventListener('click', closeDeckOverlay);
+  tvOverlayBackdrop && tvOverlayBackdrop.addEventListener('click', closeDeckOverlay);
 }
 
 // ===== Escape global =====
@@ -289,9 +321,8 @@ document.addEventListener('keydown', (e) => {
   if (contactModal && contactModal.classList.contains('open')) { closeContactModal(); return; }
   if (projModal && projModal.classList.contains('open')) { closeProjModal(); return; }
   if (aboutModal && aboutModal.classList.contains('open')) { closeAbout(); return; }
-  if (tvOverlay && !tvOverlay.hidden) { closeWorkOverlay(); return; }
-  if (tvDock && !tvDock.hidden) { closeWork(); return; }
-  if (callbarInner && callbarInner.classList.contains('ai-open')) closeAI();
+  if (tvOverlay && !tvOverlay.hidden) { closeDeckOverlay(); return; }
+  if (tvDock && !tvDock.hidden) { closeDock(); return; }
 });
 
 // ===== Project modal =====
@@ -318,9 +349,6 @@ function closeProjModal() {
 if (projModal) {
   projModalClose && projModalClose.addEventListener('click', closeProjModal);
   projBackdrop   && projBackdrop.addEventListener('click', closeProjModal);
-  document.querySelectorAll('.work-pill-card[data-proj]').forEach(btn => {
-    btn.addEventListener('click', () => openProjModal(btn.dataset.proj, btn.dataset.projN));
-  });
 }
 
 // ===== Contact modal =====
@@ -355,35 +383,18 @@ if (contactBtn && contactModal) {
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const finePointer  = window.matchMedia('(hover: hover) and (pointer: fine)');
 
-  const dockParams = {
-    'callbar-nav':  { scale: 1.28, shift: 14, range: 150 },
-    'callbar-ai':   { scale: 1.50, shift: 18, range: 130 },
-  };
-
-  const rows = Object.keys(dockParams)
-    .map((id) => document.getElementById(id))
-    .filter(Boolean)
-    .map((row) => ({
-      row,
-      params: dockParams[row.id],
-      items: Array.from(row.querySelectorAll(':scope > .call-link, :scope > .call-end, :scope > .work-pill-card')),
-    }));
-
-  function activeRow() {
-    if (inner.classList.contains('ai-open')) return rows.find((r) => r.row.id === 'callbar-ai');
-    return rows.find((r) => r.row.id === 'callbar-nav');
-  }
+  const params = { scale: 1.28, shift: 14, range: 150 };
+  const row = document.getElementById('callbar-nav');
+  if (!row) return;
+  const items = Array.from(row.querySelectorAll(':scope > .call-link, :scope > .call-end'));
 
   function resetAll() {
-    rows.forEach(({ items }) => items.forEach((el) => { el.style.transform = ''; }));
+    items.forEach((el) => { el.style.transform = ''; });
   }
 
   inner.addEventListener('mousemove', (e) => {
     if (reduceMotion.matches || !finePointer.matches) return;
-    const current = activeRow();
-    if (!current) return;
-    const { params, items } = current;
-    const rowLeft = current.row.getBoundingClientRect().left;
+    const rowLeft = row.getBoundingClientRect().left;
 
     items.forEach((item) => {
       const center = rowLeft + item.offsetLeft + item.offsetWidth / 2;
@@ -402,7 +413,7 @@ if (contactBtn && contactModal) {
   });
 
   inner.addEventListener('mouseleave', resetAll);
-  [aiBtn, aiBackBtn].forEach((btn) => {
+  [workBtn, aiBtn].forEach((btn) => {
     btn && btn.addEventListener('click', resetAll);
   });
 })();
