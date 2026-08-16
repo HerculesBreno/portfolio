@@ -368,6 +368,7 @@
         box.appendChild(btn);
       });
     } else {
+      box.innerHTML = ""; // nunca deixa opções antigas "presas" pra quem não desenha
       renderBoard($("#pick-board")); // placar enquanto espera
     }
     show("screen-pick");
