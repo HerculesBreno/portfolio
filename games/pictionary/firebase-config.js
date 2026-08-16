@@ -15,11 +15,11 @@
 // Enquanto os valores começarem com "SUA_", o jogo ignora o Firebase e roda local.
 
 window.FIREBASE_CONFIG = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SUA_APP.firebaseapp.com",
-  databaseURL: "https://SUA_APP-default-rtdb.firebaseio.com",
-  projectId: "SUA_APP",
-  storageBucket: "SUA_APP.appspot.com",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID",
+  apiKey: "AIzaSyCZr1M6_ExA2Y9PXvXbo_yvDgTMwhwFBk4",
+  authDomain: "pictionario.firebaseapp.com",
+  databaseURL: "https://pictionario-default-rtdb.firebaseio.com",
+  projectId: "pictionario",
+  storageBucket: "pictionario.firebasestorage.app",
+  messagingSenderId: "607579311484",
+  appId: "1:607579311484:web:0b01e4b83f77346ed228f9",
 };

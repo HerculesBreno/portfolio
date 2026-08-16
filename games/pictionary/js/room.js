@@ -49,6 +49,7 @@ class FirebaseStore {
     this._subs = new Set();
     this._db = null;
     this._ref = null;
+    this._pendingSet = null;
     this._readyPromise = this._connect();
   }
 
@@ -74,6 +75,9 @@ class FirebaseStore {
       const val = snap.val();
       if (val) { this.state = val; this._emit(); }
     });
+
+    // Escrita pendente (set() chamado antes da conexão terminar) é gravada agora.
+    if (this._pendingSet) { this._fb.set(this._ref, this._pendingSet); this._pendingSet = null; }
     return this;
   }
 
@@ -86,6 +90,7 @@ class FirebaseStore {
     this.state = state;
     this._emit();
     if (this._ref) this._fb.set(this._ref, state);
+    else this._pendingSet = state; // ainda conectando: grava ao terminar
   }
   update(fn) {
     fn(this.state);
