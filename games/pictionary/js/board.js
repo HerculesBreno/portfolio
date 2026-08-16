@@ -29,10 +29,11 @@ class Board {
     this._buf = [];               // pontos ainda não enviados (draw)
     this._lastFlush = 0;
     this._unsub = null;
+    this._ac = new AbortController(); // remove todos os listeners de uma vez no destroy
 
     this._resize();
     this._onResize = () => this._resize(true);
-    window.addEventListener("resize", this._onResize);
+    window.addEventListener("resize", this._onResize, { signal: this._ac.signal });
 
     if (role === "draw") this._bindPointer();
     if (role === "view" && channel) {
@@ -87,10 +88,13 @@ class Board {
   // ---------- entrada (draw) ----------
   _bindPointer() {
     const c = this.canvas;
+    const sig = { signal: this._ac.signal };
     c.style.touchAction = "none";
+    const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
     const pos = (e) => {
       const r = c.getBoundingClientRect();
-      return { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+      const w = r.width || 1, h = r.height || 1; // evita divisão por 0 (coord Infinity/NaN)
+      return { x: clamp01((e.clientX - r.left) / w), y: clamp01((e.clientY - r.top) / h) };
     };
     c.addEventListener("pointerdown", (e) => {
       e.preventDefault();
@@ -103,7 +107,7 @@ class Board {
       this._buf = [this._cur.pts[0]];
       this._lastFlush = performance.now();
       this._drawStroke({ ...this._cur });
-    });
+    }, sig);
     c.addEventListener("pointermove", (e) => {
       if (!this._cur) return;
       e.preventDefault();
@@ -122,22 +126,29 @@ class Board {
       ctx.stroke();
       const now = performance.now();
       if (this._buf.length >= 6 || now - this._lastFlush > 70) this._flush();
-    });
+    }, sig);
     const end = (e) => {
       if (!this._cur) return;
       this._flush();
       this._cur = null;
       try { c.releasePointerCapture(e.pointerId); } catch (_) {}
     };
-    c.addEventListener("pointerup", end);
-    c.addEventListener("pointercancel", end);
-    c.addEventListener("pointerleave", end);
+    c.addEventListener("pointerup", end, sig);
+    c.addEventListener("pointercancel", end, sig);
+    c.addEventListener("pointerleave", end, sig);
+  }
+
+  _safeSend(ev) {
+    if (!this.channel) return;
+    try { this.channel.send(ev); } catch (e) { /* falha de rede pontual não pode quebrar o fluxo */ }
   }
 
   _flush() {
-    if (!this.channel || !this._cur || this._buf.length === 0) { this._buf = this._cur ? [this._cur.pts[this._cur.pts.length - 1]] : []; this._lastFlush = performance.now(); return; }
-    this.channel.send({ t: "seg", s: this._cur.id, c: this._cur.c, w: this._cur.w, p: this._buf.map((p) => [round3(p.x), round3(p.y)]) });
-    this._buf = [this._cur.pts[this._cur.pts.length - 1]]; // continuidade
+    if (this.channel && this._cur && this._buf.length > 0) {
+      this._safeSend({ t: "seg", s: this._cur.id, c: this._cur.c, w: this._cur.w, p: this._buf.map((p) => [round3(p.x), round3(p.y)]) });
+    }
+    // sempre reseta o buffer, mesmo sem envio, pra nunca "travar" um ponto ruim
+    this._buf = this._cur ? [this._cur.pts[this._cur.pts.length - 1]] : [];
     this._lastFlush = performance.now();
   }
 
@@ -183,19 +194,19 @@ class Board {
     const last = this.strokes.pop();
     this._byId.delete(last.id);
     this._redrawAll();
-    if (this.channel) this.channel.send({ t: "undo", s: last.id });
+    this._safeSend({ t: "undo", s: last.id });
   }
   clear() {
     this.strokes = [];
     this._byId.clear();
     this._clearCanvas();
-    if (this.channel) this.channel.send({ t: "clear" });
+    this._safeSend({ t: "clear" });
   }
 
   refit() { this._resize(true); }
 
   destroy() {
-    window.removeEventListener("resize", this._onResize);
+    this._ac.abort(); // remove TODOS os listeners (ponteiro + resize) de uma vez
     if (this._unsub) this._unsub();
     this._unsub = null;
   }

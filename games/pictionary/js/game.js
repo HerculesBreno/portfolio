@@ -440,10 +440,15 @@
   }
 
   function setupBoard(eu) {
+    // renderPlay pode rodar mais de uma vez na mesma rodada (update local + eco do Firebase).
+    // Recriar o board à toa duplicava os listeners. Só (re)cria se mudou a rodada/papel.
+    const key = G.roundIndex + ":" + (eu ? "draw" : "view");
+    if (board && board._key === key) return;
     if (board) { board.destroy(); board = null; }
     const canvas = $("#board");
     const channel = isLocal() ? null : store.drawChannel(G.roundIndex);
     board = new window.Board(canvas, { role: eu ? "draw" : "view", channel });
+    board._key = key;
     // garante dimensionamento correto após o layout
     requestAnimationFrame(() => { if (board) board.refit(); });
     if (eu) syncSwatches();
