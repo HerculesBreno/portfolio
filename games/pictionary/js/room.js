@@ -26,6 +26,13 @@ class LocalStore {
   subscribe(cb) { this._subs.add(cb); return () => this._subs.delete(cb); }
   _emit() { for (const cb of this._subs) cb(this.state); }
   drawChannel() { return null; } // modo local desenha direto na tela, sem rede
+  reactionsChannel() {
+    const subs = new Set();
+    return {
+      send: (e, from) => { const v = { e, from, t: Date.now() }; subs.forEach((cb) => cb(v)); },
+      subscribe: (cb) => { subs.add(cb); return () => subs.delete(cb); },
+    };
+  }
   close() {}
 }
 
@@ -107,6 +114,19 @@ class FirebaseStore {
       reset: () => remove(drawRef),
       send: (ev) => push(drawRef, ev),
       subscribe: (cb) => onChildAdded(drawRef, (snap) => cb(snap.val())),
+    };
+  }
+
+  // Canal de reações (emojis) — log append-only em /rooms/{id}/reactions.
+  reactionsChannel() {
+    const { ref, push, onChildAdded } = this._fb;
+    const rRef = ref(this._db, `rooms/${this.roomId}/reactions`);
+    return {
+      send: (e, from) => push(rRef, { e, from, t: Date.now() }),
+      subscribe: (cb) => {
+        const since = Date.now() - 1500; // ignora reações antigas ao entrar
+        return onChildAdded(rRef, (snap) => { const v = snap.val(); if (v && (v.t || 0) >= since) cb(v); });
+      },
     };
   }
 }

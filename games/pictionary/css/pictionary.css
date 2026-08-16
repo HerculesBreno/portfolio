@@ -31,6 +31,9 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+/* Garante que o atributo [hidden] realmente esconda, mesmo com display de classe. */
+[hidden] { display: none !important; }
+
 html, body { height: 100%; }
 
 body {
@@ -232,6 +235,34 @@ body {
 /* ============================================================
    ESCOLHER PALAVRA
    ============================================================ */
+/* Tela de espera (enquanto o desenhista escolhe a palavra) */
+.waiting { display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
+.waiting-msg { text-align: center; font-family: var(--font-head); font-weight: 600; font-size: 18px; line-height: 1.35; }
+.waiting-msg b { font-weight: 700; }
+.emoji-bar { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.emoji-btn {
+  font-size: 26px; width: 52px; height: 52px; line-height: 1;
+  background: var(--paper-2); border: var(--border-w) solid var(--ink);
+  border-radius: 14px; cursor: pointer; box-shadow: var(--shadow-sm);
+  transition: transform 0.08s, box-shadow 0.08s;
+}
+.emoji-btn:hover { transform: translate(-1px,-1px); box-shadow: var(--shadow); }
+.emoji-btn:active { transform: translate(2px,2px) scale(0.94); box-shadow: 1px 1px 0 var(--ink); }
+.emoji-btn:focus-visible { outline: 3px dashed var(--ink); outline-offset: 2px; }
+
+/* Camada dos emojis flutuantes (provocação) */
+#reaction-layer { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+.reaction { position: absolute; bottom: 14%; text-align: center; will-change: transform, opacity; animation: floatUp 2s ease-out forwards; }
+.reaction-emoji { font-size: 46px; display: block; filter: drop-shadow(2px 2px 0 var(--ink)); }
+.reaction small { display: block; margin-top: 2px; font-family: var(--font-head); font-weight: 700; font-size: 12px;
+  color: var(--ink); background: var(--paper-2); border: 2px solid var(--ink); border-radius: 999px; padding: 1px 8px; }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(30px) scale(0.4) rotate(-8deg); }
+  15% { opacity: 1; transform: translateY(0) scale(1.15) rotate(4deg); }
+  100% { opacity: 0; transform: translateY(-240px) scale(1) rotate(-4deg); }
+}
+@media (prefers-reduced-motion: reduce) { .reaction { animation-duration: 1.2s; } }
+
 .word-cards { display: flex; flex-direction: column; gap: 14px; }
 .word-card {
   text-align: left; background: var(--paper-2);

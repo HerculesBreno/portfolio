@@ -145,9 +145,15 @@
   <!-- ===================== ESCOLHER PALAVRA ===================== -->
   <section class="screen" id="screen-pick" aria-label="Escolher palavra">
     <h2 class="screen-title screen-title--center">Escolha o que desenhar</h2>
-    <p class="hint hint--center">Só você vê estas opções. Toque para escolher.</p>
+    <p class="hint hint--center" id="pick-help">Só você vê estas opções. Toque para escolher.</p>
     <div class="word-cards" id="word-cards"></div>
-    <p class="hint hint--center" id="pick-wait" hidden>Aguardando <b id="pick-drawer">—</b> escolher a palavra…</p>
+
+    <div class="waiting" id="pick-waiting" hidden>
+      <p class="waiting-msg">✏️ <b id="pick-drawer">—</b> está escolhendo o que desenhar…</p>
+      <div class="mini-board" id="pick-board"></div>
+      <div class="emoji-bar" id="emoji-bar"></div>
+      <p class="hint hint--center">Manda um emoji pra apressar 😏</p>
+    </div>
   </section>
 
   <!-- ===================== JOGANDO (canvas + timer) ===================== -->
@@ -205,6 +211,9 @@
   </section>
 
 </main>
+
+<!-- Camada dos emojis flutuantes -->
+<div id="reaction-layer" aria-hidden="true"></div>
 
 <!-- Confirmação de saída (prevenção de erro) -->
 <div class="modal" id="modal-leave" hidden>

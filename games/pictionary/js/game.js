@@ -22,6 +22,8 @@
   let G = null;         // estado da partida (sincronizado)
   let tick = null;      // interval do timer
   let board = null;     // instância do canvas de desenho
+  let reactions = null; // canal de emojis
+  let reactionsUnsub = null;
 
   const isLocal = () => !store || store.isLocal || (store instanceof window.Room.LocalStore);
   const amDrawer = () => isLocal() || (G && myId === G.drawerId);
@@ -247,6 +249,12 @@
       route();
     });
     if (store.get()) { G = store.get(); route(); }
+    // Canal de reações (emojis) — disponível quando a conexão estiver pronta.
+    store.ready().then(() => {
+      if (reactionsUnsub || !store) return;
+      reactions = store.reactionsChannel();
+      reactionsUnsub = reactions.subscribe(animateReaction);
+    });
   }
 
   // Decide a tela a partir do estado sincronizado
@@ -343,7 +351,8 @@
     const eu = amDrawer();
     const box = $("#word-cards");
     box.hidden = !eu;
-    $("#pick-wait").hidden = eu;
+    $("#pick-help").hidden = !eu;
+    $("#pick-waiting").hidden = eu;
     $("#pick-drawer").textContent = drawer.name;
 
     if (eu) {
@@ -358,6 +367,8 @@
         btn.addEventListener("click", () => choosePalavra(i));
         box.appendChild(btn);
       });
+    } else {
+      renderBoard($("#pick-board")); // placar enquanto espera
     }
     show("screen-pick");
   }
@@ -368,6 +379,37 @@
       st.roundEndsAt = Date.now() + ROUND_TIME * 1000;
       st.phase = "play";
     });
+  }
+
+  // ----- reações (emojis de provocação) -----
+  const EMOJIS = ["🔥", "😂", "🐌", "😴", "👀", "🤯"];
+  (function buildEmojiBar() {
+    const bar = $("#emoji-bar");
+    if (!bar) return;
+    EMOJIS.forEach((e) => {
+      const b = document.createElement("button");
+      b.className = "emoji-btn";
+      b.type = "button";
+      b.textContent = e;
+      b.setAttribute("aria-label", "Enviar " + e);
+      b.addEventListener("click", () => {
+        if (!reactions) return;
+        const me = G && myId ? jogadorPorId(G, myId) : null;
+        reactions.send(e, me ? me.name : "");
+      });
+      bar.appendChild(b);
+    });
+  })();
+
+  function animateReaction(v) {
+    const layer = $("#reaction-layer");
+    if (!layer || !v) return;
+    const el = document.createElement("div");
+    el.className = "reaction";
+    el.style.left = (8 + Math.random() * 74) + "%";
+    el.innerHTML = `<span class="reaction-emoji">${v.e}</span>` + (v.from ? `<small>${v.from}</small>` : "");
+    layer.appendChild(el);
+    setTimeout(() => el.remove(), 2200);
   }
 
   // ============================================================
@@ -632,6 +674,8 @@
   function resetToHome() {
     if (tick) { clearInterval(tick); tick = null; }
     if (board) { board.destroy(); board = null; }
+    if (reactionsUnsub) { reactionsUnsub(); reactionsUnsub = null; }
+    reactions = null;
     if (unsub) { unsub(); unsub = null; }
     if (store && store.close) store.close();
     store = null; G = null; myId = null;
