@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#FF5A5F" />
+<title>Pictionário — Jogo de desenho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/pictionary.css" />
+</head>
+<body>
+
+<!-- ===================== STATUS BAR (visível durante a partida) ===================== -->
+<header class="statusbar" id="statusbar" hidden>
+  <button class="status-leave" id="btn-leave" aria-label="Sair da partida">✕</button>
+  <div class="status-round" id="status-round">Rodada 1/5</div>
+  <div class="status-timer" id="status-timer" hidden>1:30</div>
+  <div class="status-conn" id="status-conn" title="Modo da partida">🕹️ Local</div>
+</header>
+
+<main class="app" id="app">
+
+  <!-- ===================== HOME ===================== -->
+  <section class="screen active" id="screen-home" aria-label="Início">
+    <div class="logo">
+      <span class="logo-blob logo-blob--1">✏️</span>
+      <h1 class="logo-title">Pictio<span>nário</span></h1>
+      <p class="logo-tag">Desenhe. Adivinhe. Zoe os amigos.</p>
+    </div>
+    <div class="home-actions">
+      <button class="btn btn--primary btn--xl" data-go="setup" data-mode="local">
+        🎨 Jogar aqui <small>solo ou passa-e-joga</small>
+      </button>
+      <button class="btn btn--teal btn--xl" data-go="setup" data-mode="online">
+        📡 Criar sala online <small>cada um no seu celular</small>
+      </button>
+      <button class="btn btn--yellow" data-go="join">🔑 Entrar com um código</button>
+      <button class="btn btn--ghost" data-go="rules">❓ Como jogar</button>
+    </div>
+    <p class="home-note" id="home-note"></p>
+  </section>
+
+  <!-- ===================== COMO JOGAR ===================== -->
+  <section class="screen" id="screen-rules" aria-label="Como jogar">
+    <button class="btn btn--back" data-back="home">← Voltar</button>
+    <h2 class="screen-title">Como jogar</h2>
+    <ol class="rules">
+      <li><b>Junte a galera.</b> No mesmo aparelho (passa-e-joga) ou cada um no seu celular escaneando o QR.</li>
+      <li><b>Alguém desenha.</b> A vez gira entre os jogadores. Quem desenha escolhe 1 de 3 palavras — <b>fácil</b>, <b>média</b> ou <b>difícil</b> — e desenha no papel/quadro.</li>
+      <li><b>Todos adivinham.</b> São <b>1min30</b> por rodada. Quando alguém acerta, toque em <b>“Alguém acertou!”</b> e diga quem foi.</li>
+      <li><b>Pontos.</b> Vale mais quem acerta rápido e em palavra difícil. O tempo restante vira bônus de rapidez.</li>
+      <li><b>Vence</b> quem tiver mais pontos ao fim das rodadas (3, 5, 10 ou 15).</li>
+    </ol>
+    <button class="btn btn--primary" data-back="home">Entendi!</button>
+  </section>
+
+  <!-- ===================== SETUP ===================== -->
+  <section class="screen" id="screen-setup" aria-label="Configurar partida">
+    <button class="btn btn--back" data-back="home">← Voltar</button>
+    <h2 class="screen-title" id="setup-title">Nova partida</h2>
+
+    <div class="field">
+      <label class="field-label">Tema</label>
+      <div class="chips" id="setup-themes" role="radiogroup" aria-label="Tema"></div>
+    </div>
+
+    <div class="field">
+      <label class="field-label">Rodadas</label>
+      <div class="chips chips--rounds" id="setup-rounds" role="radiogroup" aria-label="Número de rodadas">
+        <button class="chip" role="radio" data-rounds="3">3</button>
+        <button class="chip" role="radio" data-rounds="5" aria-checked="true">5</button>
+        <button class="chip" role="radio" data-rounds="10">10</button>
+        <button class="chip" role="radio" data-rounds="15">15</button>
+      </div>
+    </div>
+
+    <div class="field" id="setup-players-field">
+      <label class="field-label">Jogadores <span class="field-hint">(1 = modo treino)</span></label>
+      <form class="addrow" id="add-player-form">
+        <input class="input" id="player-input" type="text" maxlength="16" placeholder="Nome do jogador" autocomplete="off" />
+        <button class="btn btn--yellow btn--add" type="submit" aria-label="Adicionar jogador">＋</button>
+      </form>
+      <ul class="players" id="setup-players"></ul>
+    </div>
+
+    <p class="hint hint--error" id="setup-error" hidden></p>
+    <button class="btn btn--primary btn--xl" id="setup-continue">Continuar →</button>
+  </section>
+
+  <!-- ===================== ENTRAR COM CÓDIGO ===================== -->
+  <section class="screen" id="screen-join" aria-label="Entrar em uma sala">
+    <button class="btn btn--back" data-back="home">← Voltar</button>
+    <h2 class="screen-title">Entrar na sala</h2>
+    <div class="field">
+      <label class="field-label" for="join-code">Código da sala</label>
+      <input class="input input--code" id="join-code" type="text" maxlength="4" placeholder="ABCD" autocomplete="off" autocapitalize="characters" />
+    </div>
+    <div class="field">
+      <label class="field-label" for="join-name">Seu nome</label>
+      <input class="input" id="join-name" type="text" maxlength="16" placeholder="Como te chamam?" autocomplete="off" />
+    </div>
+    <p class="hint hint--error" id="join-error" hidden></p>
+    <button class="btn btn--primary btn--xl" id="join-continue">Entrar →</button>
+  </section>
+
+  <!-- ===================== LOBBY ===================== -->
+  <section class="screen" id="screen-lobby" aria-label="Sala de espera">
+    <button class="btn btn--back" id="lobby-back">← Voltar</button>
+    <h2 class="screen-title">Sala pronta</h2>
+
+    <div class="lobby-share" id="lobby-share" hidden>
+      <div class="qr-box" id="qr-box"></div>
+      <div class="room-code">
+        <span class="room-code-label">Código</span>
+        <strong id="room-code-value">----</strong>
+      </div>
+      <p class="hint">Aponte a câmera do celular pro QR ou digite o código em <b>Entrar com um código</b>.</p>
+    </div>
+
+    <div class="lobby-summary" id="lobby-summary"></div>
+
+    <div class="field">
+      <label class="field-label">Na sala <span id="lobby-count" class="field-hint"></span></label>
+      <ul class="players players--lobby" id="lobby-players"></ul>
+    </div>
+
+    <button class="btn btn--primary btn--xl" id="lobby-start">Começar partida ▶</button>
+    <p class="hint" id="lobby-wait" hidden>Aguardando o host começar…</p>
+  </section>
+
+  <!-- ===================== VEZ DE DESENHAR ===================== -->
+  <section class="screen screen--center" id="screen-turn" aria-label="Vez de desenhar">
+    <p class="turn-round" id="turn-round">Rodada 1/5</p>
+    <div class="turn-card">
+      <p class="turn-label">É a vez de</p>
+      <h2 class="turn-name" id="turn-name">—</h2>
+      <p class="turn-sub" id="turn-sub">desenhar!</p>
+    </div>
+    <button class="btn btn--primary btn--xl" id="turn-start">Sou eu — escolher palavra</button>
+    <p class="hint" id="turn-wait" hidden>Passe o aparelho para quem vai desenhar 👀</p>
+  </section>
+
+  <!-- ===================== ESCOLHER PALAVRA ===================== -->
+  <section class="screen" id="screen-pick" aria-label="Escolher palavra">
+    <h2 class="screen-title screen-title--center">Escolha o que desenhar</h2>
+    <p class="hint hint--center">Só você vê estas opções. Toque para escolher.</p>
+    <div class="word-cards" id="word-cards"></div>
+    <p class="hint hint--center" id="pick-wait" hidden>Aguardando <b id="pick-drawer">—</b> escolher a palavra…</p>
+  </section>
+
+  <!-- ===================== JOGANDO (canvas + timer) ===================== -->
+  <section class="screen screen--play" id="screen-play" aria-label="Rodada em andamento">
+    <div class="play-head">
+      <div class="play-head-info" id="play-head-info">—</div>
+      <div class="mini-timer" id="mini-timer">1:30</div>
+    </div>
+    <div class="timerbar"><i id="timerbar-fill"></i></div>
+
+    <div class="board-wrap">
+      <canvas id="board" class="board" aria-label="Área de desenho"></canvas>
+    </div>
+
+    <div class="tools" id="tools" hidden>
+      <div class="swatches" id="swatches"></div>
+      <div class="tool-btns">
+        <button class="tool" id="tool-size" aria-label="Espessura do traço">● M</button>
+        <button class="tool" id="tool-eraser" aria-pressed="false" aria-label="Borracha">🩹</button>
+        <button class="tool" id="tool-undo" aria-label="Desfazer">↩︎</button>
+        <button class="tool" id="tool-clear" aria-label="Limpar tudo">🗑️</button>
+      </div>
+    </div>
+
+    <div class="play-actions" id="play-actions">
+      <button class="btn btn--primary" id="btn-got-it">✅ Alguém acertou!</button>
+      <button class="btn btn--ghost" id="btn-skip">Ninguém acertou / pular</button>
+    </div>
+  </section>
+
+  <!-- ===================== QUEM ACERTOU ===================== -->
+  <section class="screen" id="screen-winner" aria-label="Quem acertou">
+    <button class="btn btn--back" id="winner-back">← Voltar (ainda desenhando)</button>
+    <h2 class="screen-title screen-title--center">Quem acertou? 🏆</h2>
+    <p class="hint hint--center" id="winner-time">—</p>
+    <div class="pick-people" id="winner-people"></div>
+  </section>
+
+  <!-- ===================== RESULTADO DA RODADA ===================== -->
+  <section class="screen screen--center" id="screen-round" aria-label="Resultado da rodada">
+    <div class="result-card" id="result-card"></div>
+    <div class="mini-board" id="round-board"></div>
+    <button class="btn btn--primary btn--xl" id="round-next">Próxima rodada →</button>
+  </section>
+
+  <!-- ===================== FIM ===================== -->
+  <section class="screen" id="screen-final" aria-label="Fim de jogo">
+    <h2 class="screen-title screen-title--center">Fim de jogo! 🎉</h2>
+    <div class="podium" id="podium"></div>
+    <div class="mini-board" id="final-board"></div>
+    <div class="home-actions">
+      <button class="btn btn--primary btn--xl" id="final-again">Jogar de novo</button>
+      <button class="btn btn--ghost" id="final-home">Voltar ao início</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- Confirmação de saída (prevenção de erro) -->
+<div class="modal" id="modal-leave" hidden>
+  <div class="modal-card">
+    <h3>Sair da partida?</h3>
+    <p>O placar atual será perdido.</p>
+    <div class="modal-actions">
+      <button class="btn btn--ghost" id="leave-cancel">Continuar jogando</button>
+      <button class="btn btn--danger" id="leave-confirm">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- Bibliotecas e scripts (ordem importa) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/words.js"></script>
+<script src="js/state.js"></script>
+<script src="js/room.js"></script>
+<script src="js/qr.js"></script>
+<script src="js/board.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
