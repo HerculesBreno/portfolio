@@ -10,7 +10,39 @@
     <title>ТЕТРИС — Construtivista</title>
     <script type="module" crossorigin src="./assets/index-CrBv4Hyh.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-CxBjsTwl.css">
-    <link rel="stylesheet" href="./assets/mobile-hud-fix.css">
+    <style>
+      /* Keep the next-piece preview away from the stack on narrow screens. */
+      @media (max-width: 719px) {
+        .hud-col--right .next-box {
+          position: fixed;
+          top: max(12px, env(safe-area-inset-top));
+          right: 66px;
+          z-index: 6;
+          width: auto;
+          margin: 0;
+          padding: 0;
+          border: 0;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .hud-col--right .next-box .stat-label {
+          max-width: 54px;
+          font-size: 0.5rem;
+          line-height: 1.1;
+          letter-spacing: 0.1em;
+        }
+
+        #next-canvas {
+          width: 52px;
+          height: 52px;
+          background: rgba(10, 9, 8, 0.72);
+          border: 1px solid rgba(232, 211, 164, 0.35);
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="app" aria-label="Tetris Construtivista">
