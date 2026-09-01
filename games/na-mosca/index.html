@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0d0b0a" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Na Mosca — dardos</title>
+    <script type="module" crossorigin src="./assets/index-BZE3YpBC.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BgykoKge.css">
+  </head>
+  <body>
+    <div id="app" data-state="intro" data-mode="demo">
+      <!-- Fundo: camera ou demonstracao -->
+      <div id="stage-bg">
+        <video id="camera" playsinline muted autoplay></video>
+        <div id="demo-bg" aria-hidden="true"></div>
+      </div>
+
+      <!-- Camada de jogo -->
+      <canvas id="stage"></canvas>
+
+      <!-- HUD (durante a partida) -->
+      <header id="hud">
+        <div class="hud-item">
+          <span class="hud-label">Dardos</span>
+          <span id="hud-darts" class="hud-value">3</span>
+        </div>
+        <div class="hud-item hud-mode" id="hud-mode">DEMO</div>
+        <div class="hud-item">
+          <span class="hud-label">Pontos</span>
+          <span id="hud-score" class="hud-value">0</span>
+        </div>
+        <button id="btn-exit" class="btn-icon" aria-label="Sair da partida">✕</button>
+      </header>
+
+      <!-- Instrucao contextual -->
+      <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+      <!-- Controles: posicionando alvo -->
+      <div id="controls-placing" class="controls">
+        <label class="slider-row">
+          <span>Tamanho do alvo</span>
+          <input id="target-size" type="range" min="48" max="220" value="120" step="1" />
+        </label>
+        <div class="controls-row">
+          <button id="btn-reset-target" class="btn btn-ghost">Restaurar</button>
+          <button id="btn-confirm-target" class="btn btn-filled">Confirmar alvo</button>
+        </div>
+      </div>
+
+      <!-- Controles: pronto para lancar -->
+      <div id="controls-ready" class="controls">
+        <div class="launch-zone" id="launch-zone">
+          <span>Arraste e solte o dedo aqui em direção ao alvo</span>
+        </div>
+        <button id="btn-reposition" class="btn btn-ghost">Reposicionar alvo</button>
+      </div>
+
+      <!-- Toast de resultado do lancamento -->
+      <div id="throw-toast" class="throw-toast" role="status" aria-live="polite"></div>
+
+      <!-- Tela inicial -->
+      <section id="screen-intro" class="screen">
+        <div class="screen-card">
+          <h1>Na Mosca</h1>
+          <p class="tagline">Mire, arraste o dedo e acerte o alvo sobre a sua camera.</p>
+          <ul class="notes">
+            <li>Segure o celular com firmeza. O lançamento é feito <strong>apenas com o dedo</strong>.</li>
+            <li>A câmera é usada <strong>somente durante a partida</strong> — nada é gravado ou enviado.</li>
+          </ul>
+          <div class="screen-actions">
+            <button id="btn-play" class="btn btn-filled btn-lg">Jogar com câmera</button>
+            <button id="btn-demo" class="btn btn-ghost btn-lg">Modo demonstração</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tela de solicitacao de camera -->
+      <section id="screen-camera" class="screen">
+        <div class="screen-card">
+          <div class="spinner" aria-hidden="true"></div>
+          <h2>Autorize a câmera</h2>
+          <p>Toque em "Permitir" quando o navegador solicitar o acesso à câmera traseira.</p>
+        </div>
+      </section>
+
+      <!-- Tela de erro -->
+      <section id="screen-error" class="screen">
+        <div class="screen-card">
+          <h2>Não foi possível usar a câmera</h2>
+          <p id="error-message">Verifique a permissão da câmera e tente novamente.</p>
+          <div class="screen-actions">
+            <button id="btn-retry" class="btn btn-ghost btn-lg">Tentar novamente</button>
+            <button id="btn-error-demo" class="btn btn-filled btn-lg">Jogar em modo demo</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Painel de fim de rodada -->
+      <section id="screen-round" class="screen screen-round">
+        <div class="screen-card">
+          <h2>Rodada concluída</h2>
+          <p class="round-total">Total: <strong id="round-total">0</strong> pontos</p>
+          <div class="screen-actions">
+            <button id="btn-play-again" class="btn btn-filled btn-lg">Jogar novamente</button>
+            <button id="btn-round-reposition" class="btn btn-ghost btn-lg">Reposicionar alvo</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Aviso de orientacao -->
+      <div id="orientation-warning">
+        <div class="screen-card">
+          <p>📱 Gire o celular para o modo <strong>retrato</strong> para jogar.</p>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
