@@ -1,0 +1,434 @@
+:root {
+  --bg: #0d0b0a;
+  --ink: #f5f2ee;
+  --ink-dim: rgba(245, 242, 238, 0.66);
+  --amber: #ffd23f;
+  --amber-ink: #241c00;
+  --panel: rgba(20, 18, 16, 0.82);
+  --hairline: rgba(255, 255, 255, 0.14);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overscroll-behavior: none;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---------- Fundo (camera / demo) ---------- */
+#stage-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000;
+}
+
+#camera {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+#demo-bg {
+  position: absolute;
+  inset: 0;
+  display: none;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 210, 63, 0.12), transparent 45%),
+    radial-gradient(circle at 75% 80%, rgba(46, 196, 182, 0.12), transparent 45%),
+    repeating-linear-gradient(45deg, #171412 0 22px, #1c1815 22px 44px);
+}
+
+#demo-bg::after {
+  content: 'MODO DEMONSTRAÇÃO';
+  position: absolute;
+  top: 42%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+#app[data-mode='camera'] #camera {
+  display: block;
+}
+#app[data-mode='demo'] #demo-bg {
+  display: block;
+}
+
+/* ---------- Canvas ---------- */
+#stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* ---------- HUD ---------- */
+#hud {
+  position: absolute;
+  top: calc(var(--safe-top) + 10px);
+  left: calc(var(--safe-left) + 12px);
+  right: calc(var(--safe-right) + 12px);
+  z-index: 3;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  min-width: 56px;
+}
+
+.hud-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.hud-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-mode {
+  flex-direction: row;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--amber);
+}
+#app[data-mode='camera'] #hud-mode {
+  display: none;
+}
+
+.btn-icon {
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: var(--panel);
+  color: var(--ink);
+  font-size: 1.1rem;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+
+/* ---------- Hint ---------- */
+.hint {
+  position: absolute;
+  top: calc(var(--safe-top) + 76px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  margin: 0;
+  padding: 8px 16px;
+  max-width: 88%;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+}
+.hint:empty {
+  display: none;
+}
+
+/* ---------- Controles ---------- */
+.controls {
+  position: absolute;
+  left: calc(var(--safe-left) + 14px);
+  right: calc(var(--safe-right) + 14px);
+  bottom: calc(var(--safe-bottom) + 16px);
+  z-index: 3;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  /* Deixa os swipes passarem para o canvas; apenas os controles capturam toque. */
+  pointer-events: none;
+}
+.controls .btn,
+.controls .slider-row,
+.controls .controls-row {
+  pointer-events: auto;
+}
+#launch-zone {
+  pointer-events: none;
+}
+
+#app[data-state='placingTarget'] #controls-placing {
+  display: flex;
+}
+#app[data-state='ready'] #controls-ready,
+#app[data-state='result'] #controls-ready {
+  display: flex;
+}
+#app[data-round='complete'] #controls-ready {
+  display: none;
+}
+
+.slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  backdrop-filter: blur(12px);
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+
+.slider-row input[type='range'] {
+  width: 100%;
+  height: 32px;
+  accent-color: var(--amber);
+}
+
+.controls-row {
+  display: flex;
+  gap: 10px;
+}
+.controls-row .btn {
+  flex: 1;
+}
+
+.launch-zone {
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 14px;
+  font-size: 0.86rem;
+  color: var(--ink-dim);
+  background: rgba(255, 210, 63, 0.08);
+  border: 1.5px dashed rgba(255, 210, 63, 0.4);
+  border-radius: 20px;
+}
+
+/* ---------- Botoes ---------- */
+.btn {
+  appearance: none;
+  border: 1px solid var(--hairline);
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--panel);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  min-height: 48px;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-filled {
+  background: var(--amber);
+  color: var(--amber-ink);
+  border-color: transparent;
+}
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+}
+.btn-lg {
+  width: 100%;
+  padding: 16px;
+  font-size: 1.05rem;
+}
+
+/* ---------- Toast de resultado ---------- */
+.throw-toast {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  z-index: 4;
+  padding: 16px 26px;
+  border-radius: 20px;
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  backdrop-filter: blur(14px);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.throw-toast.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.throw-toast .pts {
+  display: block;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--amber);
+}
+.throw-toast .ring {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+}
+
+/* ---------- Telas (overlays) ---------- */
+.screen {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--safe-top) + 20px) 20px calc(var(--safe-bottom) + 20px);
+  background: rgba(8, 7, 6, 0.72);
+  backdrop-filter: blur(8px);
+}
+
+#app[data-state='intro'] #screen-intro,
+#app[data-state='requestingCamera'] #screen-camera,
+#app[data-state='error'] #screen-error,
+#app[data-round='complete'] #screen-round {
+  display: flex;
+}
+
+.screen-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 24px calc(28px + var(--safe-bottom));
+  background: var(--panel);
+  border: 1px solid var(--hairline);
+  border-radius: 26px;
+  backdrop-filter: blur(20px);
+  text-align: center;
+}
+
+.screen-card h1 {
+  margin: 0 0 6px;
+  font-size: 2.2rem;
+  letter-spacing: -0.02em;
+}
+.screen-card h2 {
+  margin: 0 0 10px;
+  font-size: 1.4rem;
+}
+.tagline {
+  margin: 0 0 18px;
+  color: var(--ink-dim);
+}
+.notes {
+  text-align: left;
+  margin: 0 0 22px;
+  padding-left: 18px;
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.notes strong {
+  color: var(--ink);
+}
+.screen-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.round-total {
+  font-size: 1.2rem;
+  margin: 0 0 20px;
+}
+.round-total strong {
+  color: var(--amber);
+  font-size: 1.6rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 16px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Aviso de orientacao ---------- */
+#orientation-warning {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(8, 7, 6, 0.94);
+  text-align: center;
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  #app:not([data-state='intro']) #orientation-warning {
+    display: flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:active {
+    transform: none;
+  }
+  .throw-toast {
+    transition: opacity 0.15s ease;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .throw-toast.show {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .spinner {
+    animation: none;
+  }
+}
