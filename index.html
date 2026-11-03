@@ -1,375 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Seu Nome — Product Designer disponível para novos projetos." />
-<title>Seu Nome — Product Designer</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7e7ce">
+<title>O Cinturão de Ouro</title>
+<style>
+:root{color-scheme:light;--paper:#f7e7ce;--ink:#332c28}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;width:100%;background:var(--paper);color:var(--ink)}
+body{font-family:Georgia,'Times New Roman',serif;overflow:hidden}
+button{font:inherit;color:inherit}
+#book{height:100vh;height:100dvh;overflow-y:auto;overflow-x:hidden;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior-y:contain;touch-action:pan-y pinch-zoom;outline:none}
+#book::-webkit-scrollbar{display:none}
+.page{height:100vh;height:100dvh;position:relative;scroll-snap-align:start;scroll-snap-stop:always;isolation:isolate;overflow:hidden;background:var(--paper)}
+.folio{position:relative;width:min(100%,56.25dvh);height:100%;margin:auto;background-image:url('imagens/textura.png');background-size:cover}
+.scene{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center bottom;display:block}
+.words{position:absolute;left:8%;width:84%;top:19%;margin:0;text-align:center;text-wrap:balance;font-size:clamp(25px,7vw,38px);font-weight:400;line-height:1.26;letter-spacing:-.025em;z-index:2;opacity:0;transform:translateY(6px)}
+.settled .scene{animation:arrive 1s cubic-bezier(.25,.1,.25,1) both}
+.settled .words{animation:words 1s var(--text-delay,2080ms) cubic-bezier(.25,.1,.25,1) both}
+@keyframes arrive{from{opacity:.55}to{opacity:1}}
+@keyframes words{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.navigation{position:fixed;inset:auto 0 max(8px,env(safe-area-inset-bottom));display:flex;justify-content:center;gap:10px;align-items:center;pointer-events:none;z-index:5;transition:opacity .2s}
+.navigation button,.counter{pointer-events:auto;background:rgba(255,249,237,.92);border:1px solid #ac96794d;border-radius:99px;box-shadow:0 1px 6px #332c2810}
+.navigation button{width:44px;height:44px;cursor:pointer;font-family:Arial,sans-serif;font-size:22px}
+.navigation button:disabled{opacity:.35;cursor:default}
+.counter{font-size:12px;letter-spacing:.09em;padding:9px 12px;font-variant-numeric:tabular-nums}
+.navigation.hidden{opacity:0;pointer-events:none}.navigation.hidden>*{pointer-events:none}
+button:focus-visible,#book:focus-visible{outline:2px solid #79592f;outline-offset:-3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(orientation:landscape) and (max-height:550px){.words{font-size:clamp(16px,4.4dvh,24px)}.navigation{justify-content:flex-end;padding-right:18px}}
+@media(prefers-reduced-motion:reduce){.words{opacity:1!important;transform:none!important}*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{body,#book{height:auto;overflow:visible}.page{height:100vh;break-after:page}.navigation{display:none}.scene,.words{animation:none!important;opacity:1!important;transform:none!important}}
+</style>
 </head>
 <body>
-
-<!-- ============ TOP CALL BAR ============ -->
-<header class="topbar">
-  <div class="status-pill">
-    <span class="status-dot"></span>
-    Disponível para novos projetos
-  </div>
-
-  <div class="topbar-right">
-    <button class="lang-toggle" id="lang-toggle" aria-label="Trocar idioma">
-      <span class="lang-option active" data-lang="pt">PT</span>
-      <span class="lang-sep"></span>
-      <span class="lang-option" data-lang="en">EN</span>
-    </button>
-    <div class="topbar-menu-wrap">
-      <button class="menu-btn" aria-haspopup="true" aria-label="Games">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><rect x="2" y="7" width="20" height="11" rx="5"/><path d="M6 12.5h3M7.5 11v3"/><circle cx="16.5" cy="11.5" r="0.8" fill="currentColor"/><circle cx="18.5" cy="13.5" r="0.8" fill="currentColor"/></svg>
-      </button>
-      <span class="menu-tooltip">Games</span>
-      <nav class="dropdown" aria-label="Mais opções">
-        <a href="games/tetris/">🟥 Tetris Construtivista</a>
-        <a href="games/pictionary/">✏️ Pictionário (multiplayer)</a>
-        <a href="playground.html">🎮 Playground (mini-games)</a>
-        <a href="uploads/curriculo.pdf">📄 Baixar currículo</a>
-        <a href="https://github.com/" target="_blank" rel="noopener">💻 GitHub</a>
-      </nav>
-    </div>
-  </div>
-</header>
-
-<!-- ============ HERO (chamada em andamento) ============ -->
-<section id="hero">
-  <div class="hero-media" role="img" aria-label="Foto do designer em seu escritório, durante uma chamada de vídeo"></div>
-
-  <!-- Hero text — desktop only, fades on mousemove -->
-  <div class="hero-text" id="hero-text">
-    <p class="eyebrow hero-eyebrow" data-i18n="heroEyebrow">Product Designer</p>
-    <h1 class="hero-h1" data-i18n="heroH1">Designing products and AI workflows that people understand and love.</h1>
-    <p class="hero-sub" data-i18n="heroSub">I help teams turn complexity into intuitive experiences through strategy, design and technology.</p>
-  </div>
-
-</section>
-
-<main>
-
-  <!-- ============ WORK — "gravações" ============ -->
-  <section id="work">
-    <div class="wrap">
-      <div class="section-tag reveal">
-        <span class="rec-dot"></span>
-        <span class="eyebrow">Gravações desta chamada</span>
-      </div>
-      <h2 class="section-title reveal">Work</h2>
-      <p class="section-lede reveal">Projetos selecionados — cada um com contexto, decisões e resultado, não só telas bonitas.</p>
-
-      <div class="rec-grid">
-        <a href="case-studies/_template.html" class="rec-card reveal">
-          <div class="rec-thumb" data-time="04:32">REC 001</div>
-          <div class="rec-body">
-            <div class="rec-label">CASE STUDY 001</div>
-            <div class="rec-title">Nome do Projeto</div>
-            <p class="rec-desc">Resumo de uma linha sobre o problema e o impacto.</p>
-            <div class="rec-tags"><span>Produto</span><span>0→1</span></div>
-          </div>
-        </a>
-        <a href="case-studies/_template.html" class="rec-card reveal">
-          <div class="rec-thumb" data-time="06:10">REC 002</div>
-          <div class="rec-body">
-            <div class="rec-label">CASE STUDY 002</div>
-            <div class="rec-title">Nome do Projeto</div>
-            <p class="rec-desc">Resumo de uma linha sobre o problema e o impacto.</p>
-            <div class="rec-tags"><span>B2B</span><span>Design System</span></div>
-          </div>
-        </a>
-      </div>
-      <span class="todo">TODO: me envie os projetos prontos pra eu gerar as páginas reais</span>
-    </div>
-  </section>
-
-  <!-- ============ AI & AUTOMATIONS — "tela compartilhada" ============ -->
-  <section id="ai-automations" style="background:var(--panel-2)">
-    <div class="wrap">
-      <div class="section-tag reveal">
-        <span class="rec-dot" style="background:var(--amber)"></span>
-        <span class="eyebrow">Tela compartilhada</span>
-      </div>
-      <h2 class="section-title reveal">AI &amp; Automations</h2>
-      <p class="section-lede reveal">Ferramentas e fluxos que você construiu para acelerar produto com IA.</p>
-
-      <div class="screenshare-grid">
-        <div class="screen-card reveal">
-          <div class="screen-chrome"><span></span><span></span><span></span></div>
-          <h3>Nome da automação</h3>
-          <p>O que ela resolve, em uma frase direta.</p>
-        </div>
-        <div class="screen-card reveal">
-          <div class="screen-chrome"><span></span><span></span><span></span></div>
-          <h3>Nome da automação</h3>
-          <p>O que ela resolve, em uma frase direta.</p>
-        </div>
-        <div class="screen-card reveal">
-          <div class="screen-chrome"><span></span><span></span><span></span></div>
-          <h3>Nome da automação</h3>
-          <p>O que ela resolve, em uma frase direta.</p>
-        </div>
-      </div>
-      <span class="todo">TODO: trocar pelos seus projetos de IA/automação reais</span>
-    </div>
-  </section>
-
-  <!-- ============ PRODUCT THINKING — "legendas" ============ -->
-  <section id="product-thinking">
-    <div class="wrap">
-      <div class="section-tag reveal">
-        <span class="rec-dot" style="background:var(--text-soft)"></span>
-        <span class="eyebrow">Legendas da chamada</span>
-      </div>
-      <h2 class="section-title reveal">Product Thinking</h2>
-      <p class="section-lede reveal">Como você pensa, não só o que você entrega — processo, frameworks, decisões.</p>
-
-      <div class="transcript">
-        <div class="caption-line reveal">
-          <div class="caption-time">00:04:12</div>
-          <div>
-            <h3>Título da nota / artigo</h3>
-            <p>Resumo curto da ideia ou do processo que você quer destacar.</p>
-          </div>
-        </div>
-        <div class="caption-line reveal">
-          <div class="caption-time">00:11:40</div>
-          <div>
-            <h3>Título da nota / artigo</h3>
-            <p>Resumo curto da ideia ou do processo que você quer destacar.</p>
-          </div>
-        </div>
-      </div>
-      <span class="todo">TODO: escrever 2–3 notas reais de processo/decisão</span>
-    </div>
-  </section>
-
-  <!-- ============ ABOUT — "cartão do participante" ============ -->
-  <section id="about" style="background:var(--panel-2)">
-    <div class="wrap">
-      <div class="section-tag reveal">
-        <span class="rec-dot" style="background:var(--green)"></span>
-        <span class="eyebrow">Participante</span>
-      </div>
-      <h2 class="section-title reveal">About</h2>
-
-      <div class="participant-card reveal">
-        <div class="participant-avatar">
-          <img src="uploads/hero.png" alt="Seu Nome" />
-        </div>
-        <div class="participant-info">
-          <p>Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.</p>
-          <div class="skill-chips">
-            <span>Product Design</span>
-            <span>Design Systems</span>
-            <span>IA aplicada</span>
-            <span>Front-end</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ CONTACT — "agendar próxima call" ============ -->
-  <section id="contact">
-    <div class="wrap">
-      <div class="schedule-panel reveal">
-        <span class="eyebrow">Chamada encerrando</span>
-        <h2 style="margin-top:14px">Vamos agendar a próxima call?</h2>
-        <p>Responda em até 1 dia útil. Disponível para projetos freelance e full-time.</p>
-        <div class="btn-row">
-          <a href="mailto:seu@email.com" class="btn btn-filled">Enviar e-mail</a>
-          <a href="https://linkedin.com/in/seuperfil" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer class="site-footer">© <span id="year"></span> Seu Nome — feito com HTML, CSS e JS puro.</footer>
-
-<!-- ============ CALL CONTROLS (NAV FIXA) ============ -->
-<nav class="callbar" aria-label="Navegação principal">
-  <div class="callbar-inner" id="callbar-inner">
-
-    <!-- Estado padrão: nav links -->
-    <div class="callbar-nav" id="callbar-nav">
-      <button class="call-link" id="work-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-        <span data-i18n="navWork">Work</span>
-      </button>
-      <button class="call-link" id="ai-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>
-        <span data-i18n="navAI">AI &amp; Automations</span>
-      </button>
-      <button class="call-link" id="about-btn" aria-haspopup="dialog" aria-controls="about-panel">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
-        About
-      </button>
-      <a href="#contact" class="call-link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-        Contact
-      </a>
-      <div class="call-divider"></div>
-      <button class="call-end" id="contact-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path transform="rotate(135 12 12)" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        Let's talk
-      </button>
-    </div>
-
-  </div>
-</nav>
-
-<!-- ============ WORK / AI DOCK (estilo Apple TV top-shelf) ============ -->
-<div class="tv-dock" id="tv-dock" role="region" aria-label="Trabalhos" hidden>
-  <div class="tv-dock-top">
-    <button class="tv-back" id="tv-back" aria-label="Voltar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-    <button class="tv-expand" id="tv-expand" aria-label="Ver todos os trabalhos">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
-    </button>
-  </div>
-  <div class="tv-shelf" id="tv-shelf"></div>
-</div>
-
-<!-- ============ WORK OVERLAY (grid sobre o background) ============ -->
-<div class="tv-overlay" id="tv-overlay" role="dialog" aria-modal="true" aria-label="Todos os trabalhos" hidden>
-  <div class="tv-overlay-backdrop" id="tv-overlay-backdrop"></div>
-  <div class="tv-overlay-panel">
-    <button class="tv-overlay-close" id="tv-overlay-close" aria-label="Fechar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
-    </button>
-    <p class="tv-overlay-eyebrow" id="tv-overlay-eyebrow">Portfólio</p>
-    <h3 class="tv-overlay-title" id="tv-overlay-title">Todos os trabalhos</h3>
-    <div class="tv-grid" id="tv-grid"></div>
-  </div>
-</div>
-
-<!-- ============ ABOUT PANEL (right-side drawer) ============ -->
-<div class="about-overlay" id="about-overlay" aria-hidden="true"></div>
-<aside class="about-modal" id="about-panel" role="dialog" aria-modal="true" aria-label="About" hidden>
-
-  <div class="about-panel-head">
-    <div class="about-header-text">
-      <strong>Hércules Breno</strong>
-      <span>Product Designer</span>
-    </div>
-    <button class="about-modal-close" id="about-modal-close" aria-label="Fechar">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-
-  <div class="about-tabs" role="tablist">
-    <button class="about-tab active" data-section="bio" role="tab" aria-selected="true" data-i18n="aboutNavBio">Sobre</button>
-    <button class="about-tab" data-section="skills" role="tab" aria-selected="false">Skills</button>
-    <button class="about-tab" data-section="contact" role="tab" aria-selected="false" data-i18n="aboutNavContact">Contato</button>
-  </div>
-
-  <div class="about-content-area">
-    <div class="about-section active" id="section-bio">
-      <p class="about-bio" data-i18n="aboutBio">Sua bio aqui — quem você é, como você pensa produto, o que te diferencia. Duas ou três frases, sem enrolação.</p>
-    </div>
-
-    <div class="about-section" id="section-skills">
-      <div class="skill-chips">
-        <span>Product Design</span>
-        <span>Design Systems</span>
-        <span>IA aplicada</span>
-        <span>Front-end</span>
-        <span>Research</span>
-        <span>Prototyping</span>
-      </div>
-    </div>
-
-    <div class="about-section" id="section-contact">
-      <div class="btn-row" style="flex-direction:column;align-items:stretch;margin-top:8px">
-        <a href="mailto:seu@email.com" class="btn btn-filled" data-i18n="emailBtn">Enviar e-mail</a>
-        <a href="https://linkedin.com/in/seuperfil" target="_blank" rel="noopener" class="btn btn-outline">LinkedIn</a>
-      </div>
-    </div>
-  </div>
-
-</aside>
-
-
-<!-- CONTACT MODAL -->
-<div class="contact-modal" id="contact-modal" hidden>
-  <div class="contact-modal-backdrop" id="contact-modal-backdrop"></div>
-  <div class="contact-modal-box">
-    <div class="contact-modal-head">
-      <strong>Vamos conversar</strong>
-      <button class="proj-modal-close" id="contact-modal-close" aria-label="Fechar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="contact-modal-body">
-      <a href="https://linkedin.com/in/herculesbreno" target="_blank" rel="noopener" class="contact-option">
-        <div class="contact-option-icon contact-icon-linkedin">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-        </div>
-        <div class="contact-option-text">
-          <strong>LinkedIn</strong>
-          <span>linkedin.com/in/herculesbreno</span>
-        </div>
-        <div class="contact-option-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-
-      <a href="mailto:hbreno@gmail.com" class="contact-option">
-        <div class="contact-option-icon contact-icon-email">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="18" height="18"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
-        </div>
-        <div class="contact-option-text">
-          <strong>E-mail</strong>
-          <span>hbreno@gmail.com</span>
-        </div>
-        <div class="contact-option-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-
-      <a href="https://wa.me/5511941487960" target="_blank" rel="noopener" class="contact-option">
-        <div class="contact-option-icon contact-icon-whatsapp">
-          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </div>
-        <div class="contact-option-text">
-          <strong>WhatsApp</strong>
-          <span>Conversar agora</span>
-        </div>
-        <div class="contact-option-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- PROJECT MODAL -->
-<div class="proj-modal" id="proj-modal" hidden>
-  <div class="proj-modal-backdrop" id="proj-modal-backdrop"></div>
-  <div class="proj-modal-box">
-    <div class="proj-modal-head">
-      <div>
-        <div class="proj-modal-label" id="proj-modal-label">CASE STUDY 001</div>
-        <div class="proj-modal-title" id="proj-modal-title">Nome do Projeto</div>
-      </div>
-      <button class="proj-modal-close" id="proj-modal-close" aria-label="Fechar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="proj-modal-body">
-      <div class="proj-modal-thumb">Em breve</div>
-      <p>Conteúdo do case study aparecerá aqui.</p>
-    </div>
-  </div>
-</div>
-
-<script src="assets/js/main.js"></script>
-<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<main id="book" tabindex="0" aria-label="O Cinturão de Ouro — 30 cenas ilustradas"></main>
+<nav class="navigation" aria-label="Navegação do livro"><button id="previous" aria-label="Cena anterior">‹</button><span class="counter" id="counter">01 / 30</span><button id="next" aria-label="Próxima cena">›</button></nav>
+<div class="sr" aria-live="polite" id="reading"></div>
+<noscript>Ative o JavaScript para ler este livro. As 30 cenas também estão disponíveis como imagens PNG no pacote de imagens.</noscript>
+<script type="application/json" id="story">[{"n": 3, "title": "A Porta do Tatame", "text": "", "alt": "Ponto de vista de Lia, na altura da criança. Só sua mão no batente e uma pontinha do quimono rosa aparecem no primeiro plano. À frente, o tatame parece enorme. Meninos e meninas diversos treinam, com quimonos azul, preto, branco e rosa. Movimentos reais, sem combates espetaculares. Lia ainda está do lado de fora.", "uri": "imagens/cena-01.png", "w": 540, "h": 960, "artTop": 602}, {"n": 4, "title": "A Porta do Tatame", "text": "— Oi!", "alt": "A mestra se aproxima e aparece à direita, vista de baixo, do tronco para cima. Olha para Lia, com expressão acolhedora. O espaço continua grande, mas a presença da mestra aproxima o leitor.", "uri": "imagens/cena-02.png", "w": 540, "h": 960, "artTop": 602}, {"n": 5, "title": "A Porta do Tatame", "text": "— Vamos entrar juntas?", "alt": "A mestra se abaixa até a altura de Lia e oferece a mão aberta. A menina negra, de cabelos bem cacheados e quimono rosa, aparece com mais clareza. Ela olha para a mão, ainda hesitante. Sem puxá-la ou apressá-la.", "uri": "imagens/cena-03.png", "w": 540, "h": 960, "artTop": 602}, {"n": 6, "title": "A Porta do Tatame", "text": "", "alt": "Apenas os pés descalços das duas, lado a lado, na borda do tatame, entrando juntas. As sombras mostram o gesto de reverência. A postura dos pés de Lia deixa de parecer tão contraída. Não mostrar rostos nem acrescentar explicação.", "uri": "imagens/cena-04.png", "w": 540, "h": 960, "artTop": 602}, {"n": 7, "title": "O Uniforme", "text": "— Não sei fazer…", "alt": "Lia já está de quimono rosa, como na chegada. Observa o tecido grosso e tenta juntar as pontas da faixa branca, que se soltou. Os colegas, com quimonos de cores diferentes, também ajeitam suas roupas. Ela pertence à mesma atividade sem deixar de ser quem é.", "uri": "imagens/cena-05.png", "w": 540, "h": 960, "artTop": 602}, {"n": 8, "title": "O Uniforme", "text": "— Eu te ajudo.", "alt": "A mestra se abaixa. Em destaque, as mãos das duas fazem o nó da faixa branca: Lia segura uma ponta e participa. No fundo, a turma se prepara para aprender. A faixa fica ajustada, e Lia olha para os colegas. Preservar as cores e os traços da personagem.", "uri": "imagens/cena-06.png", "w": 540, "h": 960, "artTop": 602}, {"n": 9, "title": "Animais do Tatame", "text": "— Vamos brincar de bicho?", "alt": "A mestra demonstra, e a turma a acompanha em pequenos momentos de uma mesma brincadeira: o gato e o urso. Lia começa observando, depois experimenta. As posturas humanas devem ser reconhecíveis; animais podem aparecer apenas como pequenas associações imaginadas, sem transformar a cena em fantasia literal.", "uri": "imagens/cena-07.png", "w": 540, "h": 960, "artTop": 360}, {"n": 10, "title": "Animais do Tatame", "text": "", "alt": "Lia abre os braços e tenta se equilibrar como uma águia. Balança, ajusta o pé e sorri. Outras crianças também tentam, cada uma do seu jeito; ninguém ri da dificuldade alheia. A imagem conta a descoberta do corpo pelo brincar.", "uri": "imagens/cena-08.png", "w": 540, "h": 960, "artTop": 360}, {"n": 11, "title": "O Primeiro Fracasso", "text": "", "alt": "Em outra aula, a mestra demonstra uma técnica simples com um parceiro. Lia tenta repeti-la em uma pequena sequência visual: observa, posiciona os pés, perde o equilíbrio. A mestra acompanha a turma. A técnica ainda não sai; não apresentar um acerto imediato.", "uri": "imagens/cena-09.png", "w": 540, "h": 960, "artTop": 360}, {"n": 12, "title": "O Primeiro Fracasso", "text": "— Não consigo.", "alt": "Lia está sentada no tatame, ombros curvados, mãos apertando o tecido do quimono e olhos úmidos. Olha na direção da saída, com vontade de parar. Os outros continuam ao fundo, sem zombaria. A mestra permanece próxima e atenta. Deixar silêncio e espaço na composição.", "uri": "imagens/cena-10.png", "w": 540, "h": 960, "artTop": 602}, {"n": 13, "title": "A Paciência do Colega", "text": "— No começo, eu também não conseguia.", "alt": "Um colega mais velho, com cerca de dez a doze anos, senta-se ao lado de Lia, na mesma direção que ela. Compartilha a dificuldade sem apontar o dedo ou exigir que volte ao treino. Lia levanta um pouco o rosto. Sua respiração e suas mãos começam a relaxar.", "uri": "imagens/cena-11.png", "w": 540, "h": 960, "artTop": 360}, {"n": 14, "title": "A Paciência do Colega", "text": "", "alt": "O mesmo colega demonstra devagar o movimento que a frustrou. Lia observa seus pés, tenta, para e ajusta a posição. Ele espera. Uma pequena sequência mostra avanço parcial, ainda imperfeito, sem transformação instantânea. A mestra supervisiona ao fundo.", "uri": "imagens/cena-12.png", "w": 540, "h": 960, "artTop": 360}, {"n": 15, "title": "A Arte de Cair", "text": "— Até você cai?", "alt": "Em outra aula, a mestra demonstra uma queda controlada e a continuação do movimento no chão. Lia observa surpresa. Mostrar a mestra próxima do solo, com postura correta e cabeça protegida. A imagem deve ser orientada por referência real de jiu-jítsu infantil.", "uri": "imagens/cena-13.png", "w": 540, "h": 960, "artTop": 360}, {"n": 16, "title": "A Arte de Cair", "text": "— Eu também aprendi.", "alt": "A mestra acompanha Lia praticando de forma controlada sobre o tatame. Em poucos momentos visuais, a menina aprende a chegar ao chão com cuidado e continua o movimento. A confiança cresce aos poucos. A mestra segue acessível, demonstrando novamente quando necessário.", "uri": "imagens/cena-14.png", "w": 540, "h": 960, "artTop": 360}, {"n": 17, "title": "O Primeiro Combate", "text": "— Cumprimentem-se e comecem.", "alt": "Primeiro treino de combate, na academia, sob supervisão da mestra. Lia e um colega menor se cumprimentam; ambos parecem atentos e um pouco nervosos. Não é torneio: sem pódio, medalhas ou torcida. Diferenciar visualmente este parceiro do colega mais velho que a ajudou.", "uri": "imagens/cena-15.png", "w": 540, "h": 960, "artTop": 360}, {"n": 18, "title": "O Primeiro Combate", "text": "— Como você fez isso?", "alt": "Lia avança rígida, tentando usar só a força. O colega acompanha e redireciona seu impulso, desequilibrando-a com técnica. Em sequência curta, o movimento continua no chão. Lia reage com curiosidade, observando o parceiro, sem humilhação nem pose de vencedor.", "uri": "imagens/cena-16.png", "w": 540, "h": 960, "artTop": 360}, {"n": 19, "title": "Força e Inteligência", "text": "— Vamos olhar de novo?", "alt": "A mestra se senta perto de Lia e retoma o que ocorreu com uma demonstração lenta. Mostra o instante em que o peso saiu da base e como o parceiro acompanhou o movimento. Lia observa pés, mãos e quadril. A explicação acontece pelos gestos, sem um bloco de teoria.", "uri": "imagens/cena-17.png", "w": 540, "h": 960, "artTop": 602}, {"n": 20, "title": "Força e Inteligência", "text": "", "alt": "Ao longo de outros treinos, Lia observa, testa um ajuste e pede que o colega repita pelo gesto. Agora usa o corpo com mais atenção, combinando esforço, equilíbrio e direção. Pequenas mudanças na luz exterior e no desgaste do quimono indicam passagem de semanas. Não transformar entendimento em vitória automática.", "uri": "imagens/cena-18.png", "w": 540, "h": 960, "artTop": 360}, {"n": 21, "title": "Respeito Mútuo", "text": "", "alt": "Semanas depois, Lia volta a treinar com o mesmo colega do primeiro combate. Ambos alternam posições: ela consegue sair de uma dificuldade, ele encontra outra resposta. Há quedas, defesa e movimento no chão dos dois lados. O treino mostra progresso e esforço compartilhado, sem definir um campeão.", "uri": "imagens/cena-19.png", "w": 540, "h": 960, "artTop": 360}, {"n": 22, "title": "Respeito Mútuo", "text": "— Obrigada pelo treino.", "alt": "A mestra encerra. Lia, cansada e satisfeita, estende a mão. O colega aceita, também ofegante. Dar destaque ao aperto de mãos e ao olhar recíproco. A conquista desta página é o respeito, sem troféu ou placar.", "uri": "imagens/cena-20.png", "w": 540, "h": 960, "artTop": 602}, {"n": 23, "title": "O Cinturão Colorido", "text": "", "alt": "Meses depois da chegada, em uma graduação na academia, a mestra chama Lia diante da turma e amarra sua primeira faixa colorida. A turma acompanha com carinho. Manter o quimono rosa, agora amaciado pelo uso. Usar faixa infantil compatível com a graduação definida pela autora; o manuscrito não fixa uma cor exata. Não usar faixa dourada literal.", "uri": "imagens/cena-21.png", "w": 540, "h": 960, "artTop": 360}, {"n": 24, "title": "O Cinturão Colorido", "text": "— Cada faixa é mais um começo.", "alt": "Lia toca a nova faixa e olha para a turma. Os colegas celebram sua dedicação; entre eles, crianças iniciantes de faixa branca observam. A mestra mostra discretamente que há outras etapas pela frente. A composição liga o reconhecimento ao caminho e às pessoas, sem superioridade.", "uri": "imagens/cena-22.png", "w": 540, "h": 960, "artTop": 602}, {"n": 25, "title": "Lições Fora do Tatame", "text": "Vou tentar de outro jeito.", "alt": "Na escola, sem quimono, Lia encontra dificuldade em uma atividade de matemática. Em dois pequenos momentos da mesma cena, ela respira, observa novamente e muda sua tentativa. Conservar um vestígio do erro no caderno. A expressão e o gesto repetem a paciência aprendida no treino.", "uri": "imagens/cena-23.png", "w": 540, "h": 960, "artTop": 602}, {"n": 26, "title": "Lições Fora do Tatame", "text": "— Me mostra?", "alt": "Em uma atividade escolar compartilhada, Lia escuta a ideia de uma colega e aceita sua ajuda. As duas olham para o mesmo trabalho; Lia dá espaço à outra e participa. A imagem reúne respeito e humildade, sem transportar golpes para o recreio ou sugerir que ela deixou de ter dificuldades.", "uri": "imagens/cena-24.png", "w": 540, "h": 960, "artTop": 602}, {"n": 27, "title": "O Ciclo se Completa", "text": "", "alt": "De volta à academia, um menino novo hesita na entrada, com quimono ainda rígido, faixa branca e olhar baixo. Repetir o enquadramento e o espaço da chegada de Lia. Agora Lia, com sua faixa colorida, aparece do lado de dentro e o percebe.", "uri": "imagens/cena-25.png", "w": 540, "h": 960, "artTop": 360}, {"n": 28, "title": "O Ciclo se Completa", "text": "", "alt": "Lia reconhece a postura encolhida do menino. Olha para a mestra; ela responde com um pequeno gesto de incentivo. Lia se aproxima sem invadir seu espaço. A mestra permanece presente, e o colega mais velho que acolheu Lia pode aparecer ao fundo, ligando os gestos de cuidado.", "uri": "imagens/cena-26.png", "w": 540, "h": 960, "artTop": 360}, {"n": 29, "title": "O Ciclo se Completa", "text": "— Oi!", "alt": "Lia para diante do menino e o cumprimenta. Repetir a proximidade e o acolhimento da página 4, agora com outra criança oferecendo a saudação. O menino levanta os olhos. Lia permanece na sua altura, sem assumir postura de autoridade adulta.", "uri": "imagens/cena-27.png", "w": 540, "h": 960, "artTop": 360}, {"n": 30, "title": "O Ciclo se Completa", "text": "— Vamos entrar juntos?", "alt": "Lia oferece a mão aberta, como a mestra fez no início. O menino estende a sua. A faixa colorida de Lia aparece naturalmente, sem dominar a cena. O convite nasce do reconhecimento da dificuldade do outro.", "uri": "imagens/cena-28.png", "w": 540, "h": 960, "artTop": 360}, {"n": 31, "title": "O Ciclo se Completa", "text": "", "alt": "Já sobre o tatame, Lia demonstra devagar um movimento de urso do aquecimento. O menino tenta acompanhá-la. Ela para, observa e ajusta a própria demonstração para ajudá-lo a entender. A mestra supervisiona. A imagem mostra que Lia também aprende ao compartilhar.", "uri": "imagens/cena-29.png", "w": 540, "h": 960, "artTop": 360}, {"n": 32, "title": "O Ciclo se Completa", "text": "", "alt": "O menino consegue sustentar o movimento por um instante e sorri. Lia sorri de volta, ao lado dele, enquanto a turma segue aprendendo. A mestra observa com carinho. Encerrar na escala das crianças e no espaço compartilhado, sem frase moralizante, brilho mágico ou prêmio: o acolhimento recebido continua em outro aprendiz.", "uri": "imagens/cena-30.png", "w": 540, "h": 960, "artTop": 360}]</script>
+<script>
+'use strict';
+const story=JSON.parse(document.getElementById('story').textContent),book=document.getElementById('book');
+const preference=matchMedia('(prefers-reduced-motion: reduce)');
+let current=0,frame=0,hideTimer=0,settleTimer=0;const pages=[];const textDelays={"3": 2440, "4": 2440, "5": 2260, "6": 2260, "7": 2440, "8": 2080, "9": 2260, "10": 2440, "11": 2440, "12": 2440, "13": 2260, "14": 2440, "15": 2440, "16": 2440, "17": 2440, "18": 2440, "19": 2440, "20": 2440, "21": 2440, "22": 2440, "23": 2440, "24": 2440, "25": 2440, "26": 2440, "27": 2440, "28": 2440, "29": 2260, "30": 2440, "31": 2260, "32": 2440};
+for(const [i,d] of story.entries()){
+ const section=document.createElement('section');section.className='page';section.dataset.scene=i+1;section.style.setProperty('--text-delay',`${textDelays[d.n]||2080}ms`);
+ section.setAttribute('aria-label',`Cena ${i+1} de ${story.length} — ${d.title}`);
+ const folio=document.createElement('div');folio.className='folio';
+ const img=document.createElement('img');img.className='scene';img.src=d.uri;img.alt=d.alt;img.width=540;img.height=960;img.decoding='async';img.loading=i<2?'eager':'lazy';
+ folio.append(img);
+ if(d.text){const words=document.createElement('p');words.className='words';words.textContent=d.text;folio.append(words)}
+ section.append(folio);book.append(section);pages.push(section);
+}
+function show(index){
+ current=Math.max(0,Math.min(story.length-1,index));
+ pages.forEach((p,i)=>{p.classList.toggle('current',i===current);if(i!==current)p.classList.remove('settled')});
+ document.getElementById('counter').textContent=`${String(current+1).padStart(2,'0')} / ${story.length}`;
+ document.getElementById('previous').disabled=current===0;document.getElementById('next').disabled=current===story.length-1;
+ document.getElementById('reading').textContent=`Cena ${current+1}. ${story[current].text||story[current].title}`;
+ for(let i=Math.max(0,current-1);i<=Math.min(story.length-1,current+1);i++)pages[i].querySelector('img').loading='eager';
+}
+function go(index,instant=false){index=Math.max(0,Math.min(story.length-1,index));book.scrollTo({top:pages[index].offsetTop,behavior:instant||preference.matches?'instant':'smooth'});}
+book.addEventListener('scroll',()=>{pages[current].classList.remove('settled');clearTimeout(settleTimer);settleTimer=setTimeout(()=>pages[current].classList.add('settled'),140);if(frame)return;frame=requestAnimationFrame(()=>{frame=0;const i=Math.round(book.scrollTop/book.clientHeight);if(i!==current)show(i)})},{passive:true});
+document.getElementById('previous').addEventListener('click',()=>go(current-1));document.getElementById('next').addEventListener('click',()=>go(current+1));
+document.addEventListener('keydown',e=>{
+ if(e.altKey||e.ctrlKey||e.metaKey)return;
+ let target;
+ if(['ArrowDown','ArrowRight','PageDown'].includes(e.key)||(e.key===' '&&e.target.tagName!=='BUTTON'))target=current+1;
+ if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key))target=current-1;
+ if(e.key==='Home')target=0;if(e.key==='End')target=story.length-1;
+ if(target!==undefined){e.preventDefault();go(target,e.key==='Home'||e.key==='End');wake()}
+});
+const nav=document.querySelector('.navigation');
+function wake(){nav.classList.remove('hidden');clearTimeout(hideTimer);hideTimer=setTimeout(()=>{if(!nav.contains(document.activeElement))nav.classList.add('hidden')},2600)}
+document.addEventListener('pointerdown',wake,{passive:true});document.addEventListener('pointermove',wake,{passive:true});nav.addEventListener('focusin',wake);
+let lastHeight=book.clientHeight;
+new ResizeObserver(()=>{if(book.clientHeight!==lastHeight){lastHeight=book.clientHeight;go(current,true)}}).observe(book);
+show(0);pages[0].classList.add('settled');wake();
+</script>
 </body>
 </html>
